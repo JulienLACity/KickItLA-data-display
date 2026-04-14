@@ -1,13 +1,1026 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>webpage</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kick it in the Park! — FIFA World Cup 2026 Community Celebrations</title>
+  <meta name="description" content="Find World Cup 2026 watch parties across Los Angeles parks. Filter by date, team, location, and district.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #0a0f1a; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+const { useState, useMemo, useEffect, useRef } = React;
+
+// ─── DATA ───────────────────────────────────────────────────────────────────
+const SITES = [
+  {id:1,district:1,name:"Sycamore Grove",address:"4702 N Figueroa St, Los Angeles, CA 90042",lat:34.1000935,lng:-118.2033179},
+  {id:2,district:2,name:"Whitsett Fields",address:"12445 Vanowen St, North Hollywood, CA 91605",lat:34.1960504,lng:-118.4038961},
+  {id:3,district:3,name:"Lanark Recreation Center",address:"21816 Lanark St, Canoga Park, CA 91304",lat:34.2168319,lng:-118.6035049},
+  {id:5,district:5,name:"Cheviot Hills Recreation Center",address:"2551 Motor Ave, Los Angeles, CA 90064",lat:34.0468616,lng:-118.4089588},
+  {id:6,district:5,name:"Westwood Recreation Center",address:"1350 S Sepulveda Blvd, Los Angeles, CA 90025",lat:34.0532553,lng:-118.4478125},
+  {id:7,district:6,name:"Sheldon-Arleta Park",address:"12455 Wicks St, Sun Valley, CA 91352",lat:34.2272518,lng:-118.4068172},
+  {id:8,district:7,name:"Sylmar Recreation Center",address:"13109 Borden Ave, Sylmar, CA 91342",lat:34.3083637,lng:-118.4458814},
+  {id:9,district:8,name:"Jackie Tatum Harvard Recreation Center",address:"1535 62nd St, Los Angeles, CA 90047",lat:33.9835432,lng:-118.3038059},
+  {id:10,district:9,name:"South Park Recreation Center",address:"345 E 51st St, Los Angeles, CA 90011",lat:33.9975563,lng:-118.2665493},
+  {id:11,district:10,name:"Seoul International Park",address:"3250 San Marino St., Los Angeles, CA 90006",lat:34.0542164,lng:-118.3017847},
+  {id:12,district:11,name:"Venice Beach Recreation Center",address:"1800 Ocean Front Walk, Venice, CA 90291",lat:33.9851719,lng:-118.4727099},
+  {id:13,district:12,name:"Northridge Recreation Center",address:"18300 Lemarsh St, Northridge, CA 91324",lat:34.2549726,lng:-118.5312762},
+  {id:14,district:13,name:"Echo Park",address:"1632 Bellevue Ave, Los Angeles, CA 90026",lat:34.0697562,lng:-118.2601052},
+  {id:15,district:14,name:"El Sereno Recreation Center",address:"4721 Klamath St, Los Angeles, CA 90032",lat:34.0767339,lng:-118.1813825},
+  {id:16,district:15,name:"Wilmington Sports Complex",address:"1221 Figueroa Pl, Wilmington, CA 90744",lat:33.7863391,lng:-118.2842716},
+  {id:17,district:1,name:"MacArthur Park",address:"2230 W 6th St, Los Angeles, CA 90057",lat:34.0601077,lng:-118.2780828},
+  {id:18,district:11,name:"Stoner Recreation Center",address:"1835 Stoner Ave, Los Angeles, CA 90025",lat:34.0384849,lng:-118.4535928},
+  {id:19,district:15,name:"Ken Malloy Harbor Regional Park",address:"25820 Vermont Ave, Harbor City, CA 90710",lat:33.7834882,lng:-118.294869}
+];
+
+const CALENDAR_RAW = [
+  {m:"1",date:"6/11/2026",time:"12:00 PM",stage:"Group A",host:"Mexico City",t1:"Mexico",t2:"South Africa",loc:"Wilmington Recreation Center",dist:15,lid:16},
+  {m:"1",date:"6/11/2026",time:"12:00 PM",stage:"Group A",host:"Mexico City",t1:"Mexico",t2:"South Africa",loc:"Echo Park",dist:13,lid:14},
+  {m:"1",date:"6/11/2026",time:"12:00 PM",stage:"Group A",host:"Mexico City",t1:"Mexico",t2:"South Africa",loc:"Sheldon-Arleta Park",dist:6,lid:7},
+  {m:"2",date:"6/11/2026",time:"6:00 PM",stage:"Group A",host:"Guadalajara",t1:"South Korea",t2:"Czechia",loc:"Wilmington Recreation Center",dist:15,lid:16},
+  {m:"2",date:"6/11/2026",time:"6:00 PM",stage:"Group A",host:"Guadalajara",t1:"South Korea",t2:"Czechia",loc:"Echo Park",dist:13,lid:14},
+  {m:"2",date:"6/11/2026",time:"6:00 PM",stage:"Group A",host:"Guadalajara",t1:"South Korea",t2:"Czechia",loc:"Sheldon-Arleta Park",dist:6,lid:7},
+  {m:"3",date:"6/12/2026",time:"12:00 PM",stage:"Group B",host:"Toronto",t1:"Canada",t2:"Bosnia-Herzegovina",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},
+  {m:"3",date:"6/12/2026",time:"12:00 PM",stage:"Group B",host:"Toronto",t1:"Canada",t2:"Bosnia-Herzegovina",loc:"Stoner Recreation Center",dist:11,lid:18},
+  {m:"4",date:"6/12/2026",time:"6:00 PM",stage:"Group D",host:"Los Angeles",t1:"USA",t2:"Paraguay",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},
+  {m:"4",date:"6/12/2026",time:"6:00 PM",stage:"Group D",host:"Los Angeles",t1:"USA",t2:"Paraguay",loc:"Stoner Recreation Center",dist:11,lid:18},
+  {m:"5",date:"6/13/2026",time:"12:00 PM",stage:"Group C",host:"Boston",t1:"Haiti",t2:"Scotland",loc:"Seoul International Park",dist:10,lid:11},
+  {m:"5",date:"6/13/2026",time:"12:00 PM",stage:"Group C",host:"Boston",t1:"Haiti",t2:"Scotland",loc:"Whitsett Fields",dist:2,lid:2},
+  {m:"5",date:"6/13/2026",time:"12:00 PM",stage:"Group C",host:"Boston",t1:"Haiti",t2:"Scotland",loc:"Sylmar Recreation Center",dist:7,lid:8},
+  {m:"6",date:"6/13/2026",time:"7:00 PM",stage:"Group D",host:"Vancouver",t1:"Australia",t2:"Turkey",loc:"Seoul International Park",dist:10,lid:11},
+  {m:"6",date:"6/13/2026",time:"7:00 PM",stage:"Group D",host:"Vancouver",t1:"Australia",t2:"Turkey",loc:"Whitsett Fields",dist:2,lid:2},
+  {m:"6",date:"6/13/2026",time:"7:00 PM",stage:"Group D",host:"Vancouver",t1:"Australia",t2:"Turkey",loc:"Sylmar Recreation Center",dist:7,lid:8},
+  {m:"7",date:"6/13/2026",time:"3:00 PM",stage:"Group C",host:"New York/NJ",t1:"Brazil",t2:"Morocco",loc:"Seoul International Park",dist:10,lid:11},
+  {m:"7",date:"6/13/2026",time:"3:00 PM",stage:"Group C",host:"New York/NJ",t1:"Brazil",t2:"Morocco",loc:"Whitsett Fields",dist:2,lid:2},
+  {m:"7",date:"6/13/2026",time:"3:00 PM",stage:"Group C",host:"New York/NJ",t1:"Brazil",t2:"Morocco",loc:"Sylmar Recreation Center",dist:7,lid:8},
+  {m:"8",date:"6/13/2026",time:"1:00 PM",stage:"Group B",host:"San Francisco",t1:"Qatar",t2:"Switzerland",loc:"Seoul International Park",dist:10,lid:11},
+  {m:"8",date:"6/13/2026",time:"1:00 PM",stage:"Group B",host:"San Francisco",t1:"Qatar",t2:"Switzerland",loc:"Whitsett Fields",dist:2,lid:2},
+  {m:"8",date:"6/13/2026",time:"1:00 PM",stage:"Group B",host:"San Francisco",t1:"Qatar",t2:"Switzerland",loc:"Sylmar Recreation Center",dist:7,lid:8},
+  {m:"9",date:"6/14/2026",time:"4:00 PM",stage:"Group E",host:"Philadelphia",t1:"Ivory Coast",t2:"Ecuador",loc:"Cheviot Hills Recreation Center",dist:5,lid:5},
+  {m:"9",date:"6/14/2026",time:"4:00 PM",stage:"Group E",host:"Philadelphia",t1:"Ivory Coast",t2:"Ecuador",loc:"South Park Recreation Center",dist:9,lid:10},
+  {m:"9",date:"6/14/2026",time:"4:00 PM",stage:"Group E",host:"Philadelphia",t1:"Ivory Coast",t2:"Ecuador",loc:"El Sereno Recreation Center",dist:14,lid:15},
+  {m:"10",date:"6/14/2026",time:"10:00 AM",stage:"Group E",host:"Houston",t1:"Germany",t2:"Curaçao",loc:"Cheviot Hills Recreation Center",dist:5,lid:5},
+  {m:"10",date:"6/14/2026",time:"10:00 AM",stage:"Group E",host:"Houston",t1:"Germany",t2:"Curaçao",loc:"South Park Recreation Center",dist:9,lid:10},
+  {m:"10",date:"6/14/2026",time:"10:00 AM",stage:"Group E",host:"Houston",t1:"Germany",t2:"Curaçao",loc:"El Sereno Recreation Center",dist:14,lid:15},
+  {m:"11",date:"6/14/2026",time:"1:00 PM",stage:"Group F",host:"Dallas",t1:"Netherlands",t2:"Japan",loc:"Cheviot Hills Recreation Center",dist:5,lid:5},
+  {m:"11",date:"6/14/2026",time:"1:00 PM",stage:"Group F",host:"Dallas",t1:"Netherlands",t2:"Japan",loc:"South Park Recreation Center",dist:9,lid:10},
+  {m:"11",date:"6/14/2026",time:"1:00 PM",stage:"Group F",host:"Dallas",t1:"Netherlands",t2:"Japan",loc:"El Sereno Recreation Center",dist:14,lid:15},
+  {m:"12",date:"6/14/2026",time:"7:00 PM",stage:"Group F",host:"Monterrey",t1:"Sweden",t2:"Tunisia",loc:"Cheviot Hills Recreation Center",dist:5,lid:5},
+  {m:"12",date:"6/14/2026",time:"7:00 PM",stage:"Group F",host:"Monterrey",t1:"Sweden",t2:"Tunisia",loc:"South Park Recreation Center",dist:9,lid:10},
+  {m:"12",date:"6/14/2026",time:"7:00 PM",stage:"Group F",host:"Monterrey",t1:"Sweden",t2:"Tunisia",loc:"El Sereno Recreation Center",dist:14,lid:15},
+  {m:"13",date:"6/15/2026",time:"9:00 AM",stage:"Group H",host:"Miami",t1:"Saudi Arabia",t2:"Uruguay",loc:"MacArthur Park",dist:1,lid:17},
+  {m:"13",date:"6/15/2026",time:"9:00 AM",stage:"Group H",host:"Miami",t1:"Saudi Arabia",t2:"Uruguay",loc:"Lanark Recreation Center",dist:3,lid:3},
+  {m:"13",date:"6/15/2026",time:"9:00 AM",stage:"Group H",host:"Miami",t1:"Saudi Arabia",t2:"Uruguay",loc:"Northridge Recreation Center",dist:12,lid:13},
+  {m:"14",date:"6/15/2026",time:"9:00 AM",stage:"Group H",host:"Atlanta",t1:"Spain",t2:"Cabo Verde",loc:"MacArthur Park",dist:1,lid:17},
+  {m:"14",date:"6/15/2026",time:"9:00 AM",stage:"Group H",host:"Atlanta",t1:"Spain",t2:"Cabo Verde",loc:"Lanark Recreation Center",dist:3,lid:3},
+  {m:"14",date:"6/15/2026",time:"9:00 AM",stage:"Group H",host:"Atlanta",t1:"Spain",t2:"Cabo Verde",loc:"Northridge Recreation Center",dist:12,lid:13},
+  {m:"15",date:"6/15/2026",time:"6:00 PM",stage:"Group G",host:"Los Angeles",t1:"Iran",t2:"New Zealand",loc:"MacArthur Park",dist:1,lid:17},
+  {m:"15",date:"6/15/2026",time:"6:00 PM",stage:"Group G",host:"Los Angeles",t1:"Iran",t2:"New Zealand",loc:"Lanark Recreation Center",dist:3,lid:3},
+  {m:"15",date:"6/15/2026",time:"6:00 PM",stage:"Group G",host:"Los Angeles",t1:"Iran",t2:"New Zealand",loc:"Northridge Recreation Center",dist:12,lid:13},
+  {m:"16",date:"6/15/2026",time:"12:00 PM",stage:"Group G",host:"Seattle",t1:"Belgium",t2:"Egypt",loc:"MacArthur Park",dist:1,lid:17},
+  {m:"16",date:"6/15/2026",time:"12:00 PM",stage:"Group G",host:"Seattle",t1:"Belgium",t2:"Egypt",loc:"Lanark Recreation Center",dist:3,lid:3},
+  {m:"16",date:"6/15/2026",time:"12:00 PM",stage:"Group G",host:"Seattle",t1:"Belgium",t2:"Egypt",loc:"Northridge Recreation Center",dist:12,lid:13},
+  {m:"17",date:"6/16/2026",time:"12:00 PM",stage:"Group I",host:"New York/NJ",t1:"France",t2:"Senegal",loc:"Wilmington Recreation Center",dist:15,lid:16},
+  {m:"17",date:"6/16/2026",time:"12:00 PM",stage:"Group I",host:"New York/NJ",t1:"France",t2:"Senegal",loc:"Echo Park",dist:13,lid:14},
+  {m:"17",date:"6/16/2026",time:"12:00 PM",stage:"Group I",host:"New York/NJ",t1:"France",t2:"Senegal",loc:"Sheldon-Arleta Park",dist:6,lid:7},
+  {m:"18",date:"6/16/2026",time:"3:00 PM",stage:"Group I",host:"Boston",t1:"Irak",t2:"Norway",loc:"Wilmington Recreation Center",dist:15,lid:16},
+  {m:"18",date:"6/16/2026",time:"3:00 PM",stage:"Group I",host:"Boston",t1:"Irak",t2:"Norway",loc:"Echo Park",dist:13,lid:14},
+  {m:"18",date:"6/16/2026",time:"3:00 PM",stage:"Group I",host:"Boston",t1:"Irak",t2:"Norway",loc:"Sheldon-Arleta Park",dist:6,lid:7},
+  {m:"19",date:"6/16/2026",time:"6:00 PM",stage:"Group J",host:"Kansas City",t1:"Argentina",t2:"Algeria",loc:"Wilmington Recreation Center",dist:15,lid:16},
+  {m:"19",date:"6/16/2026",time:"6:00 PM",stage:"Group J",host:"Kansas City",t1:"Argentina",t2:"Algeria",loc:"Echo Park",dist:13,lid:14},
+  {m:"19",date:"6/16/2026",time:"6:00 PM",stage:"Group J",host:"Kansas City",t1:"Argentina",t2:"Algeria",loc:"Sheldon-Arleta Park",dist:6,lid:7},
+  {m:"20",date:"6/16/2026",time:"9:00 PM",stage:"Group J",host:"San Francisco",t1:"Austria",t2:"Jordan",loc:"Wilmington Recreation Center",dist:15,lid:16},
+  {m:"20",date:"6/16/2026",time:"9:00 PM",stage:"Group J",host:"San Francisco",t1:"Austria",t2:"Jordan",loc:"Echo Park",dist:13,lid:14},
+  {m:"20",date:"6/16/2026",time:"9:00 PM",stage:"Group J",host:"San Francisco",t1:"Austria",t2:"Jordan",loc:"Sheldon-Arleta Park",dist:6,lid:7},
+  {m:"21",date:"6/17/2026",time:"4:00 PM",stage:"Group L",host:"Toronto",t1:"Ghana",t2:"Panama",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},
+  {m:"21",date:"6/17/2026",time:"4:00 PM",stage:"Group L",host:"Toronto",t1:"Ghana",t2:"Panama",loc:"Venice Beach Recreation Center",dist:11,lid:12},
+  {m:"22",date:"6/17/2026",time:"1:00 PM",stage:"Group L",host:"Dallas",t1:"England",t2:"Croatia",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},
+  {m:"22",date:"6/17/2026",time:"1:00 PM",stage:"Group L",host:"Dallas",t1:"England",t2:"Croatia",loc:"Venice Beach Recreation Center",dist:11,lid:12},
+  {m:"23",date:"6/17/2026",time:"10:00 AM",stage:"Group K",host:"Houston",t1:"Portugal",t2:"Congo DR",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},
+  {m:"23",date:"6/17/2026",time:"10:00 AM",stage:"Group K",host:"Houston",t1:"Portugal",t2:"Congo DR",loc:"Venice Beach Recreation Center",dist:11,lid:12},
+  {m:"24",date:"6/17/2026",time:"7:00 PM",stage:"Group K",host:"Mexico City",t1:"Uzbekistan",t2:"Colombia",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},
+  {m:"24",date:"6/17/2026",time:"7:00 PM",stage:"Group K",host:"Mexico City",t1:"Uzbekistan",t2:"Colombia",loc:"Venice Beach Recreation Center",dist:11,lid:12},
+  {m:"25",date:"6/18/2026",time:"9:00 AM",stage:"Group A",host:"Atlanta",t1:"Czechia",t2:"South Africa",loc:"Seoul International Park",dist:10,lid:11},
+  {m:"25",date:"6/18/2026",time:"9:00 AM",stage:"Group A",host:"Atlanta",t1:"Czechia",t2:"South Africa",loc:"Whitsett Fields",dist:2,lid:2},
+  {m:"25",date:"6/18/2026",time:"9:00 AM",stage:"Group A",host:"Atlanta",t1:"Czechia",t2:"South Africa",loc:"Sylmar Recreation Center",dist:7,lid:8},
+  {m:"26",date:"6/18/2026",time:"12:00 PM",stage:"Group B",host:"Los Angeles",t1:"Switzerland",t2:"Bosnia-Herzegovina",loc:"Seoul International Park",dist:10,lid:11},
+  {m:"26",date:"6/18/2026",time:"12:00 PM",stage:"Group B",host:"Los Angeles",t1:"Switzerland",t2:"Bosnia-Herzegovina",loc:"Whitsett Fields",dist:2,lid:2},
+  {m:"26",date:"6/18/2026",time:"12:00 PM",stage:"Group B",host:"Los Angeles",t1:"Switzerland",t2:"Bosnia-Herzegovina",loc:"Sylmar Recreation Center",dist:7,lid:8},
+  {m:"27",date:"6/18/2026",time:"3:00 PM",stage:"Group B",host:"Vancouver",t1:"Canada",t2:"Qatar",loc:"Seoul International Park",dist:10,lid:11},
+  {m:"27",date:"6/18/2026",time:"3:00 PM",stage:"Group B",host:"Vancouver",t1:"Canada",t2:"Qatar",loc:"Whitsett Fields",dist:2,lid:2},
+  {m:"27",date:"6/18/2026",time:"3:00 PM",stage:"Group B",host:"Vancouver",t1:"Canada",t2:"Qatar",loc:"Sylmar Recreation Center",dist:7,lid:8},
+  {m:"28",date:"6/18/2026",time:"6:00 PM",stage:"Group A",host:"Guadalajara",t1:"Mexico",t2:"South Korea",loc:"Seoul International Park",dist:10,lid:11},
+  {m:"28",date:"6/18/2026",time:"6:00 PM",stage:"Group A",host:"Guadalajara",t1:"Mexico",t2:"South Korea",loc:"Whitsett Fields",dist:2,lid:2},
+  {m:"28",date:"6/18/2026",time:"6:00 PM",stage:"Group A",host:"Guadalajara",t1:"Mexico",t2:"South Korea",loc:"Sylmar Recreation Center",dist:7,lid:8},
+  {m:"28",date:"6/18/2026",time:"6:00 PM",stage:"Group A",host:"Guadalajara",t1:"Mexico",t2:"South Korea",loc:"Northridge Recreation Center",dist:12,lid:13},
+  {m:"29",date:"6/19/2026",time:"3:00 PM",stage:"Group C",host:"Philadelphia",t1:"Brazil",t2:"Haiti",loc:"Cheviot Hills Recreation Center",dist:5,lid:5},
+  {m:"29",date:"6/19/2026",time:"3:00 PM",stage:"Group C",host:"Philadelphia",t1:"Brazil",t2:"Haiti",loc:"South Park Recreation Center",dist:9,lid:10},
+  {m:"29",date:"6/19/2026",time:"3:00 PM",stage:"Group C",host:"Philadelphia",t1:"Brazil",t2:"Haiti",loc:"El Sereno Recreation Center",dist:14,lid:15},
+  {m:"30",date:"6/19/2026",time:"3:00 PM",stage:"Group C",host:"Boston",t1:"Scotland",t2:"Morocco",loc:"Cheviot Hills Recreation Center",dist:5,lid:5},
+  {m:"30",date:"6/19/2026",time:"3:00 PM",stage:"Group C",host:"Boston",t1:"Scotland",t2:"Morocco",loc:"South Park Recreation Center",dist:9,lid:10},
+  {m:"30",date:"6/19/2026",time:"3:00 PM",stage:"Group C",host:"Boston",t1:"Scotland",t2:"Morocco",loc:"El Sereno Recreation Center",dist:14,lid:15},
+  {m:"31",date:"6/19/2026",time:"7:00 PM",stage:"Group D",host:"San Francisco",t1:"Turkey",t2:"Paraguay",loc:"Cheviot Hills Recreation Center",dist:5,lid:5},
+  {m:"31",date:"6/19/2026",time:"7:00 PM",stage:"Group D",host:"San Francisco",t1:"Turkey",t2:"Paraguay",loc:"South Park Recreation Center",dist:9,lid:10},
+  {m:"31",date:"6/19/2026",time:"7:00 PM",stage:"Group D",host:"San Francisco",t1:"Turkey",t2:"Paraguay",loc:"El Sereno Recreation Center",dist:14,lid:15},
+  {m:"32",date:"6/19/2026",time:"12:00 PM",stage:"Group D",host:"Seattle",t1:"USA",t2:"Australia",loc:"Cheviot Hills Recreation Center",dist:5,lid:5},
+  {m:"32",date:"6/19/2026",time:"12:00 PM",stage:"Group D",host:"Seattle",t1:"USA",t2:"Australia",loc:"South Park Recreation Center",dist:9,lid:10},
+  {m:"32",date:"6/19/2026",time:"12:00 PM",stage:"Group D",host:"Seattle",t1:"USA",t2:"Australia",loc:"El Sereno Recreation Center",dist:14,lid:15},
+  {m:"33",date:"6/20/2026",time:"1:00 PM",stage:"Group E",host:"Toronto",t1:"Germany",t2:"Ivory Coast",loc:"Sycamore Grove",dist:1,lid:1},
+  {m:"33",date:"6/20/2026",time:"1:00 PM",stage:"Group E",host:"Toronto",t1:"Germany",t2:"Ivory Coast",loc:"Lanark Recreation Center",dist:3,lid:3},
+  {m:"33",date:"6/20/2026",time:"1:00 PM",stage:"Group E",host:"Toronto",t1:"Germany",t2:"Ivory Coast",loc:"Northridge Recreation Center",dist:12,lid:13},
+  {m:"34",date:"6/20/2026",time:"5:00 PM",stage:"Group E",host:"Kansas City",t1:"Ecuador",t2:"Curaçao",loc:"Sycamore Grove",dist:1,lid:1},
+  {m:"34",date:"6/20/2026",time:"5:00 PM",stage:"Group E",host:"Kansas City",t1:"Ecuador",t2:"Curaçao",loc:"Lanark Recreation Center",dist:3,lid:3},
+  {m:"34",date:"6/20/2026",time:"5:00 PM",stage:"Group E",host:"Kansas City",t1:"Ecuador",t2:"Curaçao",loc:"Northridge Recreation Center",dist:12,lid:13},
+  {m:"35",date:"6/20/2026",time:"10:00 AM",stage:"Group F",host:"Houston",t1:"Netherlands",t2:"Sweden",loc:"Sycamore Grove",dist:1,lid:1},
+  {m:"35",date:"6/20/2026",time:"10:00 AM",stage:"Group F",host:"Houston",t1:"Netherlands",t2:"Sweden",loc:"Lanark Recreation Center",dist:3,lid:3},
+  {m:"35",date:"6/20/2026",time:"10:00 AM",stage:"Group F",host:"Houston",t1:"Netherlands",t2:"Sweden",loc:"Northridge Recreation Center",dist:12,lid:13},
+  {m:"36",date:"6/20/2026",time:"7:00 PM",stage:"Group F",host:"Monterrey",t1:"Tunisia",t2:"Japan",loc:"Sycamore Grove",dist:1,lid:1},
+  {m:"36",date:"6/20/2026",time:"7:00 PM",stage:"Group F",host:"Monterrey",t1:"Tunisia",t2:"Japan",loc:"Lanark Recreation Center",dist:3,lid:3},
+  {m:"36",date:"6/20/2026",time:"7:00 PM",stage:"Group F",host:"Monterrey",t1:"Tunisia",t2:"Japan",loc:"Northridge Recreation Center",dist:12,lid:13},
+  {m:"37",date:"6/21/2026",time:"3:00 PM",stage:"Group H",host:"Miami",t1:"Uruguay",t2:"Cabo Verde",loc:"Wilmington Recreation Center",dist:15,lid:16},
+  {m:"37",date:"6/21/2026",time:"3:00 PM",stage:"Group H",host:"Miami",t1:"Uruguay",t2:"Cabo Verde",loc:"Echo Park",dist:13,lid:14},
+  {m:"37",date:"6/21/2026",time:"3:00 PM",stage:"Group H",host:"Miami",t1:"Uruguay",t2:"Cabo Verde",loc:"Sheldon-Arleta Park",dist:6,lid:7},
+  {m:"38",date:"6/21/2026",time:"9:00 AM",stage:"Group H",host:"Atlanta",t1:"Spain",t2:"Saudi Arabia",loc:"Wilmington Recreation Center",dist:15,lid:16},
+  {m:"38",date:"6/21/2026",time:"9:00 AM",stage:"Group H",host:"Atlanta",t1:"Spain",t2:"Saudi Arabia",loc:"Echo Park",dist:13,lid:14},
+  {m:"38",date:"6/21/2026",time:"9:00 AM",stage:"Group H",host:"Atlanta",t1:"Spain",t2:"Saudi Arabia",loc:"Sheldon-Arleta Park",dist:6,lid:7},
+  {m:"39",date:"6/21/2026",time:"12:00 PM",stage:"Group G",host:"Los Angeles",t1:"Belgium",t2:"Iran",loc:"Wilmington Recreation Center",dist:15,lid:16},
+  {m:"39",date:"6/21/2026",time:"12:00 PM",stage:"Group G",host:"Los Angeles",t1:"Belgium",t2:"Iran",loc:"Echo Park",dist:13,lid:14},
+  {m:"39",date:"6/21/2026",time:"12:00 PM",stage:"Group G",host:"Los Angeles",t1:"Belgium",t2:"Iran",loc:"Sheldon-Arleta Park",dist:6,lid:7},
+  {m:"40",date:"6/21/2026",time:"6:00 PM",stage:"Group G",host:"Vancouver",t1:"New Zealand",t2:"Egypt",loc:"Wilmington Recreation Center",dist:15,lid:16},
+  {m:"40",date:"6/21/2026",time:"6:00 PM",stage:"Group G",host:"Vancouver",t1:"New Zealand",t2:"Egypt",loc:"Echo Park",dist:13,lid:14},
+  {m:"40",date:"6/21/2026",time:"6:00 PM",stage:"Group G",host:"Vancouver",t1:"New Zealand",t2:"Egypt",loc:"Sheldon-Arleta Park",dist:6,lid:7},
+  {m:"41",date:"6/22/2026",time:"5:00 PM",stage:"Group I",host:"New York/NJ",t1:"Norway",t2:"Senegal",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},
+  {m:"41",date:"6/22/2026",time:"5:00 PM",stage:"Group I",host:"New York/NJ",t1:"Norway",t2:"Senegal",loc:"Stoner Recreation Center",dist:11,lid:18},
+  {m:"42",date:"6/22/2026",time:"2:00 PM",stage:"Group I",host:"Philadelphia",t1:"France",t2:"Irak",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},
+  {m:"42",date:"6/22/2026",time:"2:00 PM",stage:"Group I",host:"Philadelphia",t1:"France",t2:"Irak",loc:"Stoner Recreation Center",dist:11,lid:18},
+  {m:"43",date:"6/22/2026",time:"10:00 AM",stage:"Group J",host:"Dallas",t1:"Argentina",t2:"Austria",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},
+  {m:"43",date:"6/22/2026",time:"10:00 AM",stage:"Group J",host:"Dallas",t1:"Argentina",t2:"Austria",loc:"Stoner Recreation Center",dist:11,lid:18},
+  {m:"44",date:"6/22/2026",time:"8:00 PM",stage:"Group J",host:"San Francisco",t1:"Jordan",t2:"Algeria",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},
+  {m:"44",date:"6/22/2026",time:"8:00 PM",stage:"Group J",host:"San Francisco",t1:"Jordan",t2:"Algeria",loc:"Stoner Recreation Center",dist:11,lid:18},
+  {m:"45",date:"6/23/2026",time:"12:00 PM",stage:"Group L",host:"Boston",t1:"England",t2:"Ghana",loc:"Seoul International Park",dist:10,lid:11},
+  {m:"45",date:"6/23/2026",time:"12:00 PM",stage:"Group L",host:"Boston",t1:"England",t2:"Ghana",loc:"Whitsett Fields",dist:2,lid:2},
+  {m:"45",date:"6/23/2026",time:"12:00 PM",stage:"Group L",host:"Boston",t1:"England",t2:"Ghana",loc:"Sylmar Recreation Center",dist:7,lid:8},
+  {m:"46",date:"6/23/2026",time:"4:00 PM",stage:"Group L",host:"Toronto",t1:"Panama",t2:"Croatia",loc:"Seoul International Park",dist:10,lid:11},
+  {m:"46",date:"6/23/2026",time:"4:00 PM",stage:"Group L",host:"Toronto",t1:"Panama",t2:"Croatia",loc:"Whitsett Fields",dist:2,lid:2},
+  {m:"46",date:"6/23/2026",time:"4:00 PM",stage:"Group L",host:"Toronto",t1:"Panama",t2:"Croatia",loc:"Sylmar Recreation Center",dist:7,lid:8},
+  {m:"47",date:"6/23/2026",time:"10:00 AM",stage:"Group K",host:"Houston",t1:"Portugal",t2:"Uzbekistan",loc:"Seoul International Park",dist:10,lid:11},
+  {m:"47",date:"6/23/2026",time:"10:00 AM",stage:"Group K",host:"Houston",t1:"Portugal",t2:"Uzbekistan",loc:"Whitsett Fields",dist:2,lid:2},
+  {m:"47",date:"6/23/2026",time:"10:00 AM",stage:"Group K",host:"Houston",t1:"Portugal",t2:"Uzbekistan",loc:"Sylmar Recreation Center",dist:7,lid:8},
+  {m:"48",date:"6/23/2026",time:"4:00 PM",stage:"Group K",host:"Guadalajara",t1:"Colombia",t2:"Congo DR",loc:"Seoul International Park",dist:10,lid:11},
+  {m:"48",date:"6/23/2026",time:"4:00 PM",stage:"Group K",host:"Guadalajara",t1:"Colombia",t2:"Congo DR",loc:"Whitsett Fields",dist:2,lid:2},
+  {m:"48",date:"6/23/2026",time:"4:00 PM",stage:"Group K",host:"Guadalajara",t1:"Colombia",t2:"Congo DR",loc:"Sylmar Recreation Center",dist:7,lid:8},
+  {m:"49",date:"6/24/2026",time:"3:00 PM",stage:"Group C",host:"Miami",t1:"Scotland",t2:"Brazil",loc:"Cheviot Hills Recreation Center",dist:5,lid:5},
+  {m:"49",date:"6/24/2026",time:"3:00 PM",stage:"Group C",host:"Miami",t1:"Scotland",t2:"Brazil",loc:"South Park Recreation Center",dist:9,lid:10},
+  {m:"49",date:"6/24/2026",time:"3:00 PM",stage:"Group C",host:"Miami",t1:"Scotland",t2:"Brazil",loc:"El Sereno Recreation Center",dist:14,lid:15},
+  {m:"50",date:"6/24/2026",time:"12:00 PM",stage:"Group C",host:"Atlanta",t1:"Morocco",t2:"Haiti",loc:"Cheviot Hills Recreation Center",dist:5,lid:5},
+  {m:"50",date:"6/24/2026",time:"12:00 PM",stage:"Group C",host:"Atlanta",t1:"Morocco",t2:"Haiti",loc:"South Park Recreation Center",dist:9,lid:10},
+  {m:"50",date:"6/24/2026",time:"12:00 PM",stage:"Group C",host:"Atlanta",t1:"Morocco",t2:"Haiti",loc:"El Sereno Recreation Center",dist:14,lid:15},
+  {m:"51",date:"6/24/2026",time:"12:00 PM",stage:"Group B",host:"Vancouver",t1:"Switzerland",t2:"Canada",loc:"Cheviot Hills Recreation Center",dist:5,lid:5},
+  {m:"51",date:"6/24/2026",time:"12:00 PM",stage:"Group B",host:"Vancouver",t1:"Switzerland",t2:"Canada",loc:"South Park Recreation Center",dist:9,lid:10},
+  {m:"51",date:"6/24/2026",time:"12:00 PM",stage:"Group B",host:"Vancouver",t1:"Switzerland",t2:"Canada",loc:"El Sereno Recreation Center",dist:14,lid:15},
+  {m:"52",date:"6/24/2026",time:"12:00 PM",stage:"Group B",host:"Seattle",t1:"Bosnia-Herzegovina",t2:"Qatar",loc:"Cheviot Hills Recreation Center",dist:5,lid:5},
+  {m:"52",date:"6/24/2026",time:"12:00 PM",stage:"Group B",host:"Seattle",t1:"Bosnia-Herzegovina",t2:"Qatar",loc:"South Park Recreation Center",dist:9,lid:10},
+  {m:"52",date:"6/24/2026",time:"12:00 PM",stage:"Group B",host:"Seattle",t1:"Bosnia-Herzegovina",t2:"Qatar",loc:"El Sereno Recreation Center",dist:14,lid:15},
+  {m:"53",date:"6/24/2026",time:"6:00 PM",stage:"Group A",host:"Mexico City",t1:"Czechia",t2:"Mexico",loc:"Cheviot Hills Recreation Center",dist:5,lid:5},
+  {m:"53",date:"6/24/2026",time:"6:00 PM",stage:"Group A",host:"Mexico City",t1:"Czechia",t2:"Mexico",loc:"South Park Recreation Center",dist:9,lid:10},
+  {m:"53",date:"6/24/2026",time:"6:00 PM",stage:"Group A",host:"Mexico City",t1:"Czechia",t2:"Mexico",loc:"El Sereno Recreation Center",dist:14,lid:15},
+  {m:"54",date:"6/24/2026",time:"6:00 PM",stage:"Group A",host:"Monterrey",t1:"South Africa",t2:"South Korea",loc:"Cheviot Hills Recreation Center",dist:5,lid:5},
+  {m:"54",date:"6/24/2026",time:"6:00 PM",stage:"Group A",host:"Monterrey",t1:"South Africa",t2:"South Korea",loc:"South Park Recreation Center",dist:9,lid:10},
+  {m:"54",date:"6/24/2026",time:"6:00 PM",stage:"Group A",host:"Monterrey",t1:"South Africa",t2:"South Korea",loc:"El Sereno Recreation Center",dist:14,lid:15},
+  {m:"55",date:"6/25/2026",time:"1:00 PM",stage:"Group E",host:"Philadelphia",t1:"Curaçao",t2:"Ivory Coast",loc:"MacArthur Park",dist:1,lid:17},
+  {m:"55",date:"6/25/2026",time:"1:00 PM",stage:"Group E",host:"Philadelphia",t1:"Curaçao",t2:"Ivory Coast",loc:"Lanark Recreation Center",dist:3,lid:3},
+  {m:"55",date:"6/25/2026",time:"1:00 PM",stage:"Group E",host:"Philadelphia",t1:"Curaçao",t2:"Ivory Coast",loc:"Northridge Recreation Center",dist:12,lid:13},
+  {m:"56",date:"6/25/2026",time:"1:00 PM",stage:"Group E",host:"New York/NJ",t1:"Ecuador",t2:"Germany",loc:"MacArthur Park",dist:1,lid:17},
+  {m:"56",date:"6/25/2026",time:"1:00 PM",stage:"Group E",host:"New York/NJ",t1:"Ecuador",t2:"Germany",loc:"Lanark Recreation Center",dist:3,lid:3},
+  {m:"56",date:"6/25/2026",time:"1:00 PM",stage:"Group E",host:"New York/NJ",t1:"Ecuador",t2:"Germany",loc:"Northridge Recreation Center",dist:12,lid:13},
+  {m:"57",date:"6/25/2026",time:"4:00 PM",stage:"Group F",host:"Dallas",t1:"Japan",t2:"Sweden",loc:"MacArthur Park",dist:1,lid:17},
+  {m:"57",date:"6/25/2026",time:"4:00 PM",stage:"Group F",host:"Dallas",t1:"Japan",t2:"Sweden",loc:"Lanark Recreation Center",dist:3,lid:3},
+  {m:"57",date:"6/25/2026",time:"4:00 PM",stage:"Group F",host:"Dallas",t1:"Japan",t2:"Sweden",loc:"Northridge Recreation Center",dist:12,lid:13},
+  {m:"58",date:"6/25/2026",time:"4:00 PM",stage:"Group F",host:"Kansas City",t1:"Tunisia",t2:"Netherlands",loc:"MacArthur Park",dist:1,lid:17},
+  {m:"58",date:"6/25/2026",time:"4:00 PM",stage:"Group F",host:"Kansas City",t1:"Tunisia",t2:"Netherlands",loc:"Lanark Recreation Center",dist:3,lid:3},
+  {m:"58",date:"6/25/2026",time:"4:00 PM",stage:"Group F",host:"Kansas City",t1:"Tunisia",t2:"Netherlands",loc:"Northridge Recreation Center",dist:12,lid:13},
+  {m:"59",date:"6/25/2026",time:"7:00 PM",stage:"Group D",host:"Los Angeles",t1:"Turkey",t2:"USA",loc:"MacArthur Park",dist:1,lid:17},
+  {m:"59",date:"6/25/2026",time:"7:00 PM",stage:"Group D",host:"Los Angeles",t1:"Turkey",t2:"USA",loc:"Lanark Recreation Center",dist:3,lid:3},
+  {m:"59",date:"6/25/2026",time:"7:00 PM",stage:"Group D",host:"Los Angeles",t1:"Turkey",t2:"USA",loc:"Northridge Recreation Center",dist:12,lid:13},
+  {m:"60",date:"6/25/2026",time:"7:00 PM",stage:"Group D",host:"San Francisco",t1:"Paraguay",t2:"Australia",loc:"MacArthur Park",dist:1,lid:17},
+  {m:"60",date:"6/25/2026",time:"7:00 PM",stage:"Group D",host:"San Francisco",t1:"Paraguay",t2:"Australia",loc:"Lanark Recreation Center",dist:3,lid:3},
+  {m:"60",date:"6/25/2026",time:"7:00 PM",stage:"Group D",host:"San Francisco",t1:"Paraguay",t2:"Australia",loc:"Northridge Recreation Center",dist:12,lid:13},
+  {m:"61",date:"6/26/2026",time:"12:00 PM",stage:"Group I",host:"Boston",t1:"Norway",t2:"France",loc:"Wilmington Recreation Center",dist:15,lid:16},
+  {m:"61",date:"6/26/2026",time:"12:00 PM",stage:"Group I",host:"Boston",t1:"Norway",t2:"France",loc:"Echo Park",dist:13,lid:14},
+  {m:"61",date:"6/26/2026",time:"12:00 PM",stage:"Group I",host:"Boston",t1:"Norway",t2:"France",loc:"Sheldon-Arleta Park",dist:6,lid:7},
+  {m:"62",date:"6/26/2026",time:"12:00 PM",stage:"Group I",host:"Toronto",t1:"Senegal",t2:"Irak",loc:"Wilmington Recreation Center",dist:15,lid:16},
+  {m:"62",date:"6/26/2026",time:"12:00 PM",stage:"Group I",host:"Toronto",t1:"Senegal",t2:"Irak",loc:"Echo Park",dist:13,lid:14},
+  {m:"62",date:"6/26/2026",time:"12:00 PM",stage:"Group I",host:"Toronto",t1:"Senegal",t2:"Irak",loc:"Sheldon-Arleta Park",dist:6,lid:7},
+  {m:"63",date:"6/26/2026",time:"8:00 PM",stage:"Group G",host:"Seattle",t1:"Egypt",t2:"Iran",loc:"Wilmington Recreation Center",dist:15,lid:16},
+  {m:"63",date:"6/26/2026",time:"8:00 PM",stage:"Group G",host:"Seattle",t1:"Egypt",t2:"Iran",loc:"Echo Park",dist:13,lid:14},
+  {m:"63",date:"6/26/2026",time:"8:00 PM",stage:"Group G",host:"Seattle",t1:"Egypt",t2:"Iran",loc:"Sheldon-Arleta Park",dist:6,lid:7},
+  {m:"64",date:"6/26/2026",time:"8:00 PM",stage:"Group G",host:"Vancouver",t1:"New Zealand",t2:"Belgium",loc:"Wilmington Recreation Center",dist:15,lid:16},
+  {m:"64",date:"6/26/2026",time:"8:00 PM",stage:"Group G",host:"Vancouver",t1:"New Zealand",t2:"Belgium",loc:"Echo Park",dist:13,lid:14},
+  {m:"64",date:"6/26/2026",time:"8:00 PM",stage:"Group G",host:"Vancouver",t1:"New Zealand",t2:"Belgium",loc:"Sheldon-Arleta Park",dist:6,lid:7},
+  {m:"65",date:"6/26/2026",time:"5:00 PM",stage:"Group H",host:"Houston",t1:"Uruguay",t2:"Spain",loc:"Wilmington Recreation Center",dist:15,lid:16},
+  {m:"65",date:"6/26/2026",time:"5:00 PM",stage:"Group H",host:"Houston",t1:"Uruguay",t2:"Spain",loc:"Echo Park",dist:13,lid:14},
+  {m:"65",date:"6/26/2026",time:"5:00 PM",stage:"Group H",host:"Houston",t1:"Uruguay",t2:"Spain",loc:"Sheldon-Arleta Park",dist:6,lid:7},
+  {m:"66",date:"6/26/2026",time:"5:00 PM",stage:"Group H",host:"Guadalajara",t1:"Cabo Verde",t2:"Saudi Arabia",loc:"Wilmington Recreation Center",dist:15,lid:16},
+  {m:"66",date:"6/26/2026",time:"5:00 PM",stage:"Group H",host:"Guadalajara",t1:"Cabo Verde",t2:"Saudi Arabia",loc:"Echo Park",dist:13,lid:14},
+  {m:"66",date:"6/26/2026",time:"5:00 PM",stage:"Group H",host:"Guadalajara",t1:"Cabo Verde",t2:"Saudi Arabia",loc:"Sheldon-Arleta Park",dist:6,lid:7},
+  {m:"67",date:"6/27/2026",time:"2:00 PM",stage:"Group L",host:"New York/NJ",t1:"Panama",t2:"England",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},
+  {m:"67",date:"6/27/2026",time:"2:00 PM",stage:"Group L",host:"New York/NJ",t1:"Panama",t2:"England",loc:"Venice Beach Recreation Center",dist:11,lid:12},
+  {m:"68",date:"6/27/2026",time:"2:00 PM",stage:"Group L",host:"Philadelphia",t1:"Croatia",t2:"Ghana",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},
+  {m:"68",date:"6/27/2026",time:"2:00 PM",stage:"Group L",host:"Philadelphia",t1:"Croatia",t2:"Ghana",loc:"Venice Beach Recreation Center",dist:11,lid:12},
+  {m:"69",date:"6/27/2026",time:"11:00 AM",stage:"Group J",host:"Kansas City",t1:"Algeria",t2:"Austria",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},
+  {m:"69",date:"6/27/2026",time:"11:00 AM",stage:"Group J",host:"Kansas City",t1:"Algeria",t2:"Austria",loc:"Venice Beach Recreation Center",dist:11,lid:12},
+  {m:"70",date:"6/27/2026",time:"11:00 AM",stage:"Group J",host:"Dallas",t1:"Jordan",t2:"Argentina",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},
+  {m:"70",date:"6/27/2026",time:"11:00 AM",stage:"Group J",host:"Dallas",t1:"Jordan",t2:"Argentina",loc:"Venice Beach Recreation Center",dist:11,lid:12},
+  {m:"71",date:"6/27/2026",time:"4:30 PM",stage:"Group K",host:"Miami",t1:"Colombia",t2:"Portugal",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},
+  {m:"71",date:"6/27/2026",time:"4:30 PM",stage:"Group K",host:"Miami",t1:"Colombia",t2:"Portugal",loc:"Venice Beach Recreation Center",dist:11,lid:12},
+  {m:"72",date:"6/27/2026",time:"4:30 PM",stage:"Group K",host:"Atlanta",t1:"Congo DR",t2:"Uzbekistan",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},
+  {m:"72",date:"6/27/2026",time:"4:30 PM",stage:"Group K",host:"Atlanta",t1:"Congo DR",t2:"Uzbekistan",loc:"Venice Beach Recreation Center",dist:11,lid:12},
+  {m:"73",date:"6/28/2026",time:"12:00 PM",stage:"Round of 32",host:"Los Angeles",t1:"2A",t2:"2B",loc:"Seoul International Park",dist:10,lid:11},
+  {m:"73",date:"6/28/2026",time:"12:00 PM",stage:"Round of 32",host:"Los Angeles",t1:"2A",t2:"2B",loc:"Whitsett Fields",dist:2,lid:2},
+  {m:"73",date:"6/28/2026",time:"12:00 PM",stage:"Round of 32",host:"Los Angeles",t1:"2A",t2:"2B",loc:"Sylmar Recreation Center",dist:7,lid:8},
+  {m:"74",date:"6/29/2026",time:"9:00 AM",stage:"Round of 32",host:"Boston",t1:"1E",t2:"3 A/B/C/D/F",loc:"Westwood Recreation Center",dist:5,lid:6},
+  {m:"74",date:"6/29/2026",time:"9:00 AM",stage:"Round of 32",host:"Boston",t1:"1E",t2:"3 A/B/C/D/F",loc:"South Park Recreation Center",dist:9,lid:10},
+  {m:"74",date:"6/29/2026",time:"9:00 AM",stage:"Round of 32",host:"Boston",t1:"1E",t2:"3 A/B/C/D/F",loc:"El Sereno Recreation Center",dist:14,lid:15},
+  {m:"75",date:"6/29/2026",time:"6:00 PM",stage:"Round of 32",host:"Monterrey",t1:"1F",t2:"2C",loc:"Westwood Recreation Center",dist:5,lid:6},
+  {m:"75",date:"6/29/2026",time:"6:00 PM",stage:"Round of 32",host:"Monterrey",t1:"1F",t2:"2C",loc:"South Park Recreation Center",dist:9,lid:10},
+  {m:"75",date:"6/29/2026",time:"6:00 PM",stage:"Round of 32",host:"Monterrey",t1:"1F",t2:"2C",loc:"El Sereno Recreation Center",dist:14,lid:15},
+  {m:"76",date:"6/29/2026",time:"12:00 PM",stage:"Round of 32",host:"Houston",t1:"1C",t2:"2F",loc:"Westwood Recreation Center",dist:5,lid:6},
+  {m:"76",date:"6/29/2026",time:"12:00 PM",stage:"Round of 32",host:"Houston",t1:"1C",t2:"2F",loc:"South Park Recreation Center",dist:9,lid:10},
+  {m:"76",date:"6/29/2026",time:"12:00 PM",stage:"Round of 32",host:"Houston",t1:"1C",t2:"2F",loc:"El Sereno Recreation Center",dist:14,lid:15},
+  {m:"77",date:"6/30/2026",time:"8:00 AM",stage:"Round of 32",host:"New York/NJ",t1:"1I",t2:"3 C/D/F/G/H",loc:"Sycamore Grove",dist:1,lid:1},
+  {m:"77",date:"6/30/2026",time:"8:00 AM",stage:"Round of 32",host:"New York/NJ",t1:"1I",t2:"3 C/D/F/G/H",loc:"Lanark Recreation Center",dist:3,lid:3},
+  {m:"77",date:"6/30/2026",time:"8:00 AM",stage:"Round of 32",host:"New York/NJ",t1:"1I",t2:"3 C/D/F/G/H",loc:"Northridge Recreation Center",dist:12,lid:13},
+  {m:"78",date:"6/30/2026",time:"10:00 AM",stage:"Round of 32",host:"Dallas",t1:"2E",t2:"2I",loc:"Sycamore Grove",dist:1,lid:1},
+  {m:"78",date:"6/30/2026",time:"10:00 AM",stage:"Round of 32",host:"Dallas",t1:"2E",t2:"2I",loc:"Lanark Recreation Center",dist:3,lid:3},
+  {m:"78",date:"6/30/2026",time:"10:00 AM",stage:"Round of 32",host:"Dallas",t1:"2E",t2:"2I",loc:"Northridge Recreation Center",dist:12,lid:13},
+  {m:"79",date:"6/30/2026",time:"2:00 PM",stage:"Round of 32",host:"Mexico City",t1:"1A",t2:"3 C/E/F/H/I",loc:"Sycamore Grove",dist:1,lid:1},
+  {m:"79",date:"6/30/2026",time:"2:00 PM",stage:"Round of 32",host:"Mexico City",t1:"1A",t2:"3 C/E/F/H/I",loc:"Lanark Recreation Center",dist:3,lid:3},
+  {m:"79",date:"6/30/2026",time:"2:00 PM",stage:"Round of 32",host:"Mexico City",t1:"1A",t2:"3 C/E/F/H/I",loc:"Northridge Recreation Center",dist:12,lid:13},
+  {m:"80",date:"7/1/2026",time:"2:00 PM",stage:"Round of 32",host:"Atlanta",t1:"1L",t2:"3 E/H/I/J/K",loc:"Ken Malloy Harbor Regional Park",dist:15,lid:19},
+  {m:"80",date:"7/1/2026",time:"2:00 PM",stage:"Round of 32",host:"Atlanta",t1:"1L",t2:"3 E/H/I/J/K",loc:"Echo Park",dist:13,lid:14},
+  {m:"80",date:"7/1/2026",time:"2:00 PM",stage:"Round of 32",host:"Atlanta",t1:"1L",t2:"3 E/H/I/J/K",loc:"Sheldon-Arleta Park",dist:6,lid:7},
+  {m:"81",date:"7/1/2026",time:"6:00 PM",stage:"Round of 32",host:"San Francisco",t1:"1D",t2:"3 B/E/F/I/J",loc:"Ken Malloy Harbor Regional Park",dist:15,lid:19},
+  {m:"81",date:"7/1/2026",time:"6:00 PM",stage:"Round of 32",host:"San Francisco",t1:"1D",t2:"3 B/E/F/I/J",loc:"Echo Park",dist:13,lid:14},
+  {m:"81",date:"7/1/2026",time:"6:00 PM",stage:"Round of 32",host:"San Francisco",t1:"1D",t2:"3 B/E/F/I/J",loc:"Sheldon-Arleta Park",dist:6,lid:7},
+  {m:"82",date:"7/1/2026",time:"12:00 PM",stage:"Round of 32",host:"Seattle",t1:"1G",t2:"3 A/E/H/I/J",loc:"Ken Malloy Harbor Regional Park",dist:15,lid:19},
+  {m:"82",date:"7/1/2026",time:"12:00 PM",stage:"Round of 32",host:"Seattle",t1:"1G",t2:"3 A/E/H/I/J",loc:"Echo Park",dist:13,lid:14},
+  {m:"82",date:"7/1/2026",time:"12:00 PM",stage:"Round of 32",host:"Seattle",t1:"1G",t2:"3 A/E/H/I/J",loc:"Sheldon-Arleta Park",dist:6,lid:7},
+  {m:"83",date:"7/2/2026",time:"2:00 PM",stage:"Round of 32",host:"Toronto",t1:"2K",t2:"2L",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},
+  {m:"83",date:"7/2/2026",time:"2:00 PM",stage:"Round of 32",host:"Toronto",t1:"2K",t2:"2L",loc:"Venice Beach Recreation Center",dist:11,lid:12},
+  {m:"84",date:"7/2/2026",time:"12:00 PM",stage:"Round of 32",host:"Los Angeles",t1:"1H",t2:"2J",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},
+  {m:"84",date:"7/2/2026",time:"12:00 PM",stage:"Round of 32",host:"Los Angeles",t1:"1H",t2:"2J",loc:"Venice Beach Recreation Center",dist:11,lid:12},
+  {m:"85",date:"7/2/2026",time:"6:00 PM",stage:"Round of 32",host:"Vancouver",t1:"1B",t2:"3 E/F/G/I/J",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},
+  {m:"85",date:"7/2/2026",time:"6:00 PM",stage:"Round of 32",host:"Vancouver",t1:"1B",t2:"3 E/F/G/I/J",loc:"Venice Beach Recreation Center",dist:11,lid:12},
+  {m:"86",date:"7/3/2026",time:"12:00 PM",stage:"Round of 32",host:"Miami",t1:"1J",t2:"2H",loc:"Seoul International Park",dist:10,lid:11},
+  {m:"86",date:"7/3/2026",time:"12:00 PM",stage:"Round of 32",host:"Miami",t1:"1J",t2:"2H",loc:"Whitsett Fields",dist:2,lid:2},
+  {m:"86",date:"7/3/2026",time:"12:00 PM",stage:"Round of 32",host:"Miami",t1:"1J",t2:"2H",loc:"Sylmar Recreation Center",dist:7,lid:8},
+  {m:"87",date:"7/3/2026",time:"11:00 AM",stage:"Round of 32",host:"Kansas City",t1:"1K",t2:"3 D/E/I/J/L",loc:"Seoul International Park",dist:10,lid:11},
+  {m:"87",date:"7/3/2026",time:"11:00 AM",stage:"Round of 32",host:"Kansas City",t1:"1K",t2:"3 D/E/I/J/L",loc:"Whitsett Fields",dist:2,lid:2},
+  {m:"87",date:"7/3/2026",time:"11:00 AM",stage:"Round of 32",host:"Kansas City",t1:"1K",t2:"3 D/E/I/J/L",loc:"Sylmar Recreation Center",dist:7,lid:8},
+  {m:"88",date:"7/3/2026",time:"5:00 PM",stage:"Round of 32",host:"Dallas",t1:"2D",t2:"2G",loc:"Seoul International Park",dist:10,lid:11},
+  {m:"88",date:"7/3/2026",time:"5:00 PM",stage:"Round of 32",host:"Dallas",t1:"2D",t2:"2G",loc:"Whitsett Fields",dist:2,lid:2},
+  {m:"88",date:"7/3/2026",time:"5:00 PM",stage:"Round of 32",host:"Dallas",t1:"2D",t2:"2G",loc:"Sylmar Recreation Center",dist:7,lid:8},
+  {m:"89",date:"7/4/2026",time:"9:00 AM",stage:"Round of 16",host:"Philadelphia",t1:"W74",t2:"W77",loc:"Westwood Recreation Center",dist:5,lid:6},
+  {m:"89",date:"7/4/2026",time:"9:00 AM",stage:"Round of 16",host:"Philadelphia",t1:"W74",t2:"W77",loc:"South Park Recreation Center",dist:9,lid:10},
+  {m:"89",date:"7/4/2026",time:"9:00 AM",stage:"Round of 16",host:"Philadelphia",t1:"W74",t2:"W77",loc:"El Sereno Recreation Center",dist:14,lid:15},
+  {m:"90",date:"7/4/2026",time:"4:00 PM",stage:"Round of 16",host:"Houston",t1:"W73",t2:"W75",loc:"Westwood Recreation Center",dist:5,lid:6},
+  {m:"90",date:"7/4/2026",time:"4:00 PM",stage:"Round of 16",host:"Houston",t1:"W73",t2:"W75",loc:"South Park Recreation Center",dist:9,lid:10},
+  {m:"90",date:"7/4/2026",time:"4:00 PM",stage:"Round of 16",host:"Houston",t1:"W73",t2:"W75",loc:"El Sereno Recreation Center",dist:14,lid:15},
+  {m:"91",date:"7/5/2026",time:"8:00 AM",stage:"Round of 16",host:"New York/NJ",t1:"W76",t2:"W78",loc:"MacArthur Park",dist:1,lid:17},
+  {m:"91",date:"7/5/2026",time:"8:00 AM",stage:"Round of 16",host:"New York/NJ",t1:"W76",t2:"W78",loc:"Lanark Recreation Center",dist:3,lid:3},
+  {m:"91",date:"7/5/2026",time:"8:00 AM",stage:"Round of 16",host:"New York/NJ",t1:"W76",t2:"W78",loc:"Northridge Recreation Center",dist:12,lid:13},
+  {m:"92",date:"7/5/2026",time:"5:00 PM",stage:"Round of 16",host:"Mexico City",t1:"W79",t2:"W80",loc:"MacArthur Park",dist:1,lid:17},
+  {m:"92",date:"7/5/2026",time:"5:00 PM",stage:"Round of 16",host:"Mexico City",t1:"W79",t2:"W80",loc:"Lanark Recreation Center",dist:3,lid:3},
+  {m:"92",date:"7/5/2026",time:"5:00 PM",stage:"Round of 16",host:"Mexico City",t1:"W79",t2:"W80",loc:"Northridge Recreation Center",dist:12,lid:13},
+  {m:"93",date:"7/6/2026",time:"4:00 PM",stage:"Round of 16",host:"Dallas",t1:"W83",t2:"W84",loc:"Ken Malloy Harbor Regional Park",dist:15,lid:19},
+  {m:"93",date:"7/6/2026",time:"4:00 PM",stage:"Round of 16",host:"Dallas",t1:"W83",t2:"W84",loc:"Echo Park",dist:13,lid:14},
+  {m:"93",date:"7/6/2026",time:"4:00 PM",stage:"Round of 16",host:"Dallas",t1:"W83",t2:"W84",loc:"Sheldon-Arleta Park",dist:6,lid:7},
+  {m:"94",date:"7/6/2026",time:"1:00 PM",stage:"Round of 16",host:"Seattle",t1:"W81",t2:"W82",loc:"Ken Malloy Harbor Regional Park",dist:15,lid:19},
+  {m:"94",date:"7/6/2026",time:"1:00 PM",stage:"Round of 16",host:"Seattle",t1:"W81",t2:"W82",loc:"Echo Park",dist:13,lid:14},
+  {m:"94",date:"7/6/2026",time:"1:00 PM",stage:"Round of 16",host:"Seattle",t1:"W81",t2:"W82",loc:"Sheldon-Arleta Park",dist:6,lid:7},
+  {m:"95",date:"7/7/2026",time:"2:00 PM",stage:"Round of 16",host:"Atlanta",t1:"W86",t2:"W88",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},
+  {m:"95",date:"7/7/2026",time:"2:00 PM",stage:"Round of 16",host:"Atlanta",t1:"W86",t2:"W88",loc:"Stoner Recreation Center",dist:11,lid:18},
+  {m:"96",date:"7/7/2026",time:"7:00 PM",stage:"Round of 16",host:"Vancouver",t1:"W85",t2:"W87",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},
+  {m:"96",date:"7/7/2026",time:"7:00 PM",stage:"Round of 16",host:"Vancouver",t1:"W85",t2:"W87",loc:"Stoner Recreation Center",dist:11,lid:18},
+  {m:"97",date:"7/9/2026",time:"2:00 PM",stage:"Quarter Final",host:"Boston",t1:"W89",t2:"W90",loc:"Seoul International Park",dist:10,lid:11},
+  {m:"97",date:"7/9/2026",time:"2:00 PM",stage:"Quarter Final",host:"Boston",t1:"W89",t2:"W90",loc:"Whitsett Fields",dist:2,lid:2},
+  {m:"97",date:"7/9/2026",time:"2:00 PM",stage:"Quarter Final",host:"Boston",t1:"W89",t2:"W90",loc:"Sylmar Recreation Center",dist:7,lid:8},
+  {m:"98",date:"7/10/2026",time:"7:00 PM",stage:"Quarter Final",host:"Los Angeles",t1:"W93",t2:"W94",loc:"Westwood Recreation Center",dist:5,lid:6},
+  {m:"98",date:"7/10/2026",time:"7:00 PM",stage:"Quarter Final",host:"Los Angeles",t1:"W93",t2:"W94",loc:"South Park Recreation Center",dist:9,lid:10},
+  {m:"98",date:"7/10/2026",time:"7:00 PM",stage:"Quarter Final",host:"Los Angeles",t1:"W93",t2:"W94",loc:"El Sereno Recreation Center",dist:14,lid:15},
+  {m:"98",date:"7/10/2026",time:"7:00 PM",stage:"Quarter Final",host:"Los Angeles",t1:"W93",t2:"W94",loc:"MacArthur Park",dist:1,lid:17},
+  {m:"99",date:"7/11/2026",time:"2:00 PM",stage:"Quarter Final",host:"Miami",t1:"W91",t2:"W92",loc:"Sycamore Grove",dist:1,lid:1},
+  {m:"99",date:"7/11/2026",time:"2:00 PM",stage:"Quarter Final",host:"Miami",t1:"W91",t2:"W92",loc:"Lanark Recreation Center",dist:3,lid:3},
+  {m:"99",date:"7/11/2026",time:"2:00 PM",stage:"Quarter Final",host:"Miami",t1:"W91",t2:"W92",loc:"Northridge Recreation Center",dist:12,lid:13},
+  {m:"100",date:"7/11/2026",time:"6:00 PM",stage:"Quarter Final",host:"Kansas City",t1:"W95",t2:"W96",loc:"Sycamore Grove",dist:1,lid:1},
+  {m:"100",date:"7/11/2026",time:"6:00 PM",stage:"Quarter Final",host:"Kansas City",t1:"W95",t2:"W96",loc:"Lanark Recreation Center",dist:3,lid:3},
+  {m:"100",date:"7/11/2026",time:"6:00 PM",stage:"Quarter Final",host:"Kansas City",t1:"W95",t2:"W96",loc:"Northridge Recreation Center",dist:12,lid:13},
+  {m:"101",date:"7/14/2026",time:"5:00 PM",stage:"Semi Final",host:"Dallas",t1:"W97",t2:"W98",loc:"Ken Malloy Harbor Regional Park",dist:15,lid:19},
+  {m:"101",date:"7/14/2026",time:"5:00 PM",stage:"Semi Final",host:"Dallas",t1:"W97",t2:"W98",loc:"Sheldon-Arleta Park",dist:6,lid:7},
+  {m:"101",date:"7/14/2026",time:"5:00 PM",stage:"Semi Final",host:"Dallas",t1:"W97",t2:"W98",loc:"Echo Park",dist:13,lid:14},
+  {m:"102",date:"7/15/2026",time:"5:00 PM",stage:"Semi Final",host:"Atlanta",t1:"W99",t2:"W100",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},
+  {m:"102",date:"7/15/2026",time:"5:00 PM",stage:"Semi Final",host:"Atlanta",t1:"W99",t2:"W100",loc:"Venice Beach Recreation Center",dist:11,lid:12},
+  {m:"103",date:"7/18/2026",time:"5:00 PM",stage:"Bronze Final",host:"Miami",t1:"L101",t2:"L102",loc:"Seoul International Park",dist:10,lid:11},
+  {m:"103",date:"7/18/2026",time:"5:00 PM",stage:"Bronze Final",host:"Miami",t1:"L101",t2:"L102",loc:"Whitsett Fields",dist:2,lid:2},
+  {m:"103",date:"7/18/2026",time:"5:00 PM",stage:"Bronze Final",host:"Miami",t1:"L101",t2:"L102",loc:"Sylmar Recreation Center",dist:7,lid:8},
+  {m:"104",date:"7/19/2026",time:"12:00 PM",stage:"Final",host:"New York/NJ",t1:"W101",t2:"W102",loc:"Westwood Recreation Center",dist:5,lid:6},
+  {m:"104",date:"7/19/2026",time:"12:00 PM",stage:"Final",host:"New York/NJ",t1:"W101",t2:"W102",loc:"South Park Recreation Center",dist:9,lid:10},
+  {m:"104",date:"7/19/2026",time:"12:00 PM",stage:"Final",host:"New York/NJ",t1:"W101",t2:"W102",loc:"El Sereno Recreation Center",dist:14,lid:15},
+  {m:"104",date:"7/19/2026",time:"12:00 PM",stage:"Final",host:"New York/NJ",t1:"W101",t2:"W102",loc:"Lanark Recreation Center",dist:3,lid:3},
+];
+
+// ─── HELPERS ────────────────────────────────────────────────────────────────
+const isPlaceholder = (name) => /^(W\d|L\d|\d[A-L]|3\s)/.test(name);
+const isRealTeam = (name) => !isPlaceholder(name);
+
+const parseDate = (d) => {
+  const [m, day, y] = d.split("/");
+  return new Date(+y, +m - 1, +day);
+};
+
+const formatDate = (d) => {
+  const dt = parseDate(d);
+  return dt.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+};
+
+const sortDates = (a, b) => parseDate(a) - parseDate(b);
+
+// ─── TEAM NAME OVERRIDES ────────────────────────────────────────────────────
+// When you learn who advances, just fill in the real team name next to the
+// placeholder code. For example:  "W73": "Germany",
+// The change will apply everywhere automatically (schedule, filters, map).
+const TEAM_OVERRIDES = {
+  // Round of 32 placeholders
+  // "1A": "",
+  // "1B": "",
+  // "1C": "",
+  // "1D": "",
+  // "1E": "",
+  // "1F": "",
+  // "1G": "",
+  // "1H": "",
+  // "1I": "",
+  // "1J": "",
+  // "1K": "",
+  // "1L": "",
+  // "2A": "",
+  // "2B": "",
+  // "2C": "",
+  // "2D": "",
+  // "2E": "",
+  // "2F": "",
+  // "2G": "",
+  // "2H": "",
+  // "2I": "",
+  // "2J": "",
+  // "2K": "",
+  // "2L": "",
+  // "3 A/B/C/D/F": "",
+  // "3 C/D/F/G/H": "",
+  // "3 C/E/F/H/I": "",
+  // "3 B/E/F/I/J": "",
+  // "3 A/E/H/I/J": "",
+  // "3 E/F/G/I/J": "",
+  // "3 D/E/I/J/L": "",
+  // "3 E/H/I/J/K": "",
+
+  // Round of 16
+  // "W73": "",  "W74": "",  "W75": "",  "W76": "",
+  // "W77": "",  "W78": "",  "W79": "",  "W80": "",
+  // "W81": "",  "W82": "",  "W83": "",  "W84": "",
+  // "W85": "",  "W86": "",  "W87": "",  "W88": "",
+
+  // Quarter Finals
+  // "W89": "",  "W90": "",  "W91": "",  "W92": "",
+  // "W93": "",  "W94": "",  "W95": "",  "W96": "",
+
+  // Semi Finals
+  // "W97": "",  "W98": "",  "W99": "",  "W100": "",
+
+  // Bronze Final
+  // "L101": "",  "L102": "",
+
+  // Final
+  // "W101": "",  "W102": "",
+};
+
+// Resolve a team name: use override if set, otherwise keep original
+const resolveTeam = (name) => TEAM_OVERRIDES[name] || name;
+
+// Deduplicate matches (one per match number, collect locations)
+const MATCHES = (() => {
+  const map = new Map();
+  CALENDAR_RAW.forEach((r) => {
+    const key = r.m;
+    const t1 = resolveTeam(r.t1);
+    const t2 = resolveTeam(r.t2);
+    if (!map.has(key)) {
+      map.set(key, { ...r, t1, t2, locations: [{ name: r.loc, dist: r.dist, lid: r.lid }] });
+    } else {
+      map.get(key).locations.push({ name: r.loc, dist: r.dist, lid: r.lid });
+    }
+  });
+  return [...map.values()];
+})();
+
+const ALL_DATES = [...new Set(CALENDAR_RAW.map((r) => r.date))].sort(sortDates);
+const ALL_TEAMS = [...new Set(MATCHES.flatMap((m) => [m.t1, m.t2]).filter(isRealTeam))].sort();
+const ALL_LOCATIONS = SITES.map((s) => s.name).sort();
+const ALL_DISTRICTS = [...new Set(SITES.map((s) => s.district))].sort((a, b) => a - b);
+const STAGES = ["Group Stage", "Round of 32", "Round of 16", "Quarter Final", "Semi Final", "Bronze Final", "Final"];
+
+const stageCategory = (s) => (s.startsWith("Group") ? "Group Stage" : s);
+
+// ─── COLORS ─────────────────────────────────────────────────────────────────
+const C = {
+  bg: "#0a0f1a",
+  surface: "#111827",
+  card: "#1a2236",
+  border: "#2a3554",
+  accent: "#e63946",
+  accentSoft: "rgba(230,57,70,0.15)",
+  gold: "#f4a261",
+  green: "#2ec4b6",
+  text: "#e8eaf0",
+  textMuted: "#9ba7bc",
+  white: "#fff",
+};
+
+const STAGE_COLORS = {
+  "Group Stage": "#3b82f6",
+  "Round of 32": "#8b5cf6",
+  "Round of 16": "#a855f7",
+  "Quarter Final": "#f59e0b",
+  "Semi Final": "#f97316",
+  "Bronze Final": "#cd7f32",
+  Final: "#e63946",
+};
+
+// ─── MAP COMPONENT (Leaflet via CDN) ────────────────────────────────────────
+function MapView({ sites, selectedSite, onSelectSite, filteredLocationIds }) {
+  const mapRef = useRef(null);
+  const mapInstanceRef = useRef(null);
+  const markersRef = useRef([]);
+
+  useEffect(() => {
+    if (mapInstanceRef.current) return;
+    const L = window.L;
+    if (!L) return;
+
+    const map = L.map(mapRef.current, {
+      center: [34.05, -118.35],
+      zoom: 11,
+      zoomControl: true,
+      scrollWheelZoom: true,
+    });
+
+    // OpenStreetMap tiles — completely free, no API key, no usage limits
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      maxZoom: 19,
+    }).addTo(map);
+
+    mapInstanceRef.current = map;
+
+    return () => {
+      map.remove();
+      mapInstanceRef.current = null;
+    };
+  }, []);
+
+  useEffect(() => {
+    const L = window.L;
+    if (!L || !mapInstanceRef.current) return;
+    const map = mapInstanceRef.current;
+
+    markersRef.current.forEach((m) => map.removeLayer(m));
+    markersRef.current = [];
+
+    sites.forEach((site) => {
+      const isActive = filteredLocationIds.size === 0 || filteredLocationIds.has(site.id);
+      const isSelected = selectedSite?.id === site.id;
+      const size = isSelected ? 22 : 16;
+      const color = isSelected ? C.accent : isActive ? C.green : C.textMuted;
+      const opacity = isActive ? 1 : 0.4;
+
+      const icon = L.divIcon({
+        className: "",
+        html: `<div style="
+          width:${size}px;height:${size}px;
+          background:${color};
+          border:3px solid ${isSelected ? C.white : "#fff"};
+          border-radius:50%;
+          box-shadow:0 0 ${isSelected ? 14 : 8}px ${color}, 0 2px 6px rgba(0,0,0,0.5);
+          opacity:${opacity};
+          transition: all 0.2s;
+          cursor:pointer;
+        "></div>`,
+        iconSize: [size, size],
+        iconAnchor: [size / 2, size / 2],
+      });
+
+      const marker = L.marker([site.lat, site.lng], { icon })
+        .on("click", () => onSelectSite(site))
+        .addTo(map);
+
+      if (isSelected) {
+        marker.bindPopup(
+          `<div style="font-family:system-ui;font-size:13px;color:#111;">
+            <strong>${site.name}</strong><br/>
+            <span style="color:#555;">District ${site.district}</span><br/>
+            <span style="font-size:11px;color:#777;">${site.address}</span>
+          </div>`,
+          { closeButton: false }
+        ).openPopup();
+      }
+
+      markersRef.current.push(marker);
+    });
+  }, [sites, selectedSite, filteredLocationIds, onSelectSite]);
+
+  return <div ref={mapRef} style={{ width: "100%", height: "100%", borderRadius: 12 }} />;
+}
+
+// ─── MAIN APP ───────────────────────────────────────────────────────────────
+function KickItInLA() {
+  const [selectedSite, setSelectedSite] = useState(null);
+  const [dateFilter, setDateFilter] = useState("");
+  const [teamFilter, setTeamFilter] = useState("");
+  const [locationFilter, setLocationFilter] = useState("");
+  const [districtFilter, setDistrictFilter] = useState("");
+  const [stageFilter, setStageFilter] = useState("");
+  const [leafletReady, setLeafletReady] = useState(!!window.L);
+
+  // Load Leaflet
+  useEffect(() => {
+    if (window.L) { setLeafletReady(true); return; }
+    const cssLink = document.createElement("link");
+    cssLink.rel = "stylesheet";
+    cssLink.href = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css";
+    document.head.appendChild(cssLink);
+
+    const script = document.createElement("script");
+    script.src = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js";
+    script.onload = () => setLeafletReady(true);
+    document.head.appendChild(script);
+  }, []);
+
+  const filteredMatches = useMemo(() => {
+    return MATCHES.filter((m) => {
+      if (dateFilter && m.date !== dateFilter) return false;
+      if (teamFilter && m.t1 !== teamFilter && m.t2 !== teamFilter) return false;
+      if (locationFilter && !m.locations.some((l) => l.name === locationFilter)) return false;
+      if (districtFilter && !m.locations.some((l) => String(l.dist) === districtFilter)) return false;
+      if (stageFilter && stageCategory(m.stage) !== stageFilter) return false;
+      return true;
+    });
+  }, [dateFilter, teamFilter, locationFilter, districtFilter, stageFilter]);
+
+  const filteredLocationIds = useMemo(() => {
+    if (!dateFilter && !teamFilter && !locationFilter && !districtFilter && !stageFilter) return new Set();
+    const ids = new Set();
+    filteredMatches.forEach((m) => m.locations.forEach((l) => ids.add(l.lid)));
+    return ids;
+  }, [filteredMatches, dateFilter, teamFilter, locationFilter, districtFilter, stageFilter]);
+
+  const siteMatches = useMemo(() => {
+    if (!selectedSite) return [];
+    return MATCHES.filter((m) => m.locations.some((l) => l.lid === selectedSite.id))
+      .sort((a, b) => sortDates(a.date, b.date));
+  }, [selectedSite]);
+
+  const matchesByDate = useMemo(() => {
+    const grouped = {};
+    const source = selectedSite ? siteMatches : filteredMatches;
+    source.forEach((m) => {
+      if (!grouped[m.date]) grouped[m.date] = [];
+      grouped[m.date].push(m);
+    });
+    return Object.entries(grouped).sort(([a], [b]) => sortDates(a, b));
+  }, [filteredMatches, siteMatches, selectedSite]);
+
+  const clearFilters = () => {
+    setDateFilter("");
+    setTeamFilter("");
+    setLocationFilter("");
+    setDistrictFilter("");
+    setStageFilter("");
+    setSelectedSite(null);
+  };
+
+  const hasFilters = dateFilter || teamFilter || locationFilter || districtFilter || stageFilter || selectedSite;
+
+  const selectStyle = {
+    background: C.card,
+    color: C.text,
+    border: `1px solid ${C.border}`,
+    borderRadius: 8,
+    padding: "10px 12px",
+    fontSize: 14,
+    outline: "none",
+    cursor: "pointer",
+    minWidth: 0,
+    flex: "1 1 140px",
+    maxWidth: "none",
+    appearance: "none",
+    WebkitAppearance: "none",
+    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%238b95a8' viewBox='0 0 16 16'%3E%3Cpath d='M1.5 5.5l6.5 6 6.5-6'/%3E%3C/svg%3E")`,
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "right 10px center",
+    paddingRight: 30,
+    minHeight: 44, // iOS touch target minimum
+  };
+
+  return (
+    <div lang="en" style={{ background: C.bg, minHeight: "100vh", fontFamily: "'DM Sans', 'Segoe UI', system-ui, sans-serif", color: C.text }}>
+      <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Unbounded:wght@700;900&display=swap" rel="stylesheet" />
+
+      {/* Skip navigation for keyboard users */}
+      <a href="#main-content" style={{
+        position: "absolute", left: "-9999px", top: "auto", width: "1px", height: "1px", overflow: "hidden",
+        zIndex: 9999, background: C.accent, color: C.white, padding: "12px 24px", fontSize: 16, fontWeight: 700,
+        textDecoration: "none", borderRadius: "0 0 8px 0",
+      }} onFocus={(e) => { e.target.style.left = "0"; e.target.style.width = "auto"; e.target.style.height = "auto"; }}
+         onBlur={(e) => { e.target.style.left = "-9999px"; e.target.style.width = "1px"; e.target.style.height = "1px"; }}>
+        Skip to main content
+      </a>
+
+      {/* ── HERO ── */}
+      <header className="kickit-hero" role="banner" style={{
+        background: `linear-gradient(135deg, ${C.bg} 0%, #1a1a2e 50%, #16213e 100%)`,
+        padding: "48px 24px 32px",
+        textAlign: "center",
+        position: "relative",
+        overflow: "hidden",
+      }}>
+        <div style={{
+          position: "absolute", inset: 0, opacity: 0.06,
+          backgroundImage: "radial-gradient(circle at 20% 50%, #e63946 0%, transparent 50%), radial-gradient(circle at 80% 50%, #2ec4b6 0%, transparent 50%)",
+        }} />
+        <div style={{ position: "relative" }}>
+          <div style={{ fontSize: 14, letterSpacing: 4, color: C.gold, fontWeight: 700, textTransform: "uppercase", marginBottom: 8 }}>
+            FIFA World Cup 2026 &middot; Los Angeles
+          </div>
+          <h1 aria-label="Kick it in the Park!" style={{
+            fontFamily: "'Unbounded', sans-serif",
+            fontSize: "clamp(32px, 6vw, 56px)",
+            fontWeight: 900,
+            margin: "0 0 8px",
+            color: C.white,
+            background: `linear-gradient(135deg, ${C.white} 0%, ${C.gold} 50%, ${C.accent} 100%)`,
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            lineHeight: 1.1,
+          }}>
+            Kick it in the Park!
+          </h1>
+          <p style={{ color: C.textMuted, fontSize: 16, maxWidth: 500, margin: "12px auto 0", lineHeight: 1.5 }}>
+            Community Celebrations across the city. Find your nearest park, pick your team, and watch the world's biggest tournament together.
+          </p>
+          <div className="kickit-stats" style={{ display: "flex", justifyContent: "center", gap: 24, marginTop: 20, flexWrap: "wrap" }}>
+            <Stat label="Parks" value={SITES.length} color={C.green} />
+            <Stat label="Match Days" value={ALL_DATES.length} color={C.gold} />
+            <Stat label="Screenings" value={CALENDAR_RAW.length} color={C.accent} />
+            <Stat label="Teams" value={ALL_TEAMS.length} color="#8b5cf6" />
+          </div>
+        </div>
+      </header>
+
+      {/* ── CONTENT ── */}
+      <main id="main-content" className="kickit-content" style={{ maxWidth: 1200, margin: "0 auto", padding: "24px 16px 80px" }}>
+
+        {/* ── FILTERS ── */}
+        <nav className="kickit-filters" aria-label="Game filters" style={{
+          background: C.surface,
+          border: `1px solid ${C.border}`,
+          borderRadius: 12,
+          padding: "16px 20px",
+          marginBottom: 20,
+        }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12, flexWrap: "wrap", gap: 8 }}>
+            <span id="filter-heading" style={{ fontSize: 13, fontWeight: 700, textTransform: "uppercase", letterSpacing: 2, color: C.textMuted }}>
+              Filter Games
+            </span>
+            {hasFilters && (
+              <button onClick={clearFilters} aria-label="Clear all filters" style={{
+                background: C.accentSoft, color: C.accent, border: "none", borderRadius: 6,
+                padding: "4px 12px", fontSize: 12, cursor: "pointer", fontWeight: 600,
+              }}>
+                Clear all
+              </button>
+            )}
+          </div>
+          <div className="kickit-filter-row" role="group" aria-labelledby="filter-heading" style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+            <select aria-label="Filter by date" value={dateFilter} onChange={(e) => setDateFilter(e.target.value)} style={selectStyle}>
+              <option value="">All dates</option>
+              {ALL_DATES.map((d) => <option key={d} value={d}>{formatDate(d)}</option>)}
+            </select>
+            <select aria-label="Filter by team" value={teamFilter} onChange={(e) => setTeamFilter(e.target.value)} style={selectStyle}>
+              <option value="">All teams</option>
+              {ALL_TEAMS.map((t) => <option key={t} value={t}>{t}</option>)}
+            </select>
+            <select aria-label="Filter by location" value={locationFilter} onChange={(e) => setLocationFilter(e.target.value)} style={selectStyle}>
+              <option value="">All locations</option>
+              {ALL_LOCATIONS.map((l) => <option key={l} value={l}>{l}</option>)}
+            </select>
+            <select aria-label="Filter by district" value={districtFilter} onChange={(e) => setDistrictFilter(e.target.value)} style={selectStyle}>
+              <option value="">All districts</option>
+              {ALL_DISTRICTS.map((d) => <option key={d} value={String(d)}>District {d}</option>)}
+            </select>
+            <select aria-label="Filter by tournament stage" value={stageFilter} onChange={(e) => setStageFilter(e.target.value)} style={selectStyle}>
+              <option value="">All stages</option>
+              {STAGES.map((s) => <option key={s} value={s}>{s}</option>)}
+            </select>
+          </div>
+        </nav>
+
+        {/* ── MAP + SCHEDULE ── */}
+        <div className="kickit-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, minHeight: 500 }}>
+          {/* Map */}
+          <div className="kickit-map" role="region" aria-label="Map of celebration sites" style={{
+            background: C.surface,
+            border: `1px solid ${C.border}`,
+            borderRadius: 12,
+            overflow: "hidden",
+            position: "relative",
+            minHeight: 450,
+          }}>
+            <div aria-live="polite" style={{
+              position: "absolute", top: 12, left: 12, zIndex: 1000,
+              background: "rgba(10,15,26,0.85)", padding: "6px 14px", borderRadius: 8,
+              fontSize: 12, fontWeight: 700, color: C.gold, letterSpacing: 1,
+              backdropFilter: "blur(6px)",
+            }}>
+              {filteredLocationIds.size > 0 ? `${filteredLocationIds.size} active sites` : `${SITES.length} celebration sites`}
+            </div>
+            {leafletReady ? (
+              <MapView
+                sites={SITES}
+                selectedSite={selectedSite}
+                onSelectSite={(s) => setSelectedSite(selectedSite?.id === s.id ? null : s)}
+                filteredLocationIds={filteredLocationIds}
+              />
+            ) : (
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", color: C.textMuted }}>
+                Loading map...
+              </div>
+            )}
+          </div>
+
+          {/* Schedule */}
+          <section aria-label="Game schedule" style={{
+            background: C.surface,
+            border: `1px solid ${C.border}`,
+            borderRadius: 12,
+            overflow: "hidden",
+            display: "flex",
+            flexDirection: "column",
+          }}>
+            <div style={{
+              padding: "14px 20px",
+              borderBottom: `1px solid ${C.border}`,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}>
+              <div>
+                <h2 style={{ fontSize: 15, fontWeight: 700, margin: 0 }}>
+                  {selectedSite ? selectedSite.name : "Schedule"}
+                </h2>
+                {selectedSite && (
+                  <span style={{ fontSize: 12, color: C.textMuted, marginLeft: 8 }}>
+                    District {selectedSite.district}
+                  </span>
+                )}
+              </div>
+              <span aria-live="polite" style={{ fontSize: 12, color: C.textMuted }}>
+                {selectedSite
+                  ? `${siteMatches.length} games`
+                  : `${filteredMatches.length} games`}
+              </span>
+            </div>
+            <div className="kickit-schedule-list" style={{ flex: 1, overflowY: "auto", padding: "0 12px 12px", maxHeight: 500 }}>
+              {matchesByDate.length === 0 ? (
+                <div style={{ padding: 40, textAlign: "center", color: C.textMuted }}>
+                  <div style={{ fontSize: 32, marginBottom: 8 }}>⚽</div>
+                  No games match your filters
+                </div>
+              ) : (
+                matchesByDate.map(([date, matches]) => (
+                  <div key={date}>
+                    <div style={{
+                      position: "sticky", top: 0, zIndex: 1,
+                      background: C.surface,
+                      padding: "12px 8px 6px",
+                      fontSize: 13, fontWeight: 700, color: C.gold,
+                      borderBottom: `1px solid ${C.border}`,
+                    }}>
+                      {formatDate(date)}
+                    </div>
+                    {matches.map((m, i) => (
+                      <MatchCard key={`${m.m}-${i}`} match={m} selectedSite={selectedSite} />
+                    ))}
+                  </div>
+                ))
+              )}
+            </div>
+          </section>
+        </div>
+
+        {/* ── LOCATION GRID ── */}
+        <section aria-label="All celebration sites" style={{ marginTop: 32 }}>
+          <h2 style={{
+            fontFamily: "'Unbounded', sans-serif",
+            fontSize: 20, fontWeight: 700, marginBottom: 16,
+          }}>
+            All Celebration Sites
+          </h2>
+          <div className="kickit-sites-grid" role="list" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 12 }}>
+            {SITES.map((site) => {
+              const gameCount = MATCHES.filter((m) => m.locations.some((l) => l.lid === site.id)).length;
+              const isSelected = selectedSite?.id === site.id;
+              return (
+                <button
+                  key={site.id}
+                  role="listitem"
+                  aria-pressed={isSelected}
+                  aria-label={`${site.name}, District ${site.district}, ${gameCount} games${isSelected ? ", selected" : ""}`}
+                  onClick={() => setSelectedSite(isSelected ? null : site)}
+                  style={{
+                    background: isSelected ? C.accentSoft : C.card,
+                    border: `1px solid ${isSelected ? C.accent : C.border}`,
+                    borderRadius: 10,
+                    padding: "14px 16px",
+                    cursor: "pointer",
+                    textAlign: "left",
+                    transition: "all 0.15s",
+                    color: C.text,
+                  }}
+                >
+                  <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 4 }}>{site.name}</div>
+                  <div style={{ fontSize: 11, color: C.textMuted, marginBottom: 6 }}>District {site.district}</div>
+                  <div style={{ display: "flex", gap: 8 }}>
+                    <span style={{
+                      background: "rgba(46,196,182,0.15)", color: C.green,
+                      fontSize: 11, fontWeight: 600, padding: "2px 8px", borderRadius: 4,
+                    }}>
+                      {gameCount} games
+                    </span>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </section>
+      </main>
+
+      <style>{`
+        /* ── Mobile-first responsive ── */
+        @media (max-width: 768px) {
+          /* Stack map and schedule vertically */
+          .kickit-grid {
+            grid-template-columns: 1fr !important;
+          }
+          /* Reduce hero padding */
+          .kickit-hero {
+            padding: 32px 16px 24px !important;
+          }
+          .kickit-hero h1 {
+            font-size: 28px !important;
+          }
+          /* Filters: full width selects */
+          .kickit-filters {
+            padding: 12px 14px !important;
+          }
+          .kickit-filter-row select {
+            flex: 1 1 100% !important;
+            max-width: 100% !important;
+          }
+          /* Map: shorter on mobile */
+          .kickit-map {
+            min-height: 320px !important;
+          }
+          /* Schedule: limit height so user can scroll past */
+          .kickit-schedule-list {
+            max-height: 400px !important;
+          }
+          /* Site grid: single column */
+          .kickit-sites-grid {
+            grid-template-columns: 1fr !important;
+          }
+          /* Stats row */
+          .kickit-stats {
+            gap: 16px !important;
+          }
+          .kickit-stats > div > div:first-child {
+            font-size: 22px !important;
+          }
+          /* Content padding */
+          .kickit-content {
+            padding: 16px 12px 60px !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .kickit-hero h1 {
+            font-size: 24px !important;
+          }
+          .kickit-map {
+            min-height: 260px !important;
+          }
+          .kickit-filter-row select {
+            font-size: 14px !important;
+            padding: 10px 12px !important;
+          }
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: ${C.border}; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: ${C.textMuted}; }
+        /* Keyboard focus visibility */
+        *:focus-visible {
+          outline: 2px solid ${C.gold} !important;
+          outline-offset: 2px !important;
+        }
+        /* Reduce motion for users who prefer it */
+        @media (prefers-reduced-motion: reduce) {
+          * { transition: none !important; animation: none !important; }
+        }
+      `}</style>
+    </div>
+  );
+}
+
+function MatchCard({ match, selectedSite }) {
+  const cat = stageCategory(match.stage);
+  const stageColor = STAGE_COLORS[cat] || C.textMuted;
+  const t1Real = isRealTeam(match.t1);
+  const t2Real = isRealTeam(match.t2);
+
+  return (
+    <article aria-label={`${match.t1} vs ${match.t2}, ${match.stage}, ${match.time} PDT`} style={{
+      background: C.card,
+      border: `1px solid ${C.border}`,
+      borderRadius: 8,
+      padding: "10px 14px",
+      margin: "6px 0",
+      display: "flex",
+      flexDirection: "column",
+      gap: 6,
+    }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <span style={{
+          fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1,
+          color: stageColor, background: `${stageColor}22`, padding: "2px 8px", borderRadius: 4,
+        }}>
+          {match.stage}
+        </span>
+        <span style={{ fontSize: 12, color: C.textMuted }}>{match.time} PDT</span>
+      </div>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, padding: "4px 0" }}>
+        <span style={{ fontSize: 14, fontWeight: t1Real ? 700 : 400, color: t1Real ? C.text : C.textMuted, textAlign: "right", flex: 1 }}>
+          {match.t1}
+        </span>
+        <span aria-hidden="true" style={{
+          fontSize: 11, fontWeight: 700, color: C.accent,
+          background: C.accentSoft, padding: "2px 8px", borderRadius: 4,
+        }}>VS</span>
+        <span style={{ fontSize: 14, fontWeight: t2Real ? 700 : 400, color: t2Real ? C.text : C.textMuted, textAlign: "left", flex: 1 }}>
+          {match.t2}
+        </span>
+      </div>
+      {!selectedSite && (
+        <div style={{ fontSize: 11, color: C.textMuted, display: "flex", flexWrap: "wrap", gap: 4 }}>
+          {match.locations.map((l, i) => (
+            <span key={i} style={{ background: "rgba(255,255,255,0.05)", padding: "1px 6px", borderRadius: 3 }}>
+              {l.name}
+            </span>
+          ))}
+        </div>
+      )}
+    </article>
+  );
+}
+
+function Stat({ label, value, color }) {
+  return (
+    <div role="status" aria-label={`${value} ${label}`} style={{ textAlign: "center" }}>
+      <div aria-hidden="true" style={{ fontSize: 28, fontWeight: 900, fontFamily: "'Unbounded', sans-serif", color }}>{value}</div>
+      <div aria-hidden="true" style={{ fontSize: 11, color: C.textMuted, textTransform: "uppercase", letterSpacing: 1 }}>{label}</div>
+    </div>
+  );
+}
+
+
+ReactDOM.createRoot(document.getElementById('root')).render(<KickItInLA />);
+  </script>
+</body>
 </html>
