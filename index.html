@@ -415,138 +415,425 @@ const { useState, useMemo, useEffect, useRef } = React;
 
 // ─── DATA ───
 const SITES = [
-  {id:1,district:1,name:"Sycamore Grove",address:"4702 N Figueroa St, Los Angeles, CA 90042",lat:34.1000935,lng:-118.2033179},
-  {id:2,district:2,name:"Whitsett Fields",address:"12445 Vanowen St, North Hollywood, CA 91605",lat:34.1960504,lng:-118.4038961},
-  {id:3,district:3,name:"Lanark Recreation Center",address:"21816 Lanark St, Canoga Park, CA 91304",lat:34.2168319,lng:-118.6035049},
-  {id:5,district:5,name:"Cheviot Hills Recreation Center",address:"2551 Motor Ave, Los Angeles, CA 90064",lat:34.0468616,lng:-118.4089588},
-  {id:6,district:5,name:"Westwood Recreation Center",address:"1350 S Sepulveda Blvd, Los Angeles, CA 90025",lat:34.0532553,lng:-118.4478125},
-  {id:7,district:6,name:"Sheldon-Arleta Park",address:"12455 Wicks St, Sun Valley, CA 91352",lat:34.2272518,lng:-118.4068172},
-  {id:8,district:7,name:"Sylmar Recreation Center",address:"13109 Borden Ave, Sylmar, CA 91342",lat:34.3083637,lng:-118.4458814},
-  {id:9,district:8,name:"Jackie Tatum Harvard Recreation Center",address:"1535 62nd St, Los Angeles, CA 90047",lat:33.9835432,lng:-118.3038059},
-  {id:10,district:9,name:"South Park Recreation Center",address:"345 E 51st St, Los Angeles, CA 90011",lat:33.9975563,lng:-118.2665493},
-  {id:11,district:10,name:"Seoul International Park",address:"3250 San Marino St., Los Angeles, CA 90006",lat:34.0542164,lng:-118.3017847},
-  {id:12,district:11,name:"Venice Beach Recreation Center",address:"1800 Ocean Front Walk, Venice, CA 90291",lat:33.9851719,lng:-118.4727099},
-  {id:13,district:12,name:"Northridge Recreation Center",address:"18300 Lemarsh St, Northridge, CA 91324",lat:34.2549726,lng:-118.5312762},
-  {id:14,district:13,name:"Echo Park",address:"1632 Bellevue Ave, Los Angeles, CA 90026",lat:34.0697562,lng:-118.2601052},
-  {id:15,district:14,name:"El Sereno Recreation Center",address:"4721 Klamath St, Los Angeles, CA 90032",lat:34.0767339,lng:-118.1813825},
-  {id:16,district:15,name:"Wilmington Sports Complex",address:"1221 Figueroa Pl, Wilmington, CA 90744",lat:33.7863391,lng:-118.2842716},
-  {id:17,district:1,name:"MacArthur Park",address:"2230 W 6th St, Los Angeles, CA 90057",lat:34.0601077,lng:-118.2780828},
-  {id:18,district:11,name:"Stoner Recreation Center",address:"1835 Stoner Ave, Los Angeles, CA 90025",lat:34.0384849,lng:-118.4535928},
-  {id:19,district:15,name:"Ken Malloy Harbor Regional Park",address:"25820 Vermont Ave, Harbor City, CA 90710",lat:33.7834882,lng:-118.294869}
+  {id:1,district:1,name:"Sycamore Grove",address:"4702 N Figueroa St, Los Angeles, CA 90042",lat:34.1000935,lng:-118.2033179,type:"Kick In the Park",free:"Yes"},
+  {id:2,district:2,name:"Whitsett Fields",address:"12445 Vanowen St, North Hollywood, CA 91605",lat:34.1960504,lng:-118.4038961,type:"Kick In the Park",free:"Yes"},
+  {id:3,district:3,name:"Lanark Recreation Center",address:"21816 Lanark St, Canoga Park, CA 91304",lat:34.2168319,lng:-118.6035049,type:"Kick In the Park",free:"Yes"},
+  {id:5,district:5,name:"Cheviot Hills Recreation Center",address:"2551 Motor Ave, Los Angeles, CA 90064",lat:34.0468616,lng:-118.4089588,type:"Kick In the Park",free:"Yes"},
+  {id:6,district:5,name:"Westwood Recreation Center",address:"1350 S Sepulveda Blvd, Los Angeles, CA 90025",lat:34.0532553,lng:-118.4478125,type:"Kick In the Park",free:"Yes"},
+  {id:7,district:6,name:"Sheldon-Arleta Park",address:"12455 Wicks St, Sun Valley, CA 91352",lat:34.2272518,lng:-118.4068172,type:"Kick In the Park",free:"Yes"},
+  {id:8,district:7,name:"Sylmar Recreation Center",address:"13109 Borden Ave, Sylmar, CA 91342",lat:34.3083637,lng:-118.4458814,type:"Kick In the Park",free:"Yes"},
+  {id:9,district:8,name:"Jackie Tatum Harvard Recreation Center",address:"1535 62nd St, Los Angeles, CA 90047",lat:33.9835432,lng:-118.3038059,type:"Kick In the Park",free:"Yes"},
+  {id:10,district:9,name:"South Park Recreation Center",address:"345 E 51st St, Los Angeles, CA 90011",lat:33.9975563,lng:-118.2665493,type:"Kick In the Park",free:"Yes"},
+  {id:11,district:10,name:"Seoul International Park",address:"3250 San Marino St., Los Angeles, CA 90006",lat:34.0542164,lng:-118.3017847,type:"Kick In the Park",free:"Yes"},
+  {id:12,district:11,name:"Venice Beach Recreation Center",address:"1800 Ocean Front Walk, Venice, CA 90291",lat:33.9851719,lng:-118.4727099,type:"Kick In the Park",free:"Yes"},
+  {id:13,district:12,name:"Northridge Recreation Center",address:"18300 Lemarsh St, Northridge, CA 91324",lat:34.2549726,lng:-118.5312762,type:"Kick In the Park",free:"Yes"},
+  {id:14,district:13,name:"Echo Park",address:"1632 Bellevue Ave, Los Angeles, CA 90026",lat:34.0697562,lng:-118.2601052,type:"Kick In the Park",free:"Yes"},
+  {id:15,district:14,name:"El Sereno Recreation Center",address:"4721 Klamath St, Los Angeles, CA 90032",lat:34.0767339,lng:-118.1813825,type:"Kick In the Park",free:"Yes"},
+  {id:16,district:15,name:"Wilmington Recreation Center",address:"325 N Neptune Ave, Wilmington, CA 90744",lat:33.7863391,lng:-118.2842716,type:"Kick In the Park",free:"Yes"},
+  {id:17,district:1,name:"MacArthur Park",address:"2230 W 6th St, Los Angeles, CA 90057",lat:34.0601077,lng:-118.2780828,type:"Kick In the Park",free:"Yes"},
+  {id:18,district:11,name:"Stoner Recreation Center",address:"1835 Stoner Ave, Los Angeles, CA 90025",lat:34.0384849,lng:-118.4535928,type:"Kick In the Park",free:"Yes"},
+  {id:19,district:15,name:"Ken Malloy Harbor Regional Park",address:"25820 Vermont Ave, Harbor City, CA 90710",lat:33.7834882,lng:-118.294869,type:"Kick In the Park",free:"Yes"},
+  {id:30,district:4,name:"The Autry Museum",address:"Griffith Park, 4700 Western Heritage Way, Los Angeles, CA 90027",lat:34.1484,lng:-118.2821,type:"Community Activations",free:"Yes"},
+  {id:80,district:9,name:"Los Angeles Memorial Coliseum",address:"3911 S Figueroa St, Los Angeles, CA 90037",lat:34.0141,lng:-118.2879,type:"FIFA Fan Festival",free:"No"},
+  {id:90,district:5,name:"The Original Farmers Market",address:"6333 W. 3rd St, Los Angeles 90036",lat:34.0722,lng:-118.3614,type:"Official Fan Zone",free:"No"},
+  {id:91,district:14,name:"Los Angeles Union Station",address:"800 N. Alameda Street, Los Angeles 90012",lat:34.0561,lng:-118.2365,type:"Official Fan Zone",free:"Yes"},
+  {id:92,district:7,name:"Hansen Dam",address:"11770 Foothill Blvd, Sylmar 91342",lat:34.2742,lng:-118.3963,type:"Official Fan Zone",free:"No"},
+  {id:93,district:11,name:"Venice Beach",address:"Winward Ave, Venice Beach, Los Angeles 90291",lat:33.9850,lng:-118.4695,type:"Official Fan Zone",free:"Yes"},
+  {id:94,district:15,name:"West Harbor Los Angeles",address:"461 W. 6th Street, Suite 300, San Pedro 90731",lat:33.7400,lng:-118.2780,type:"Official Fan Zone",free:"No"},
 ];
 
 const CALENDAR_RAW = [
-  {m:"1",date:"6/11/2026",time:"12:00 PM",stage:"Group A",host:"Mexico City",t1:"Mexico",t2:"South Africa",loc:"Wilmington Recreation Center",dist:15,lid:16},
-  {m:"1",date:"6/11/2026",time:"12:00 PM",stage:"Group A",host:"Mexico City",t1:"Mexico",t2:"South Africa",loc:"Echo Park",dist:13,lid:14},
-  {m:"1",date:"6/11/2026",time:"12:00 PM",stage:"Group A",host:"Mexico City",t1:"Mexico",t2:"South Africa",loc:"Sheldon-Arleta Park",dist:6,lid:7},
-  {m:"2",date:"6/11/2026",time:"6:00 PM",stage:"Group A",host:"Guadalajara",t1:"South Korea",t2:"Czechia",loc:"Wilmington Recreation Center",dist:15,lid:16},
-  {m:"2",date:"6/11/2026",time:"6:00 PM",stage:"Group A",host:"Guadalajara",t1:"South Korea",t2:"Czechia",loc:"Echo Park",dist:13,lid:14},
-  {m:"2",date:"6/11/2026",time:"6:00 PM",stage:"Group A",host:"Guadalajara",t1:"South Korea",t2:"Czechia",loc:"Sheldon-Arleta Park",dist:6,lid:7},
-  {m:"3",date:"6/12/2026",time:"12:00 PM",stage:"Group B",host:"Toronto",t1:"Canada",t2:"Bosnia-Herzegovina",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},
-  {m:"3",date:"6/12/2026",time:"12:00 PM",stage:"Group B",host:"Toronto",t1:"Canada",t2:"Bosnia-Herzegovina",loc:"Stoner Recreation Center",dist:11,lid:18},
-  {m:"4",date:"6/12/2026",time:"6:00 PM",stage:"Group D",host:"Los Angeles",t1:"USA",t2:"Paraguay",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},
-  {m:"4",date:"6/12/2026",time:"6:00 PM",stage:"Group D",host:"Los Angeles",t1:"USA",t2:"Paraguay",loc:"Stoner Recreation Center",dist:11,lid:18},
-  {m:"5",date:"6/13/2026",time:"12:00 PM",stage:"Group C",host:"Boston",t1:"Haiti",t2:"Scotland",loc:"Seoul International Park",dist:10,lid:11},{m:"5",date:"6/13/2026",time:"12:00 PM",stage:"Group C",host:"Boston",t1:"Haiti",t2:"Scotland",loc:"Whitsett Fields",dist:2,lid:2},{m:"5",date:"6/13/2026",time:"12:00 PM",stage:"Group C",host:"Boston",t1:"Haiti",t2:"Scotland",loc:"Sylmar Recreation Center",dist:7,lid:8},
-  {m:"6",date:"6/13/2026",time:"7:00 PM",stage:"Group D",host:"Vancouver",t1:"Australia",t2:"Turkey",loc:"Seoul International Park",dist:10,lid:11},{m:"6",date:"6/13/2026",time:"7:00 PM",stage:"Group D",host:"Vancouver",t1:"Australia",t2:"Turkey",loc:"Whitsett Fields",dist:2,lid:2},{m:"6",date:"6/13/2026",time:"7:00 PM",stage:"Group D",host:"Vancouver",t1:"Australia",t2:"Turkey",loc:"Sylmar Recreation Center",dist:7,lid:8},
-  {m:"7",date:"6/13/2026",time:"3:00 PM",stage:"Group C",host:"New York/NJ",t1:"Brazil",t2:"Morocco",loc:"Seoul International Park",dist:10,lid:11},{m:"7",date:"6/13/2026",time:"3:00 PM",stage:"Group C",host:"New York/NJ",t1:"Brazil",t2:"Morocco",loc:"Whitsett Fields",dist:2,lid:2},{m:"7",date:"6/13/2026",time:"3:00 PM",stage:"Group C",host:"New York/NJ",t1:"Brazil",t2:"Morocco",loc:"Sylmar Recreation Center",dist:7,lid:8},
-  {m:"8",date:"6/13/2026",time:"1:00 PM",stage:"Group B",host:"San Francisco",t1:"Qatar",t2:"Switzerland",loc:"Seoul International Park",dist:10,lid:11},{m:"8",date:"6/13/2026",time:"1:00 PM",stage:"Group B",host:"San Francisco",t1:"Qatar",t2:"Switzerland",loc:"Whitsett Fields",dist:2,lid:2},{m:"8",date:"6/13/2026",time:"1:00 PM",stage:"Group B",host:"San Francisco",t1:"Qatar",t2:"Switzerland",loc:"Sylmar Recreation Center",dist:7,lid:8},
-  {m:"9",date:"6/14/2026",time:"4:00 PM",stage:"Group E",host:"Philadelphia",t1:"Ivory Coast",t2:"Ecuador",loc:"Cheviot Hills Recreation Center",dist:5,lid:5},{m:"9",date:"6/14/2026",time:"4:00 PM",stage:"Group E",host:"Philadelphia",t1:"Ivory Coast",t2:"Ecuador",loc:"South Park Recreation Center",dist:9,lid:10},{m:"9",date:"6/14/2026",time:"4:00 PM",stage:"Group E",host:"Philadelphia",t1:"Ivory Coast",t2:"Ecuador",loc:"El Sereno Recreation Center",dist:14,lid:15},
-  {m:"10",date:"6/14/2026",time:"10:00 AM",stage:"Group E",host:"Houston",t1:"Germany",t2:"Curaçao",loc:"Cheviot Hills Recreation Center",dist:5,lid:5},{m:"10",date:"6/14/2026",time:"10:00 AM",stage:"Group E",host:"Houston",t1:"Germany",t2:"Curaçao",loc:"South Park Recreation Center",dist:9,lid:10},{m:"10",date:"6/14/2026",time:"10:00 AM",stage:"Group E",host:"Houston",t1:"Germany",t2:"Curaçao",loc:"El Sereno Recreation Center",dist:14,lid:15},
-  {m:"11",date:"6/14/2026",time:"1:00 PM",stage:"Group F",host:"Dallas",t1:"Netherlands",t2:"Japan",loc:"Cheviot Hills Recreation Center",dist:5,lid:5},{m:"11",date:"6/14/2026",time:"1:00 PM",stage:"Group F",host:"Dallas",t1:"Netherlands",t2:"Japan",loc:"South Park Recreation Center",dist:9,lid:10},{m:"11",date:"6/14/2026",time:"1:00 PM",stage:"Group F",host:"Dallas",t1:"Netherlands",t2:"Japan",loc:"El Sereno Recreation Center",dist:14,lid:15},
-  {m:"12",date:"6/14/2026",time:"7:00 PM",stage:"Group F",host:"Monterrey",t1:"Sweden",t2:"Tunisia",loc:"Cheviot Hills Recreation Center",dist:5,lid:5},{m:"12",date:"6/14/2026",time:"7:00 PM",stage:"Group F",host:"Monterrey",t1:"Sweden",t2:"Tunisia",loc:"South Park Recreation Center",dist:9,lid:10},{m:"12",date:"6/14/2026",time:"7:00 PM",stage:"Group F",host:"Monterrey",t1:"Sweden",t2:"Tunisia",loc:"El Sereno Recreation Center",dist:14,lid:15},
-  {m:"13",date:"6/15/2026",time:"3:00 PM",stage:"Group H",host:"Miami",t1:"Saudi Arabia",t2:"Uruguay",loc:"MacArthur Park",dist:1,lid:17},{m:"13",date:"6/15/2026",time:"3:00 PM",stage:"Group H",host:"Miami",t1:"Saudi Arabia",t2:"Uruguay",loc:"Lanark Recreation Center",dist:3,lid:3},{m:"13",date:"6/15/2026",time:"3:00 PM",stage:"Group H",host:"Miami",t1:"Saudi Arabia",t2:"Uruguay",loc:"Northridge Recreation Center",dist:12,lid:13},
-  {m:"14",date:"6/15/2026",time:"9:00 AM",stage:"Group H",host:"Atlanta",t1:"Spain",t2:"Cabo Verde",loc:"MacArthur Park",dist:1,lid:17},{m:"14",date:"6/15/2026",time:"9:00 AM",stage:"Group H",host:"Atlanta",t1:"Spain",t2:"Cabo Verde",loc:"Lanark Recreation Center",dist:3,lid:3},{m:"14",date:"6/15/2026",time:"9:00 AM",stage:"Group H",host:"Atlanta",t1:"Spain",t2:"Cabo Verde",loc:"Northridge Recreation Center",dist:12,lid:13},
-  {m:"15",date:"6/15/2026",time:"6:00 PM",stage:"Group G",host:"Los Angeles",t1:"Iran",t2:"New Zealand",loc:"MacArthur Park",dist:1,lid:17},{m:"15",date:"6/15/2026",time:"6:00 PM",stage:"Group G",host:"Los Angeles",t1:"Iran",t2:"New Zealand",loc:"Lanark Recreation Center",dist:3,lid:3},{m:"15",date:"6/15/2026",time:"6:00 PM",stage:"Group G",host:"Los Angeles",t1:"Iran",t2:"New Zealand",loc:"Northridge Recreation Center",dist:12,lid:13},
-  {m:"16",date:"6/15/2026",time:"12:00 PM",stage:"Group G",host:"Seattle",t1:"Belgium",t2:"Egypt",loc:"MacArthur Park",dist:1,lid:17},{m:"16",date:"6/15/2026",time:"12:00 PM",stage:"Group G",host:"Seattle",t1:"Belgium",t2:"Egypt",loc:"Lanark Recreation Center",dist:3,lid:3},{m:"16",date:"6/15/2026",time:"12:00 PM",stage:"Group G",host:"Seattle",t1:"Belgium",t2:"Egypt",loc:"Northridge Recreation Center",dist:12,lid:13},
-  {m:"17",date:"6/16/2026",time:"12:00 PM",stage:"Group I",host:"New York/NJ",t1:"France",t2:"Senegal",loc:"Wilmington Recreation Center",dist:15,lid:16},{m:"17",date:"6/16/2026",time:"12:00 PM",stage:"Group I",host:"New York/NJ",t1:"France",t2:"Senegal",loc:"Echo Park",dist:13,lid:14},{m:"17",date:"6/16/2026",time:"12:00 PM",stage:"Group I",host:"New York/NJ",t1:"France",t2:"Senegal",loc:"Sheldon-Arleta Park",dist:6,lid:7},
-  {m:"18",date:"6/16/2026",time:"3:00 PM",stage:"Group I",host:"Boston",t1:"Iraq",t2:"Norway",loc:"Wilmington Recreation Center",dist:15,lid:16},{m:"18",date:"6/16/2026",time:"3:00 PM",stage:"Group I",host:"Boston",t1:"Iraq",t2:"Norway",loc:"Echo Park",dist:13,lid:14},{m:"18",date:"6/16/2026",time:"3:00 PM",stage:"Group I",host:"Boston",t1:"Iraq",t2:"Norway",loc:"Sheldon-Arleta Park",dist:6,lid:7},
-  {m:"19",date:"6/16/2026",time:"6:00 PM",stage:"Group J",host:"Kansas City",t1:"Argentina",t2:"Algeria",loc:"Wilmington Recreation Center",dist:15,lid:16},{m:"19",date:"6/16/2026",time:"6:00 PM",stage:"Group J",host:"Kansas City",t1:"Argentina",t2:"Algeria",loc:"Echo Park",dist:13,lid:14},{m:"19",date:"6/16/2026",time:"6:00 PM",stage:"Group J",host:"Kansas City",t1:"Argentina",t2:"Algeria",loc:"Sheldon-Arleta Park",dist:6,lid:7},
-  {m:"20",date:"6/16/2026",time:"9:00 PM",stage:"Group J",host:"San Francisco",t1:"Austria",t2:"Jordan",loc:"Wilmington Recreation Center",dist:15,lid:16},{m:"20",date:"6/16/2026",time:"9:00 PM",stage:"Group J",host:"San Francisco",t1:"Austria",t2:"Jordan",loc:"Echo Park",dist:13,lid:14},{m:"20",date:"6/16/2026",time:"9:00 PM",stage:"Group J",host:"San Francisco",t1:"Austria",t2:"Jordan",loc:"Sheldon-Arleta Park",dist:6,lid:7},
-  {m:"21",date:"6/17/2026",time:"4:00 PM",stage:"Group L",host:"Toronto",t1:"Ghana",t2:"Panama",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},{m:"21",date:"6/17/2026",time:"4:00 PM",stage:"Group L",host:"Toronto",t1:"Ghana",t2:"Panama",loc:"Venice Beach Recreation Center",dist:11,lid:12},
-  {m:"22",date:"6/17/2026",time:"1:00 PM",stage:"Group L",host:"Dallas",t1:"England",t2:"Croatia",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},{m:"22",date:"6/17/2026",time:"1:00 PM",stage:"Group L",host:"Dallas",t1:"England",t2:"Croatia",loc:"Venice Beach Recreation Center",dist:11,lid:12},
-  {m:"23",date:"6/17/2026",time:"10:00 AM",stage:"Group K",host:"Houston",t1:"Portugal",t2:"Congo DR",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},{m:"23",date:"6/17/2026",time:"10:00 AM",stage:"Group K",host:"Houston",t1:"Portugal",t2:"Congo DR",loc:"Venice Beach Recreation Center",dist:11,lid:12},
-  {m:"24",date:"6/17/2026",time:"7:00 PM",stage:"Group K",host:"Mexico City",t1:"Uzbekistan",t2:"Colombia",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},{m:"24",date:"6/17/2026",time:"7:00 PM",stage:"Group K",host:"Mexico City",t1:"Uzbekistan",t2:"Colombia",loc:"Venice Beach Recreation Center",dist:11,lid:12},
-  {m:"25",date:"6/18/2026",time:"9:00 AM",stage:"Group A",host:"Atlanta",t1:"Czechia",t2:"South Africa",loc:"Seoul International Park",dist:10,lid:11},{m:"25",date:"6/18/2026",time:"9:00 AM",stage:"Group A",host:"Atlanta",t1:"Czechia",t2:"South Africa",loc:"Whitsett Fields",dist:2,lid:2},{m:"25",date:"6/18/2026",time:"9:00 AM",stage:"Group A",host:"Atlanta",t1:"Czechia",t2:"South Africa",loc:"Sylmar Recreation Center",dist:7,lid:8},
-  {m:"26",date:"6/18/2026",time:"12:00 PM",stage:"Group B",host:"Los Angeles",t1:"Switzerland",t2:"Bosnia-Herzegovina",loc:"Seoul International Park",dist:10,lid:11},{m:"26",date:"6/18/2026",time:"12:00 PM",stage:"Group B",host:"Los Angeles",t1:"Switzerland",t2:"Bosnia-Herzegovina",loc:"Whitsett Fields",dist:2,lid:2},{m:"26",date:"6/18/2026",time:"12:00 PM",stage:"Group B",host:"Los Angeles",t1:"Switzerland",t2:"Bosnia-Herzegovina",loc:"Sylmar Recreation Center",dist:7,lid:8},
-  {m:"27",date:"6/18/2026",time:"3:00 PM",stage:"Group B",host:"Vancouver",t1:"Canada",t2:"Qatar",loc:"Seoul International Park",dist:10,lid:11},{m:"27",date:"6/18/2026",time:"3:00 PM",stage:"Group B",host:"Vancouver",t1:"Canada",t2:"Qatar",loc:"Whitsett Fields",dist:2,lid:2},{m:"27",date:"6/18/2026",time:"3:00 PM",stage:"Group B",host:"Vancouver",t1:"Canada",t2:"Qatar",loc:"Sylmar Recreation Center",dist:7,lid:8},
-  {m:"28",date:"6/18/2026",time:"6:00 PM",stage:"Group A",host:"Guadalajara",t1:"Mexico",t2:"South Korea",loc:"Seoul International Park",dist:10,lid:11},{m:"28",date:"6/18/2026",time:"6:00 PM",stage:"Group A",host:"Guadalajara",t1:"Mexico",t2:"South Korea",loc:"Whitsett Fields",dist:2,lid:2},{m:"28",date:"6/18/2026",time:"6:00 PM",stage:"Group A",host:"Guadalajara",t1:"Mexico",t2:"South Korea",loc:"Sylmar Recreation Center",dist:7,lid:8},{m:"28",date:"6/18/2026",time:"6:00 PM",stage:"Group A",host:"Guadalajara",t1:"Mexico",t2:"South Korea",loc:"Northridge Recreation Center",dist:12,lid:13},
-  {m:"29",date:"6/19/2026",time:"3:00 PM",stage:"Group C",host:"Philadelphia",t1:"Brazil",t2:"Haiti",loc:"Cheviot Hills Recreation Center",dist:5,lid:5},{m:"29",date:"6/19/2026",time:"3:00 PM",stage:"Group C",host:"Philadelphia",t1:"Brazil",t2:"Haiti",loc:"South Park Recreation Center",dist:9,lid:10},{m:"29",date:"6/19/2026",time:"3:00 PM",stage:"Group C",host:"Philadelphia",t1:"Brazil",t2:"Haiti",loc:"El Sereno Recreation Center",dist:14,lid:15},
-  {m:"30",date:"6/19/2026",time:"3:00 PM",stage:"Group C",host:"Boston",t1:"Scotland",t2:"Morocco",loc:"Cheviot Hills Recreation Center",dist:5,lid:5},{m:"30",date:"6/19/2026",time:"3:00 PM",stage:"Group C",host:"Boston",t1:"Scotland",t2:"Morocco",loc:"South Park Recreation Center",dist:9,lid:10},{m:"30",date:"6/19/2026",time:"3:00 PM",stage:"Group C",host:"Boston",t1:"Scotland",t2:"Morocco",loc:"El Sereno Recreation Center",dist:14,lid:15},
-  {m:"31",date:"6/19/2026",time:"7:00 PM",stage:"Group D",host:"San Francisco",t1:"Turkey",t2:"Paraguay",loc:"Cheviot Hills Recreation Center",dist:5,lid:5},{m:"31",date:"6/19/2026",time:"7:00 PM",stage:"Group D",host:"San Francisco",t1:"Turkey",t2:"Paraguay",loc:"South Park Recreation Center",dist:9,lid:10},{m:"31",date:"6/19/2026",time:"7:00 PM",stage:"Group D",host:"San Francisco",t1:"Turkey",t2:"Paraguay",loc:"El Sereno Recreation Center",dist:14,lid:15},
-  {m:"32",date:"6/19/2026",time:"12:00 PM",stage:"Group D",host:"Seattle",t1:"USA",t2:"Australia",loc:"Cheviot Hills Recreation Center",dist:5,lid:5},{m:"32",date:"6/19/2026",time:"12:00 PM",stage:"Group D",host:"Seattle",t1:"USA",t2:"Australia",loc:"South Park Recreation Center",dist:9,lid:10},{m:"32",date:"6/19/2026",time:"12:00 PM",stage:"Group D",host:"Seattle",t1:"USA",t2:"Australia",loc:"El Sereno Recreation Center",dist:14,lid:15},
-  {m:"33",date:"6/20/2026",time:"1:00 PM",stage:"Group E",host:"Toronto",t1:"Germany",t2:"Ivory Coast",loc:"Sycamore Grove",dist:1,lid:1},{m:"33",date:"6/20/2026",time:"1:00 PM",stage:"Group E",host:"Toronto",t1:"Germany",t2:"Ivory Coast",loc:"Lanark Recreation Center",dist:3,lid:3},{m:"33",date:"6/20/2026",time:"1:00 PM",stage:"Group E",host:"Toronto",t1:"Germany",t2:"Ivory Coast",loc:"Northridge Recreation Center",dist:12,lid:13},
-  {m:"34",date:"6/20/2026",time:"5:00 PM",stage:"Group E",host:"Kansas City",t1:"Ecuador",t2:"Curaçao",loc:"Sycamore Grove",dist:1,lid:1},{m:"34",date:"6/20/2026",time:"5:00 PM",stage:"Group E",host:"Kansas City",t1:"Ecuador",t2:"Curaçao",loc:"Lanark Recreation Center",dist:3,lid:3},{m:"34",date:"6/20/2026",time:"5:00 PM",stage:"Group E",host:"Kansas City",t1:"Ecuador",t2:"Curaçao",loc:"Northridge Recreation Center",dist:12,lid:13},
-  {m:"35",date:"6/20/2026",time:"10:00 AM",stage:"Group F",host:"Houston",t1:"Netherlands",t2:"Sweden",loc:"Sycamore Grove",dist:1,lid:1},{m:"35",date:"6/20/2026",time:"10:00 AM",stage:"Group F",host:"Houston",t1:"Netherlands",t2:"Sweden",loc:"Lanark Recreation Center",dist:3,lid:3},{m:"35",date:"6/20/2026",time:"10:00 AM",stage:"Group F",host:"Houston",t1:"Netherlands",t2:"Sweden",loc:"Northridge Recreation Center",dist:12,lid:13},
-  {m:"36",date:"6/20/2026",time:"7:00 PM",stage:"Group F",host:"Monterrey",t1:"Tunisia",t2:"Japan",loc:"Sycamore Grove",dist:1,lid:1},{m:"36",date:"6/20/2026",time:"7:00 PM",stage:"Group F",host:"Monterrey",t1:"Tunisia",t2:"Japan",loc:"Lanark Recreation Center",dist:3,lid:3},{m:"36",date:"6/20/2026",time:"7:00 PM",stage:"Group F",host:"Monterrey",t1:"Tunisia",t2:"Japan",loc:"Northridge Recreation Center",dist:12,lid:13},
-  {m:"37",date:"6/21/2026",time:"3:00 PM",stage:"Group H",host:"Miami",t1:"Uruguay",t2:"Cabo Verde",loc:"Wilmington Recreation Center",dist:15,lid:16},{m:"37",date:"6/21/2026",time:"3:00 PM",stage:"Group H",host:"Miami",t1:"Uruguay",t2:"Cabo Verde",loc:"Echo Park",dist:13,lid:14},{m:"37",date:"6/21/2026",time:"3:00 PM",stage:"Group H",host:"Miami",t1:"Uruguay",t2:"Cabo Verde",loc:"Sheldon-Arleta Park",dist:6,lid:7},
-  {m:"38",date:"6/21/2026",time:"9:00 AM",stage:"Group H",host:"Atlanta",t1:"Spain",t2:"Saudi Arabia",loc:"Wilmington Recreation Center",dist:15,lid:16},{m:"38",date:"6/21/2026",time:"9:00 AM",stage:"Group H",host:"Atlanta",t1:"Spain",t2:"Saudi Arabia",loc:"Echo Park",dist:13,lid:14},{m:"38",date:"6/21/2026",time:"9:00 AM",stage:"Group H",host:"Atlanta",t1:"Spain",t2:"Saudi Arabia",loc:"Sheldon-Arleta Park",dist:6,lid:7},
-  {m:"39",date:"6/21/2026",time:"12:00 PM",stage:"Group G",host:"Los Angeles",t1:"Belgium",t2:"Iran",loc:"Wilmington Recreation Center",dist:15,lid:16},{m:"39",date:"6/21/2026",time:"12:00 PM",stage:"Group G",host:"Los Angeles",t1:"Belgium",t2:"Iran",loc:"Echo Park",dist:13,lid:14},{m:"39",date:"6/21/2026",time:"12:00 PM",stage:"Group G",host:"Los Angeles",t1:"Belgium",t2:"Iran",loc:"Sheldon-Arleta Park",dist:6,lid:7},
-  {m:"40",date:"6/21/2026",time:"6:00 PM",stage:"Group G",host:"Vancouver",t1:"New Zealand",t2:"Egypt",loc:"Wilmington Recreation Center",dist:15,lid:16},{m:"40",date:"6/21/2026",time:"6:00 PM",stage:"Group G",host:"Vancouver",t1:"New Zealand",t2:"Egypt",loc:"Echo Park",dist:13,lid:14},{m:"40",date:"6/21/2026",time:"6:00 PM",stage:"Group G",host:"Vancouver",t1:"New Zealand",t2:"Egypt",loc:"Sheldon-Arleta Park",dist:6,lid:7},
-  {m:"41",date:"6/22/2026",time:"5:00 PM",stage:"Group I",host:"New York/NJ",t1:"Norway",t2:"Senegal",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},{m:"41",date:"6/22/2026",time:"5:00 PM",stage:"Group I",host:"New York/NJ",t1:"Norway",t2:"Senegal",loc:"Stoner Recreation Center",dist:11,lid:18},
-  {m:"42",date:"6/22/2026",time:"2:00 PM",stage:"Group I",host:"Philadelphia",t1:"France",t2:"Iraq",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},{m:"42",date:"6/22/2026",time:"2:00 PM",stage:"Group I",host:"Philadelphia",t1:"France",t2:"Iraq",loc:"Stoner Recreation Center",dist:11,lid:18},
-  {m:"43",date:"6/22/2026",time:"10:00 AM",stage:"Group J",host:"Dallas",t1:"Argentina",t2:"Austria",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},{m:"43",date:"6/22/2026",time:"10:00 AM",stage:"Group J",host:"Dallas",t1:"Argentina",t2:"Austria",loc:"Stoner Recreation Center",dist:11,lid:18},
-  {m:"44",date:"6/22/2026",time:"8:00 PM",stage:"Group J",host:"San Francisco",t1:"Jordan",t2:"Algeria",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},{m:"44",date:"6/22/2026",time:"8:00 PM",stage:"Group J",host:"San Francisco",t1:"Jordan",t2:"Algeria",loc:"Stoner Recreation Center",dist:11,lid:18},
-  {m:"45",date:"6/23/2026",time:"12:00 PM",stage:"Group L",host:"Boston",t1:"England",t2:"Ghana",loc:"Seoul International Park",dist:10,lid:11},{m:"45",date:"6/23/2026",time:"12:00 PM",stage:"Group L",host:"Boston",t1:"England",t2:"Ghana",loc:"Whitsett Fields",dist:2,lid:2},{m:"45",date:"6/23/2026",time:"12:00 PM",stage:"Group L",host:"Boston",t1:"England",t2:"Ghana",loc:"Sylmar Recreation Center",dist:7,lid:8},
-  {m:"46",date:"6/23/2026",time:"4:00 PM",stage:"Group L",host:"Toronto",t1:"Panama",t2:"Croatia",loc:"Seoul International Park",dist:10,lid:11},{m:"46",date:"6/23/2026",time:"4:00 PM",stage:"Group L",host:"Toronto",t1:"Panama",t2:"Croatia",loc:"Whitsett Fields",dist:2,lid:2},{m:"46",date:"6/23/2026",time:"4:00 PM",stage:"Group L",host:"Toronto",t1:"Panama",t2:"Croatia",loc:"Sylmar Recreation Center",dist:7,lid:8},
-  {m:"47",date:"6/23/2026",time:"10:00 AM",stage:"Group K",host:"Houston",t1:"Portugal",t2:"Uzbekistan",loc:"Seoul International Park",dist:10,lid:11},{m:"47",date:"6/23/2026",time:"10:00 AM",stage:"Group K",host:"Houston",t1:"Portugal",t2:"Uzbekistan",loc:"Whitsett Fields",dist:2,lid:2},{m:"47",date:"6/23/2026",time:"10:00 AM",stage:"Group K",host:"Houston",t1:"Portugal",t2:"Uzbekistan",loc:"Sylmar Recreation Center",dist:7,lid:8},
-  {m:"48",date:"6/23/2026",time:"4:00 PM",stage:"Group K",host:"Guadalajara",t1:"Colombia",t2:"Congo DR",loc:"Seoul International Park",dist:10,lid:11},{m:"48",date:"6/23/2026",time:"4:00 PM",stage:"Group K",host:"Guadalajara",t1:"Colombia",t2:"Congo DR",loc:"Whitsett Fields",dist:2,lid:2},{m:"48",date:"6/23/2026",time:"4:00 PM",stage:"Group K",host:"Guadalajara",t1:"Colombia",t2:"Congo DR",loc:"Sylmar Recreation Center",dist:7,lid:8},
-  {m:"49",date:"6/24/2026",time:"3:00 PM",stage:"Group C",host:"Miami",t1:"Scotland",t2:"Brazil",loc:"Cheviot Hills Recreation Center",dist:5,lid:5},{m:"49",date:"6/24/2026",time:"3:00 PM",stage:"Group C",host:"Miami",t1:"Scotland",t2:"Brazil",loc:"South Park Recreation Center",dist:9,lid:10},{m:"49",date:"6/24/2026",time:"3:00 PM",stage:"Group C",host:"Miami",t1:"Scotland",t2:"Brazil",loc:"El Sereno Recreation Center",dist:14,lid:15},
-  {m:"50",date:"6/24/2026",time:"12:00 PM",stage:"Group C",host:"Atlanta",t1:"Morocco",t2:"Haiti",loc:"Cheviot Hills Recreation Center",dist:5,lid:5},{m:"50",date:"6/24/2026",time:"12:00 PM",stage:"Group C",host:"Atlanta",t1:"Morocco",t2:"Haiti",loc:"South Park Recreation Center",dist:9,lid:10},{m:"50",date:"6/24/2026",time:"12:00 PM",stage:"Group C",host:"Atlanta",t1:"Morocco",t2:"Haiti",loc:"El Sereno Recreation Center",dist:14,lid:15},
-  {m:"51",date:"6/24/2026",time:"12:00 PM",stage:"Group B",host:"Vancouver",t1:"Switzerland",t2:"Canada",loc:"Cheviot Hills Recreation Center",dist:5,lid:5},{m:"51",date:"6/24/2026",time:"12:00 PM",stage:"Group B",host:"Vancouver",t1:"Switzerland",t2:"Canada",loc:"South Park Recreation Center",dist:9,lid:10},{m:"51",date:"6/24/2026",time:"12:00 PM",stage:"Group B",host:"Vancouver",t1:"Switzerland",t2:"Canada",loc:"El Sereno Recreation Center",dist:14,lid:15},
-  {m:"52",date:"6/24/2026",time:"12:00 PM",stage:"Group B",host:"Seattle",t1:"Bosnia-Herzegovina",t2:"Qatar",loc:"Cheviot Hills Recreation Center",dist:5,lid:5},{m:"52",date:"6/24/2026",time:"12:00 PM",stage:"Group B",host:"Seattle",t1:"Bosnia-Herzegovina",t2:"Qatar",loc:"South Park Recreation Center",dist:9,lid:10},{m:"52",date:"6/24/2026",time:"12:00 PM",stage:"Group B",host:"Seattle",t1:"Bosnia-Herzegovina",t2:"Qatar",loc:"El Sereno Recreation Center",dist:14,lid:15},
-  {m:"53",date:"6/24/2026",time:"6:00 PM",stage:"Group A",host:"Mexico City",t1:"Czechia",t2:"Mexico",loc:"Cheviot Hills Recreation Center",dist:5,lid:5},{m:"53",date:"6/24/2026",time:"6:00 PM",stage:"Group A",host:"Mexico City",t1:"Czechia",t2:"Mexico",loc:"South Park Recreation Center",dist:9,lid:10},{m:"53",date:"6/24/2026",time:"6:00 PM",stage:"Group A",host:"Mexico City",t1:"Czechia",t2:"Mexico",loc:"El Sereno Recreation Center",dist:14,lid:15},
-  {m:"54",date:"6/24/2026",time:"6:00 PM",stage:"Group A",host:"Monterrey",t1:"South Africa",t2:"South Korea",loc:"Cheviot Hills Recreation Center",dist:5,lid:5},{m:"54",date:"6/24/2026",time:"6:00 PM",stage:"Group A",host:"Monterrey",t1:"South Africa",t2:"South Korea",loc:"South Park Recreation Center",dist:9,lid:10},{m:"54",date:"6/24/2026",time:"6:00 PM",stage:"Group A",host:"Monterrey",t1:"South Africa",t2:"South Korea",loc:"El Sereno Recreation Center",dist:14,lid:15},
-  {m:"55",date:"6/25/2026",time:"1:00 PM",stage:"Group E",host:"Philadelphia",t1:"Curaçao",t2:"Ivory Coast",loc:"MacArthur Park",dist:1,lid:17},{m:"55",date:"6/25/2026",time:"1:00 PM",stage:"Group E",host:"Philadelphia",t1:"Curaçao",t2:"Ivory Coast",loc:"Lanark Recreation Center",dist:3,lid:3},{m:"55",date:"6/25/2026",time:"1:00 PM",stage:"Group E",host:"Philadelphia",t1:"Curaçao",t2:"Ivory Coast",loc:"Northridge Recreation Center",dist:12,lid:13},
-  {m:"56",date:"6/25/2026",time:"1:00 PM",stage:"Group E",host:"New York/NJ",t1:"Ecuador",t2:"Germany",loc:"MacArthur Park",dist:1,lid:17},{m:"56",date:"6/25/2026",time:"1:00 PM",stage:"Group E",host:"New York/NJ",t1:"Ecuador",t2:"Germany",loc:"Lanark Recreation Center",dist:3,lid:3},{m:"56",date:"6/25/2026",time:"1:00 PM",stage:"Group E",host:"New York/NJ",t1:"Ecuador",t2:"Germany",loc:"Northridge Recreation Center",dist:12,lid:13},
-  {m:"57",date:"6/25/2026",time:"4:00 PM",stage:"Group F",host:"Dallas",t1:"Japan",t2:"Sweden",loc:"MacArthur Park",dist:1,lid:17},{m:"57",date:"6/25/2026",time:"4:00 PM",stage:"Group F",host:"Dallas",t1:"Japan",t2:"Sweden",loc:"Lanark Recreation Center",dist:3,lid:3},{m:"57",date:"6/25/2026",time:"4:00 PM",stage:"Group F",host:"Dallas",t1:"Japan",t2:"Sweden",loc:"Northridge Recreation Center",dist:12,lid:13},
-  {m:"58",date:"6/25/2026",time:"4:00 PM",stage:"Group F",host:"Kansas City",t1:"Tunisia",t2:"Netherlands",loc:"MacArthur Park",dist:1,lid:17},{m:"58",date:"6/25/2026",time:"4:00 PM",stage:"Group F",host:"Kansas City",t1:"Tunisia",t2:"Netherlands",loc:"Lanark Recreation Center",dist:3,lid:3},{m:"58",date:"6/25/2026",time:"4:00 PM",stage:"Group F",host:"Kansas City",t1:"Tunisia",t2:"Netherlands",loc:"Northridge Recreation Center",dist:12,lid:13},
-  {m:"59",date:"6/25/2026",time:"7:00 PM",stage:"Group D",host:"Los Angeles",t1:"Turkey",t2:"USA",loc:"MacArthur Park",dist:1,lid:17},{m:"59",date:"6/25/2026",time:"7:00 PM",stage:"Group D",host:"Los Angeles",t1:"Turkey",t2:"USA",loc:"Lanark Recreation Center",dist:3,lid:3},{m:"59",date:"6/25/2026",time:"7:00 PM",stage:"Group D",host:"Los Angeles",t1:"Turkey",t2:"USA",loc:"Northridge Recreation Center",dist:12,lid:13},
-  {m:"60",date:"6/25/2026",time:"7:00 PM",stage:"Group D",host:"San Francisco",t1:"Paraguay",t2:"Australia",loc:"MacArthur Park",dist:1,lid:17},{m:"60",date:"6/25/2026",time:"7:00 PM",stage:"Group D",host:"San Francisco",t1:"Paraguay",t2:"Australia",loc:"Lanark Recreation Center",dist:3,lid:3},{m:"60",date:"6/25/2026",time:"7:00 PM",stage:"Group D",host:"San Francisco",t1:"Paraguay",t2:"Australia",loc:"Northridge Recreation Center",dist:12,lid:13},
-  {m:"61",date:"6/26/2026",time:"12:00 PM",stage:"Group I",host:"Boston",t1:"Norway",t2:"France",loc:"Wilmington Recreation Center",dist:15,lid:16},{m:"61",date:"6/26/2026",time:"12:00 PM",stage:"Group I",host:"Boston",t1:"Norway",t2:"France",loc:"Echo Park",dist:13,lid:14},{m:"61",date:"6/26/2026",time:"12:00 PM",stage:"Group I",host:"Boston",t1:"Norway",t2:"France",loc:"Sheldon-Arleta Park",dist:6,lid:7},
-  {m:"62",date:"6/26/2026",time:"12:00 PM",stage:"Group I",host:"Toronto",t1:"Senegal",t2:"Iraq",loc:"Wilmington Recreation Center",dist:15,lid:16},{m:"62",date:"6/26/2026",time:"12:00 PM",stage:"Group I",host:"Toronto",t1:"Senegal",t2:"Iraq",loc:"Echo Park",dist:13,lid:14},{m:"62",date:"6/26/2026",time:"12:00 PM",stage:"Group I",host:"Toronto",t1:"Senegal",t2:"Iraq",loc:"Sheldon-Arleta Park",dist:6,lid:7},
-  {m:"63",date:"6/26/2026",time:"8:00 PM",stage:"Group G",host:"Seattle",t1:"Egypt",t2:"Iran",loc:"Wilmington Recreation Center",dist:15,lid:16},{m:"63",date:"6/26/2026",time:"8:00 PM",stage:"Group G",host:"Seattle",t1:"Egypt",t2:"Iran",loc:"Echo Park",dist:13,lid:14},{m:"63",date:"6/26/2026",time:"8:00 PM",stage:"Group G",host:"Seattle",t1:"Egypt",t2:"Iran",loc:"Sheldon-Arleta Park",dist:6,lid:7},
-  {m:"64",date:"6/26/2026",time:"8:00 PM",stage:"Group G",host:"Vancouver",t1:"New Zealand",t2:"Belgium",loc:"Wilmington Recreation Center",dist:15,lid:16},{m:"64",date:"6/26/2026",time:"8:00 PM",stage:"Group G",host:"Vancouver",t1:"New Zealand",t2:"Belgium",loc:"Echo Park",dist:13,lid:14},{m:"64",date:"6/26/2026",time:"8:00 PM",stage:"Group G",host:"Vancouver",t1:"New Zealand",t2:"Belgium",loc:"Sheldon-Arleta Park",dist:6,lid:7},
-  {m:"65",date:"6/26/2026",time:"5:00 PM",stage:"Group H",host:"Houston",t1:"Uruguay",t2:"Spain",loc:"Wilmington Recreation Center",dist:15,lid:16},{m:"65",date:"6/26/2026",time:"5:00 PM",stage:"Group H",host:"Houston",t1:"Uruguay",t2:"Spain",loc:"Echo Park",dist:13,lid:14},{m:"65",date:"6/26/2026",time:"5:00 PM",stage:"Group H",host:"Houston",t1:"Uruguay",t2:"Spain",loc:"Sheldon-Arleta Park",dist:6,lid:7},
-  {m:"66",date:"6/26/2026",time:"5:00 PM",stage:"Group H",host:"Guadalajara",t1:"Cabo Verde",t2:"Saudi Arabia",loc:"Wilmington Recreation Center",dist:15,lid:16},{m:"66",date:"6/26/2026",time:"5:00 PM",stage:"Group H",host:"Guadalajara",t1:"Cabo Verde",t2:"Saudi Arabia",loc:"Echo Park",dist:13,lid:14},{m:"66",date:"6/26/2026",time:"5:00 PM",stage:"Group H",host:"Guadalajara",t1:"Cabo Verde",t2:"Saudi Arabia",loc:"Sheldon-Arleta Park",dist:6,lid:7},
-  {m:"67",date:"6/27/2026",time:"2:00 PM",stage:"Group L",host:"New York/NJ",t1:"Panama",t2:"England",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},{m:"67",date:"6/27/2026",time:"2:00 PM",stage:"Group L",host:"New York/NJ",t1:"Panama",t2:"England",loc:"Venice Beach Recreation Center",dist:11,lid:12},
-  {m:"68",date:"6/27/2026",time:"2:00 PM",stage:"Group L",host:"Philadelphia",t1:"Croatia",t2:"Ghana",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},{m:"68",date:"6/27/2026",time:"2:00 PM",stage:"Group L",host:"Philadelphia",t1:"Croatia",t2:"Ghana",loc:"Venice Beach Recreation Center",dist:11,lid:12},
-  {m:"69",date:"6/27/2026",time:"11:00 AM",stage:"Group J",host:"Kansas City",t1:"Algeria",t2:"Austria",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},{m:"69",date:"6/27/2026",time:"11:00 AM",stage:"Group J",host:"Kansas City",t1:"Algeria",t2:"Austria",loc:"Venice Beach Recreation Center",dist:11,lid:12},
-  {m:"70",date:"6/27/2026",time:"11:00 AM",stage:"Group J",host:"Dallas",t1:"Jordan",t2:"Argentina",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},{m:"70",date:"6/27/2026",time:"11:00 AM",stage:"Group J",host:"Dallas",t1:"Jordan",t2:"Argentina",loc:"Venice Beach Recreation Center",dist:11,lid:12},
-  {m:"71",date:"6/27/2026",time:"4:30 PM",stage:"Group K",host:"Miami",t1:"Colombia",t2:"Portugal",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},{m:"71",date:"6/27/2026",time:"4:30 PM",stage:"Group K",host:"Miami",t1:"Colombia",t2:"Portugal",loc:"Venice Beach Recreation Center",dist:11,lid:12},
-  {m:"72",date:"6/27/2026",time:"4:30 PM",stage:"Group K",host:"Atlanta",t1:"Congo DR",t2:"Uzbekistan",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},{m:"72",date:"6/27/2026",time:"4:30 PM",stage:"Group K",host:"Atlanta",t1:"Congo DR",t2:"Uzbekistan",loc:"Venice Beach Recreation Center",dist:11,lid:12},
-  {m:"73",date:"6/28/2026",time:"12:00 PM",stage:"Round of 32",host:"Los Angeles",t1:"2A",t2:"2B",loc:"Seoul International Park",dist:10,lid:11},{m:"73",date:"6/28/2026",time:"12:00 PM",stage:"Round of 32",host:"Los Angeles",t1:"2A",t2:"2B",loc:"Whitsett Fields",dist:2,lid:2},{m:"73",date:"6/28/2026",time:"12:00 PM",stage:"Round of 32",host:"Los Angeles",t1:"2A",t2:"2B",loc:"Sylmar Recreation Center",dist:7,lid:8},
-  {m:"74",date:"6/29/2026",time:"9:00 AM",stage:"Round of 32",host:"Boston",t1:"1E",t2:"3 A/B/C/D/F",loc:"Westwood Recreation Center",dist:5,lid:6},{m:"74",date:"6/29/2026",time:"9:00 AM",stage:"Round of 32",host:"Boston",t1:"1E",t2:"3 A/B/C/D/F",loc:"South Park Recreation Center",dist:9,lid:10},{m:"74",date:"6/29/2026",time:"9:00 AM",stage:"Round of 32",host:"Boston",t1:"1E",t2:"3 A/B/C/D/F",loc:"El Sereno Recreation Center",dist:14,lid:15},
-  {m:"75",date:"6/29/2026",time:"6:00 PM",stage:"Round of 32",host:"Monterrey",t1:"1F",t2:"2C",loc:"Westwood Recreation Center",dist:5,lid:6},{m:"75",date:"6/29/2026",time:"6:00 PM",stage:"Round of 32",host:"Monterrey",t1:"1F",t2:"2C",loc:"South Park Recreation Center",dist:9,lid:10},{m:"75",date:"6/29/2026",time:"6:00 PM",stage:"Round of 32",host:"Monterrey",t1:"1F",t2:"2C",loc:"El Sereno Recreation Center",dist:14,lid:15},
-  {m:"76",date:"6/29/2026",time:"12:00 PM",stage:"Round of 32",host:"Houston",t1:"1C",t2:"2F",loc:"Westwood Recreation Center",dist:5,lid:6},{m:"76",date:"6/29/2026",time:"12:00 PM",stage:"Round of 32",host:"Houston",t1:"1C",t2:"2F",loc:"South Park Recreation Center",dist:9,lid:10},{m:"76",date:"6/29/2026",time:"12:00 PM",stage:"Round of 32",host:"Houston",t1:"1C",t2:"2F",loc:"El Sereno Recreation Center",dist:14,lid:15},
-  {m:"77",date:"6/30/2026",time:"8:00 AM",stage:"Round of 32",host:"New York/NJ",t1:"1I",t2:"3 C/D/F/G/H",loc:"Sycamore Grove",dist:1,lid:1},{m:"77",date:"6/30/2026",time:"8:00 AM",stage:"Round of 32",host:"New York/NJ",t1:"1I",t2:"3 C/D/F/G/H",loc:"Lanark Recreation Center",dist:3,lid:3},{m:"77",date:"6/30/2026",time:"8:00 AM",stage:"Round of 32",host:"New York/NJ",t1:"1I",t2:"3 C/D/F/G/H",loc:"Northridge Recreation Center",dist:12,lid:13},
-  {m:"78",date:"6/30/2026",time:"10:00 AM",stage:"Round of 32",host:"Dallas",t1:"2E",t2:"2I",loc:"Sycamore Grove",dist:1,lid:1},{m:"78",date:"6/30/2026",time:"10:00 AM",stage:"Round of 32",host:"Dallas",t1:"2E",t2:"2I",loc:"Lanark Recreation Center",dist:3,lid:3},{m:"78",date:"6/30/2026",time:"10:00 AM",stage:"Round of 32",host:"Dallas",t1:"2E",t2:"2I",loc:"Northridge Recreation Center",dist:12,lid:13},
-  {m:"79",date:"6/30/2026",time:"2:00 PM",stage:"Round of 32",host:"Mexico City",t1:"1A",t2:"3 C/E/F/H/I",loc:"Sycamore Grove",dist:1,lid:1},{m:"79",date:"6/30/2026",time:"2:00 PM",stage:"Round of 32",host:"Mexico City",t1:"1A",t2:"3 C/E/F/H/I",loc:"Lanark Recreation Center",dist:3,lid:3},{m:"79",date:"6/30/2026",time:"2:00 PM",stage:"Round of 32",host:"Mexico City",t1:"1A",t2:"3 C/E/F/H/I",loc:"Northridge Recreation Center",dist:12,lid:13},
-  {m:"80",date:"7/1/2026",time:"2:00 PM",stage:"Round of 32",host:"Atlanta",t1:"1L",t2:"3 E/H/I/J/K",loc:"Ken Malloy Harbor Regional Park",dist:15,lid:19},{m:"80",date:"7/1/2026",time:"2:00 PM",stage:"Round of 32",host:"Atlanta",t1:"1L",t2:"3 E/H/I/J/K",loc:"Echo Park",dist:13,lid:14},{m:"80",date:"7/1/2026",time:"2:00 PM",stage:"Round of 32",host:"Atlanta",t1:"1L",t2:"3 E/H/I/J/K",loc:"Sheldon-Arleta Park",dist:6,lid:7},
-  {m:"81",date:"7/1/2026",time:"6:00 PM",stage:"Round of 32",host:"San Francisco",t1:"1D",t2:"3 B/E/F/I/J",loc:"Ken Malloy Harbor Regional Park",dist:15,lid:19},{m:"81",date:"7/1/2026",time:"6:00 PM",stage:"Round of 32",host:"San Francisco",t1:"1D",t2:"3 B/E/F/I/J",loc:"Echo Park",dist:13,lid:14},{m:"81",date:"7/1/2026",time:"6:00 PM",stage:"Round of 32",host:"San Francisco",t1:"1D",t2:"3 B/E/F/I/J",loc:"Sheldon-Arleta Park",dist:6,lid:7},
-  {m:"82",date:"7/1/2026",time:"12:00 PM",stage:"Round of 32",host:"Seattle",t1:"1G",t2:"3 A/E/H/I/J",loc:"Ken Malloy Harbor Regional Park",dist:15,lid:19},{m:"82",date:"7/1/2026",time:"12:00 PM",stage:"Round of 32",host:"Seattle",t1:"1G",t2:"3 A/E/H/I/J",loc:"Echo Park",dist:13,lid:14},{m:"82",date:"7/1/2026",time:"12:00 PM",stage:"Round of 32",host:"Seattle",t1:"1G",t2:"3 A/E/H/I/J",loc:"Sheldon-Arleta Park",dist:6,lid:7},
-  {m:"83",date:"7/2/2026",time:"2:00 PM",stage:"Round of 32",host:"Toronto",t1:"2K",t2:"2L",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},{m:"83",date:"7/2/2026",time:"2:00 PM",stage:"Round of 32",host:"Toronto",t1:"2K",t2:"2L",loc:"Venice Beach Recreation Center",dist:11,lid:12},
-  {m:"84",date:"7/2/2026",time:"12:00 PM",stage:"Round of 32",host:"Los Angeles",t1:"1H",t2:"2J",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},{m:"84",date:"7/2/2026",time:"12:00 PM",stage:"Round of 32",host:"Los Angeles",t1:"1H",t2:"2J",loc:"Venice Beach Recreation Center",dist:11,lid:12},
-  {m:"85",date:"7/2/2026",time:"6:00 PM",stage:"Round of 32",host:"Vancouver",t1:"1B",t2:"3 E/F/G/I/J",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},{m:"85",date:"7/2/2026",time:"6:00 PM",stage:"Round of 32",host:"Vancouver",t1:"1B",t2:"3 E/F/G/I/J",loc:"Venice Beach Recreation Center",dist:11,lid:12},
-  {m:"86",date:"7/3/2026",time:"12:00 PM",stage:"Round of 32",host:"Miami",t1:"1J",t2:"2H",loc:"Seoul International Park",dist:10,lid:11},{m:"86",date:"7/3/2026",time:"12:00 PM",stage:"Round of 32",host:"Miami",t1:"1J",t2:"2H",loc:"Whitsett Fields",dist:2,lid:2},{m:"86",date:"7/3/2026",time:"12:00 PM",stage:"Round of 32",host:"Miami",t1:"1J",t2:"2H",loc:"Sylmar Recreation Center",dist:7,lid:8},
-  {m:"87",date:"7/3/2026",time:"11:00 AM",stage:"Round of 32",host:"Kansas City",t1:"1K",t2:"3 D/E/I/J/L",loc:"Seoul International Park",dist:10,lid:11},{m:"87",date:"7/3/2026",time:"11:00 AM",stage:"Round of 32",host:"Kansas City",t1:"1K",t2:"3 D/E/I/J/L",loc:"Whitsett Fields",dist:2,lid:2},{m:"87",date:"7/3/2026",time:"11:00 AM",stage:"Round of 32",host:"Kansas City",t1:"1K",t2:"3 D/E/I/J/L",loc:"Sylmar Recreation Center",dist:7,lid:8},
-  {m:"88",date:"7/3/2026",time:"5:00 PM",stage:"Round of 32",host:"Dallas",t1:"2D",t2:"2G",loc:"Seoul International Park",dist:10,lid:11},{m:"88",date:"7/3/2026",time:"5:00 PM",stage:"Round of 32",host:"Dallas",t1:"2D",t2:"2G",loc:"Whitsett Fields",dist:2,lid:2},{m:"88",date:"7/3/2026",time:"5:00 PM",stage:"Round of 32",host:"Dallas",t1:"2D",t2:"2G",loc:"Sylmar Recreation Center",dist:7,lid:8},
-  {m:"89",date:"7/4/2026",time:"9:00 AM",stage:"Round of 16",host:"Philadelphia",t1:"W74",t2:"W77",loc:"Westwood Recreation Center",dist:5,lid:6},{m:"89",date:"7/4/2026",time:"9:00 AM",stage:"Round of 16",host:"Philadelphia",t1:"W74",t2:"W77",loc:"South Park Recreation Center",dist:9,lid:10},{m:"89",date:"7/4/2026",time:"9:00 AM",stage:"Round of 16",host:"Philadelphia",t1:"W74",t2:"W77",loc:"El Sereno Recreation Center",dist:14,lid:15},
-  {m:"90",date:"7/4/2026",time:"4:00 PM",stage:"Round of 16",host:"Houston",t1:"W73",t2:"W75",loc:"Westwood Recreation Center",dist:5,lid:6},{m:"90",date:"7/4/2026",time:"4:00 PM",stage:"Round of 16",host:"Houston",t1:"W73",t2:"W75",loc:"South Park Recreation Center",dist:9,lid:10},{m:"90",date:"7/4/2026",time:"4:00 PM",stage:"Round of 16",host:"Houston",t1:"W73",t2:"W75",loc:"El Sereno Recreation Center",dist:14,lid:15},
-  {m:"91",date:"7/5/2026",time:"8:00 AM",stage:"Round of 16",host:"New York/NJ",t1:"W76",t2:"W78",loc:"MacArthur Park",dist:1,lid:17},{m:"91",date:"7/5/2026",time:"8:00 AM",stage:"Round of 16",host:"New York/NJ",t1:"W76",t2:"W78",loc:"Lanark Recreation Center",dist:3,lid:3},{m:"91",date:"7/5/2026",time:"8:00 AM",stage:"Round of 16",host:"New York/NJ",t1:"W76",t2:"W78",loc:"Northridge Recreation Center",dist:12,lid:13},
-  {m:"92",date:"7/5/2026",time:"5:00 PM",stage:"Round of 16",host:"Mexico City",t1:"W79",t2:"W80",loc:"MacArthur Park",dist:1,lid:17},{m:"92",date:"7/5/2026",time:"5:00 PM",stage:"Round of 16",host:"Mexico City",t1:"W79",t2:"W80",loc:"Lanark Recreation Center",dist:3,lid:3},{m:"92",date:"7/5/2026",time:"5:00 PM",stage:"Round of 16",host:"Mexico City",t1:"W79",t2:"W80",loc:"Northridge Recreation Center",dist:12,lid:13},
-  {m:"93",date:"7/6/2026",time:"4:00 PM",stage:"Round of 16",host:"Dallas",t1:"W83",t2:"W84",loc:"Ken Malloy Harbor Regional Park",dist:15,lid:19},{m:"93",date:"7/6/2026",time:"4:00 PM",stage:"Round of 16",host:"Dallas",t1:"W83",t2:"W84",loc:"Echo Park",dist:13,lid:14},{m:"93",date:"7/6/2026",time:"4:00 PM",stage:"Round of 16",host:"Dallas",t1:"W83",t2:"W84",loc:"Sheldon-Arleta Park",dist:6,lid:7},
-  {m:"94",date:"7/6/2026",time:"1:00 PM",stage:"Round of 16",host:"Seattle",t1:"W81",t2:"W82",loc:"Ken Malloy Harbor Regional Park",dist:15,lid:19},{m:"94",date:"7/6/2026",time:"1:00 PM",stage:"Round of 16",host:"Seattle",t1:"W81",t2:"W82",loc:"Echo Park",dist:13,lid:14},{m:"94",date:"7/6/2026",time:"1:00 PM",stage:"Round of 16",host:"Seattle",t1:"W81",t2:"W82",loc:"Sheldon-Arleta Park",dist:6,lid:7},
-  {m:"95",date:"7/7/2026",time:"2:00 PM",stage:"Round of 16",host:"Atlanta",t1:"W86",t2:"W88",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},{m:"95",date:"7/7/2026",time:"2:00 PM",stage:"Round of 16",host:"Atlanta",t1:"W86",t2:"W88",loc:"Stoner Recreation Center",dist:11,lid:18},
-  {m:"96",date:"7/7/2026",time:"7:00 PM",stage:"Round of 16",host:"Vancouver",t1:"W85",t2:"W87",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},{m:"96",date:"7/7/2026",time:"7:00 PM",stage:"Round of 16",host:"Vancouver",t1:"W85",t2:"W87",loc:"Stoner Recreation Center",dist:11,lid:18},
-  {m:"97",date:"7/9/2026",time:"2:00 PM",stage:"Quarter Final",host:"Boston",t1:"W89",t2:"W90",loc:"Seoul International Park",dist:10,lid:11},{m:"97",date:"7/9/2026",time:"2:00 PM",stage:"Quarter Final",host:"Boston",t1:"W89",t2:"W90",loc:"Whitsett Fields",dist:2,lid:2},{m:"97",date:"7/9/2026",time:"2:00 PM",stage:"Quarter Final",host:"Boston",t1:"W89",t2:"W90",loc:"Sylmar Recreation Center",dist:7,lid:8},
-  {m:"98",date:"7/10/2026",time:"7:00 PM",stage:"Quarter Final",host:"Los Angeles",t1:"W93",t2:"W94",loc:"Westwood Recreation Center",dist:5,lid:6},{m:"98",date:"7/10/2026",time:"7:00 PM",stage:"Quarter Final",host:"Los Angeles",t1:"W93",t2:"W94",loc:"South Park Recreation Center",dist:9,lid:10},{m:"98",date:"7/10/2026",time:"7:00 PM",stage:"Quarter Final",host:"Los Angeles",t1:"W93",t2:"W94",loc:"El Sereno Recreation Center",dist:14,lid:15},{m:"98",date:"7/10/2026",time:"7:00 PM",stage:"Quarter Final",host:"Los Angeles",t1:"W93",t2:"W94",loc:"MacArthur Park",dist:1,lid:17},
-  {m:"99",date:"7/11/2026",time:"2:00 PM",stage:"Quarter Final",host:"Miami",t1:"W91",t2:"W92",loc:"Sycamore Grove",dist:1,lid:1},{m:"99",date:"7/11/2026",time:"2:00 PM",stage:"Quarter Final",host:"Miami",t1:"W91",t2:"W92",loc:"Lanark Recreation Center",dist:3,lid:3},{m:"99",date:"7/11/2026",time:"2:00 PM",stage:"Quarter Final",host:"Miami",t1:"W91",t2:"W92",loc:"Northridge Recreation Center",dist:12,lid:13},
-  {m:"100",date:"7/11/2026",time:"6:00 PM",stage:"Quarter Final",host:"Kansas City",t1:"W95",t2:"W96",loc:"Sycamore Grove",dist:1,lid:1},{m:"100",date:"7/11/2026",time:"6:00 PM",stage:"Quarter Final",host:"Kansas City",t1:"W95",t2:"W96",loc:"Lanark Recreation Center",dist:3,lid:3},{m:"100",date:"7/11/2026",time:"6:00 PM",stage:"Quarter Final",host:"Kansas City",t1:"W95",t2:"W96",loc:"Northridge Recreation Center",dist:12,lid:13},
-  {m:"101",date:"7/14/2026",time:"5:00 PM",stage:"Semi Final",host:"Dallas",t1:"W97",t2:"W98",loc:"Ken Malloy Harbor Regional Park",dist:15,lid:19},{m:"101",date:"7/14/2026",time:"5:00 PM",stage:"Semi Final",host:"Dallas",t1:"W97",t2:"W98",loc:"Sheldon-Arleta Park",dist:6,lid:7},{m:"101",date:"7/14/2026",time:"5:00 PM",stage:"Semi Final",host:"Dallas",t1:"W97",t2:"W98",loc:"Echo Park",dist:13,lid:14},
-  {m:"102",date:"7/15/2026",time:"5:00 PM",stage:"Semi Final",host:"Atlanta",t1:"W99",t2:"W100",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9},{m:"102",date:"7/15/2026",time:"5:00 PM",stage:"Semi Final",host:"Atlanta",t1:"W99",t2:"W100",loc:"Venice Beach Recreation Center",dist:11,lid:12},
-  {m:"103",date:"7/18/2026",time:"5:00 PM",stage:"Bronze Final",host:"Miami",t1:"L101",t2:"L102",loc:"Seoul International Park",dist:10,lid:11},{m:"103",date:"7/18/2026",time:"5:00 PM",stage:"Bronze Final",host:"Miami",t1:"L101",t2:"L102",loc:"Whitsett Fields",dist:2,lid:2},{m:"103",date:"7/18/2026",time:"5:00 PM",stage:"Bronze Final",host:"Miami",t1:"L101",t2:"L102",loc:"Sylmar Recreation Center",dist:7,lid:8},
-  {m:"104",date:"7/19/2026",time:"12:00 PM",stage:"Final",host:"New York/NJ",t1:"W101",t2:"W102",loc:"Westwood Recreation Center",dist:5,lid:6},{m:"104",date:"7/19/2026",time:"12:00 PM",stage:"Final",host:"New York/NJ",t1:"W101",t2:"W102",loc:"South Park Recreation Center",dist:9,lid:10},{m:"104",date:"7/19/2026",time:"12:00 PM",stage:"Final",host:"New York/NJ",t1:"W101",t2:"W102",loc:"El Sereno Recreation Center",dist:14,lid:15},{m:"104",date:"7/19/2026",time:"12:00 PM",stage:"Final",host:"New York/NJ",t1:"W101",t2:"W102",loc:"Lanark Recreation Center",dist:3,lid:3},
+  {m:"1",date:"6/11/2026",time:"12:00 PM",stage:"Group A",host:"Mexico City",t1:"Mexico",t2:"South Africa",loc:"Wilmington Recreation Center",dist:15,lid:16,type:"Kick In the Park",free:"Yes"},
+  {m:"1",date:"6/11/2026",time:"12:00 PM",stage:"Group A",host:"Mexico City",t1:"Mexico",t2:"South Africa",loc:"Echo Park",dist:13,lid:14,type:"Kick In the Park",free:"Yes"},
+  {m:"1",date:"6/11/2026",time:"12:00 PM",stage:"Group A",host:"Mexico City",t1:"Mexico",t2:"South Africa",loc:"Sheldon-Arleta Park",dist:6,lid:7,type:"Kick In the Park",free:"Yes"},
+  {m:"1",date:"6/11/2026",time:"12:00 PM",stage:"Group A",host:"Mexico City",t1:"Mexico",t2:"South Africa",loc:"Los Angeles Memorial Coliseum",dist:9,lid:80,type:"FIFA Fan Festival",free:"No"},
+  {m:"1",date:"6/11/2026",time:"12:00 PM",stage:"Group A",host:"Mexico City",t1:"Mexico",t2:"South Africa",loc:"The Autry Museum",dist:4,lid:30,type:"Community Activations",free:"Yes"},
+  {m:"2",date:"6/11/2026",time:"6:00 PM",stage:"Group A",host:"Guadalajara",t1:"South Korea",t2:"Czechia",loc:"Wilmington Recreation Center",dist:15,lid:16,type:"Kick In the Park",free:"Yes"},
+  {m:"2",date:"6/11/2026",time:"6:00 PM",stage:"Group A",host:"Guadalajara",t1:"South Korea",t2:"Czechia",loc:"Echo Park",dist:13,lid:14,type:"Kick In the Park",free:"Yes"},
+  {m:"2",date:"6/11/2026",time:"6:00 PM",stage:"Group A",host:"Guadalajara",t1:"South Korea",t2:"Czechia",loc:"Sheldon-Arleta Park",dist:6,lid:7,type:"Kick In the Park",free:"Yes"},
+  {m:"2",date:"6/11/2026",time:"6:00 PM",stage:"Group A",host:"Guadalajara",t1:"South Korea",t2:"Czechia",loc:"Los Angeles Memorial Coliseum",dist:9,lid:80,type:"FIFA Fan Festival",free:"No"},
+  {m:"2",date:"6/11/2026",time:"6:00 PM",stage:"Group A",host:"Guadalajara",t1:"South Korea",t2:"Czechia",loc:"The Autry Museum",dist:4,lid:30,type:"Community Activations",free:"Yes"},
+  {m:"3",date:"6/12/2026",time:"12:00 PM",stage:"Group B",host:"Toronto",t1:"Canada",t2:"Bosnia-Herzegovina",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9,type:"Kick In the Park",free:"Yes"},
+  {m:"3",date:"6/12/2026",time:"12:00 PM",stage:"Group B",host:"Toronto",t1:"Canada",t2:"Bosnia-Herzegovina",loc:"Stoner Recreation Center",dist:11,lid:18,type:"Kick In the Park",free:"Yes"},
+  {m:"3",date:"6/12/2026",time:"12:00 PM",stage:"Group B",host:"Toronto",t1:"Canada",t2:"Bosnia-Herzegovina",loc:"Los Angeles Memorial Coliseum",dist:9,lid:80,type:"FIFA Fan Festival",free:"No"},
+  {m:"3",date:"6/12/2026",time:"12:00 PM",stage:"Group B",host:"Toronto",t1:"Canada",t2:"Bosnia-Herzegovina",loc:"The Autry Museum",dist:4,lid:30,type:"Community Activations",free:"Yes"},
+  {m:"4",date:"6/12/2026",time:"6:00 PM",stage:"Group D",host:"Los Angeles",t1:"USA",t2:"Paraguay",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9,type:"Kick In the Park",free:"Yes"},
+  {m:"4",date:"6/12/2026",time:"6:00 PM",stage:"Group D",host:"Los Angeles",t1:"USA",t2:"Paraguay",loc:"Stoner Recreation Center",dist:11,lid:18,type:"Kick In the Park",free:"Yes"},
+  {m:"4",date:"6/12/2026",time:"6:00 PM",stage:"Group D",host:"Los Angeles",t1:"USA",t2:"Paraguay",loc:"Los Angeles Memorial Coliseum",dist:9,lid:80,type:"FIFA Fan Festival",free:"No"},
+  {m:"4",date:"6/12/2026",time:"6:00 PM",stage:"Group D",host:"Los Angeles",t1:"USA",t2:"Paraguay",loc:"The Autry Museum",dist:4,lid:30,type:"Community Activations",free:"Yes"},
+  {m:"5",date:"6/13/2026",time:"12:00 PM",stage:"Group C",host:"Boston",t1:"Haiti",t2:"Scotland",loc:"Seoul International Park",dist:10,lid:11,type:"Kick In the Park",free:"Yes"},
+  {m:"5",date:"6/13/2026",time:"12:00 PM",stage:"Group C",host:"Boston",t1:"Haiti",t2:"Scotland",loc:"Whitsett Fields",dist:2,lid:2,type:"Kick In the Park",free:"Yes"},
+  {m:"5",date:"6/13/2026",time:"12:00 PM",stage:"Group C",host:"Boston",t1:"Haiti",t2:"Scotland",loc:"Sylmar Recreation Center",dist:7,lid:8,type:"Kick In the Park",free:"Yes"},
+  {m:"5",date:"6/13/2026",time:"12:00 PM",stage:"Group C",host:"Boston",t1:"Haiti",t2:"Scotland",loc:"Los Angeles Memorial Coliseum",dist:9,lid:80,type:"FIFA Fan Festival",free:"No"},
+  {m:"6",date:"6/13/2026",time:"7:00 PM",stage:"Group D",host:"Vancouver",t1:"Australia",t2:"Turkey",loc:"Seoul International Park",dist:10,lid:11,type:"Kick In the Park",free:"Yes"},
+  {m:"6",date:"6/13/2026",time:"7:00 PM",stage:"Group D",host:"Vancouver",t1:"Australia",t2:"Turkey",loc:"Whitsett Fields",dist:2,lid:2,type:"Kick In the Park",free:"Yes"},
+  {m:"6",date:"6/13/2026",time:"7:00 PM",stage:"Group D",host:"Vancouver",t1:"Australia",t2:"Turkey",loc:"Sylmar Recreation Center",dist:7,lid:8,type:"Kick In the Park",free:"Yes"},
+  {m:"6",date:"6/13/2026",time:"7:00 PM",stage:"Group D",host:"Vancouver",t1:"Australia",t2:"Turkey",loc:"Los Angeles Memorial Coliseum",dist:9,lid:80,type:"FIFA Fan Festival",free:"No"},
+  {m:"7",date:"6/13/2026",time:"3:00 PM",stage:"Group C",host:"New York/NJ",t1:"Brazil",t2:"Morocco",loc:"Seoul International Park",dist:10,lid:11,type:"Kick In the Park",free:"Yes"},
+  {m:"7",date:"6/13/2026",time:"3:00 PM",stage:"Group C",host:"New York/NJ",t1:"Brazil",t2:"Morocco",loc:"Whitsett Fields",dist:2,lid:2,type:"Kick In the Park",free:"Yes"},
+  {m:"7",date:"6/13/2026",time:"3:00 PM",stage:"Group C",host:"New York/NJ",t1:"Brazil",t2:"Morocco",loc:"Sylmar Recreation Center",dist:7,lid:8,type:"Kick In the Park",free:"Yes"},
+  {m:"7",date:"6/13/2026",time:"3:00 PM",stage:"Group C",host:"New York/NJ",t1:"Brazil",t2:"Morocco",loc:"Los Angeles Memorial Coliseum",dist:9,lid:80,type:"FIFA Fan Festival",free:"No"},
+  {m:"8",date:"6/13/2026",time:"1:00 PM",stage:"Group B",host:"San Francisco",t1:"Qatar",t2:"Switzerland",loc:"Seoul International Park",dist:10,lid:11,type:"Kick In the Park",free:"Yes"},
+  {m:"8",date:"6/13/2026",time:"1:00 PM",stage:"Group B",host:"San Francisco",t1:"Qatar",t2:"Switzerland",loc:"Whitsett Fields",dist:2,lid:2,type:"Kick In the Park",free:"Yes"},
+  {m:"8",date:"6/13/2026",time:"1:00 PM",stage:"Group B",host:"San Francisco",t1:"Qatar",t2:"Switzerland",loc:"Sylmar Recreation Center",dist:7,lid:8,type:"Kick In the Park",free:"Yes"},
+  {m:"8",date:"6/13/2026",time:"1:00 PM",stage:"Group B",host:"San Francisco",t1:"Qatar",t2:"Switzerland",loc:"Los Angeles Memorial Coliseum",dist:9,lid:80,type:"FIFA Fan Festival",free:"No"},
+  {m:"9",date:"6/14/2026",time:"4:00 PM",stage:"Group E",host:"Philadelphia",t1:"Ivory Coast",t2:"Ecuador",loc:"Cheviot Hills Recreation Center",dist:5,lid:5,type:"Kick In the Park",free:"Yes"},
+  {m:"9",date:"6/14/2026",time:"4:00 PM",stage:"Group E",host:"Philadelphia",t1:"Ivory Coast",t2:"Ecuador",loc:"South Park Recreation Center",dist:9,lid:10,type:"Kick In the Park",free:"Yes"},
+  {m:"9",date:"6/14/2026",time:"4:00 PM",stage:"Group E",host:"Philadelphia",t1:"Ivory Coast",t2:"Ecuador",loc:"El Sereno Recreation Center",dist:14,lid:15,type:"Kick In the Park",free:"Yes"},
+  {m:"9",date:"6/14/2026",time:"4:00 PM",stage:"Group E",host:"Philadelphia",t1:"Ivory Coast",t2:"Ecuador",loc:"Los Angeles Memorial Coliseum",dist:9,lid:80,type:"FIFA Fan Festival",free:"No"},
+  {m:"10",date:"6/14/2026",time:"10:00 AM",stage:"Group E",host:"Houston",t1:"Germany",t2:"Curaçao",loc:"Cheviot Hills Recreation Center",dist:5,lid:5,type:"Kick In the Park",free:"Yes"},
+  {m:"10",date:"6/14/2026",time:"10:00 AM",stage:"Group E",host:"Houston",t1:"Germany",t2:"Curaçao",loc:"South Park Recreation Center",dist:9,lid:10,type:"Kick In the Park",free:"Yes"},
+  {m:"10",date:"6/14/2026",time:"10:00 AM",stage:"Group E",host:"Houston",t1:"Germany",t2:"Curaçao",loc:"El Sereno Recreation Center",dist:14,lid:15,type:"Kick In the Park",free:"Yes"},
+  {m:"10",date:"6/14/2026",time:"10:00 AM",stage:"Group E",host:"Houston",t1:"Germany",t2:"Curaçao",loc:"Los Angeles Memorial Coliseum",dist:9,lid:80,type:"FIFA Fan Festival",free:"No"},
+  {m:"11",date:"6/14/2026",time:"1:00 PM",stage:"Group F",host:"Dallas",t1:"Netherlands",t2:"Japan",loc:"Cheviot Hills Recreation Center",dist:5,lid:5,type:"Kick In the Park",free:"Yes"},
+  {m:"11",date:"6/14/2026",time:"1:00 PM",stage:"Group F",host:"Dallas",t1:"Netherlands",t2:"Japan",loc:"South Park Recreation Center",dist:9,lid:10,type:"Kick In the Park",free:"Yes"},
+  {m:"11",date:"6/14/2026",time:"1:00 PM",stage:"Group F",host:"Dallas",t1:"Netherlands",t2:"Japan",loc:"El Sereno Recreation Center",dist:14,lid:15,type:"Kick In the Park",free:"Yes"},
+  {m:"11",date:"6/14/2026",time:"1:00 PM",stage:"Group F",host:"Dallas",t1:"Netherlands",t2:"Japan",loc:"Los Angeles Memorial Coliseum",dist:9,lid:80,type:"FIFA Fan Festival",free:"No"},
+  {m:"12",date:"6/14/2026",time:"7:00 PM",stage:"Group F",host:"Monterrey",t1:"Sweden",t2:"Tunisia",loc:"Cheviot Hills Recreation Center",dist:5,lid:5,type:"Kick In the Park",free:"Yes"},
+  {m:"12",date:"6/14/2026",time:"7:00 PM",stage:"Group F",host:"Monterrey",t1:"Sweden",t2:"Tunisia",loc:"South Park Recreation Center",dist:9,lid:10,type:"Kick In the Park",free:"Yes"},
+  {m:"12",date:"6/14/2026",time:"7:00 PM",stage:"Group F",host:"Monterrey",t1:"Sweden",t2:"Tunisia",loc:"El Sereno Recreation Center",dist:14,lid:15,type:"Kick In the Park",free:"Yes"},
+  {m:"12",date:"6/14/2026",time:"7:00 PM",stage:"Group F",host:"Monterrey",t1:"Sweden",t2:"Tunisia",loc:"Los Angeles Memorial Coliseum",dist:9,lid:80,type:"FIFA Fan Festival",free:"No"},
+  {m:"13",date:"6/15/2026",time:"3:00 PM",stage:"Group H",host:"Miami",t1:"Saudi Arabia",t2:"Uruguay",loc:"MacArthur Park",dist:1,lid:17,type:"Kick In the Park",free:"Yes"},
+  {m:"13",date:"6/15/2026",time:"3:00 PM",stage:"Group H",host:"Miami",t1:"Saudi Arabia",t2:"Uruguay",loc:"Lanark Recreation Center",dist:3,lid:3,type:"Kick In the Park",free:"Yes"},
+  {m:"13",date:"6/15/2026",time:"3:00 PM",stage:"Group H",host:"Miami",t1:"Saudi Arabia",t2:"Uruguay",loc:"Northridge Recreation Center",dist:12,lid:13,type:"Kick In the Park",free:"Yes"},
+  {m:"14",date:"6/15/2026",time:"9:00 AM",stage:"Group H",host:"Atlanta",t1:"Spain",t2:"Cabo Verde",loc:"MacArthur Park",dist:1,lid:17,type:"Kick In the Park",free:"Yes"},
+  {m:"14",date:"6/15/2026",time:"9:00 AM",stage:"Group H",host:"Atlanta",t1:"Spain",t2:"Cabo Verde",loc:"Lanark Recreation Center",dist:3,lid:3,type:"Kick In the Park",free:"Yes"},
+  {m:"14",date:"6/15/2026",time:"9:00 AM",stage:"Group H",host:"Atlanta",t1:"Spain",t2:"Cabo Verde",loc:"Northridge Recreation Center",dist:12,lid:13,type:"Kick In the Park",free:"Yes"},
+  {m:"15",date:"6/15/2026",time:"6:00 PM",stage:"Group G",host:"Los Angeles",t1:"Iran",t2:"New Zealand",loc:"MacArthur Park",dist:1,lid:17,type:"Kick In the Park",free:"Yes"},
+  {m:"15",date:"6/15/2026",time:"6:00 PM",stage:"Group G",host:"Los Angeles",t1:"Iran",t2:"New Zealand",loc:"Lanark Recreation Center",dist:3,lid:3,type:"Kick In the Park",free:"Yes"},
+  {m:"15",date:"6/15/2026",time:"6:00 PM",stage:"Group G",host:"Los Angeles",t1:"Iran",t2:"New Zealand",loc:"Northridge Recreation Center",dist:12,lid:13,type:"Kick In the Park",free:"Yes"},
+  {m:"16",date:"6/15/2026",time:"12:00 PM",stage:"Group G",host:"Seattle",t1:"Belgium",t2:"Egypt",loc:"MacArthur Park",dist:1,lid:17,type:"Kick In the Park",free:"Yes"},
+  {m:"16",date:"6/15/2026",time:"12:00 PM",stage:"Group G",host:"Seattle",t1:"Belgium",t2:"Egypt",loc:"Lanark Recreation Center",dist:3,lid:3,type:"Kick In the Park",free:"Yes"},
+  {m:"16",date:"6/15/2026",time:"12:00 PM",stage:"Group G",host:"Seattle",t1:"Belgium",t2:"Egypt",loc:"Northridge Recreation Center",dist:12,lid:13,type:"Kick In the Park",free:"Yes"},
+  {m:"17",date:"6/16/2026",time:"12:00 PM",stage:"Group I",host:"New York/NJ",t1:"France",t2:"Senegal",loc:"Wilmington Recreation Center",dist:15,lid:16,type:"Kick In the Park",free:"Yes"},
+  {m:"17",date:"6/16/2026",time:"12:00 PM",stage:"Group I",host:"New York/NJ",t1:"France",t2:"Senegal",loc:"Echo Park",dist:13,lid:14,type:"Kick In the Park",free:"Yes"},
+  {m:"17",date:"6/16/2026",time:"12:00 PM",stage:"Group I",host:"New York/NJ",t1:"France",t2:"Senegal",loc:"Sheldon-Arleta Park",dist:6,lid:7,type:"Kick In the Park",free:"Yes"},
+  {m:"18",date:"6/16/2026",time:"3:00 PM",stage:"Group I",host:"Boston",t1:"Iraq",t2:"Norway",loc:"Wilmington Recreation Center",dist:15,lid:16,type:"Kick In the Park",free:"Yes"},
+  {m:"18",date:"6/16/2026",time:"3:00 PM",stage:"Group I",host:"Boston",t1:"Iraq",t2:"Norway",loc:"Echo Park",dist:13,lid:14,type:"Kick In the Park",free:"Yes"},
+  {m:"18",date:"6/16/2026",time:"3:00 PM",stage:"Group I",host:"Boston",t1:"Iraq",t2:"Norway",loc:"Sheldon-Arleta Park",dist:6,lid:7,type:"Kick In the Park",free:"Yes"},
+  {m:"19",date:"6/16/2026",time:"6:00 PM",stage:"Group J",host:"Kansas City",t1:"Argentina",t2:"Algeria",loc:"Wilmington Recreation Center",dist:15,lid:16,type:"Kick In the Park",free:"Yes"},
+  {m:"19",date:"6/16/2026",time:"6:00 PM",stage:"Group J",host:"Kansas City",t1:"Argentina",t2:"Algeria",loc:"Echo Park",dist:13,lid:14,type:"Kick In the Park",free:"Yes"},
+  {m:"19",date:"6/16/2026",time:"6:00 PM",stage:"Group J",host:"Kansas City",t1:"Argentina",t2:"Algeria",loc:"Sheldon-Arleta Park",dist:6,lid:7,type:"Kick In the Park",free:"Yes"},
+  {m:"20",date:"6/16/2026",time:"9:00 PM",stage:"Group J",host:"San Francisco",t1:"Austria",t2:"Jordan",loc:"Wilmington Recreation Center",dist:15,lid:16,type:"Kick In the Park",free:"Yes"},
+  {m:"20",date:"6/16/2026",time:"9:00 PM",stage:"Group J",host:"San Francisco",t1:"Austria",t2:"Jordan",loc:"Echo Park",dist:13,lid:14,type:"Kick In the Park",free:"Yes"},
+  {m:"20",date:"6/16/2026",time:"9:00 PM",stage:"Group J",host:"San Francisco",t1:"Austria",t2:"Jordan",loc:"Sheldon-Arleta Park",dist:6,lid:7,type:"Kick In the Park",free:"Yes"},
+  {m:"21",date:"6/17/2026",time:"4:00 PM",stage:"Group L",host:"Toronto",t1:"Ghana",t2:"Panama",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9,type:"Kick In the Park",free:"Yes"},
+  {m:"21",date:"6/17/2026",time:"4:00 PM",stage:"Group L",host:"Toronto",t1:"Ghana",t2:"Panama",loc:"Venice Beach Recreation Center",dist:11,lid:12,type:"Kick In the Park",free:"Yes"},
+  {m:"22",date:"6/17/2026",time:"1:00 PM",stage:"Group L",host:"Dallas",t1:"England",t2:"Croatia",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9,type:"Kick In the Park",free:"Yes"},
+  {m:"22",date:"6/17/2026",time:"1:00 PM",stage:"Group L",host:"Dallas",t1:"England",t2:"Croatia",loc:"Venice Beach Recreation Center",dist:11,lid:12,type:"Kick In the Park",free:"Yes"},
+  {m:"23",date:"6/17/2026",time:"10:00 AM",stage:"Group K",host:"Houston",t1:"Portugal",t2:"Congo DR",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9,type:"Kick In the Park",free:"Yes"},
+  {m:"23",date:"6/17/2026",time:"10:00 AM",stage:"Group K",host:"Houston",t1:"Portugal",t2:"Congo DR",loc:"Venice Beach Recreation Center",dist:11,lid:12,type:"Kick In the Park",free:"Yes"},
+  {m:"24",date:"6/17/2026",time:"7:00 PM",stage:"Group K",host:"Mexico City",t1:"Uzbekistan",t2:"Colombia",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9,type:"Kick In the Park",free:"Yes"},
+  {m:"24",date:"6/17/2026",time:"7:00 PM",stage:"Group K",host:"Mexico City",t1:"Uzbekistan",t2:"Colombia",loc:"Venice Beach Recreation Center",dist:11,lid:12,type:"Kick In the Park",free:"Yes"},
+  {m:"25",date:"6/18/2026",time:"9:00 AM",stage:"Group A",host:"Atlanta",t1:"Czechia",t2:"South Africa",loc:"Seoul International Park",dist:10,lid:11,type:"Kick In the Park",free:"Yes"},
+  {m:"25",date:"6/18/2026",time:"9:00 AM",stage:"Group A",host:"Atlanta",t1:"Czechia",t2:"South Africa",loc:"Whitsett Fields",dist:2,lid:2,type:"Kick In the Park",free:"Yes"},
+  {m:"25",date:"6/18/2026",time:"9:00 AM",stage:"Group A",host:"Atlanta",t1:"Czechia",t2:"South Africa",loc:"Sylmar Recreation Center",dist:7,lid:8,type:"Kick In the Park",free:"Yes"},
+  {m:"25",date:"6/18/2026",time:"9:00 AM",stage:"Group A",host:"Atlanta",t1:"Czechia",t2:"South Africa",loc:"The Original Farmers Market",dist:5,lid:90,type:"Official Fan Zone",free:"No"},
+  {m:"26",date:"6/18/2026",time:"12:00 PM",stage:"Group B",host:"Los Angeles",t1:"Switzerland",t2:"Bosnia-Herzegovina",loc:"Seoul International Park",dist:10,lid:11,type:"Kick In the Park",free:"Yes"},
+  {m:"26",date:"6/18/2026",time:"12:00 PM",stage:"Group B",host:"Los Angeles",t1:"Switzerland",t2:"Bosnia-Herzegovina",loc:"Whitsett Fields",dist:2,lid:2,type:"Kick In the Park",free:"Yes"},
+  {m:"26",date:"6/18/2026",time:"12:00 PM",stage:"Group B",host:"Los Angeles",t1:"Switzerland",t2:"Bosnia-Herzegovina",loc:"Sylmar Recreation Center",dist:7,lid:8,type:"Kick In the Park",free:"Yes"},
+  {m:"26",date:"6/18/2026",time:"12:00 PM",stage:"Group B",host:"Los Angeles",t1:"Switzerland",t2:"Bosnia-Herzegovina",loc:"The Original Farmers Market",dist:5,lid:90,type:"Official Fan Zone",free:"No"},
+  {m:"27",date:"6/18/2026",time:"3:00 PM",stage:"Group B",host:"Vancouver",t1:"Canada",t2:"Qatar",loc:"Seoul International Park",dist:10,lid:11,type:"Kick In the Park",free:"Yes"},
+  {m:"27",date:"6/18/2026",time:"3:00 PM",stage:"Group B",host:"Vancouver",t1:"Canada",t2:"Qatar",loc:"Whitsett Fields",dist:2,lid:2,type:"Kick In the Park",free:"Yes"},
+  {m:"27",date:"6/18/2026",time:"3:00 PM",stage:"Group B",host:"Vancouver",t1:"Canada",t2:"Qatar",loc:"Sylmar Recreation Center",dist:7,lid:8,type:"Kick In the Park",free:"Yes"},
+  {m:"27",date:"6/18/2026",time:"3:00 PM",stage:"Group B",host:"Vancouver",t1:"Canada",t2:"Qatar",loc:"The Original Farmers Market",dist:5,lid:90,type:"Official Fan Zone",free:"No"},
+  {m:"28",date:"6/18/2026",time:"6:00 PM",stage:"Group A",host:"Guadalajara",t1:"Mexico",t2:"South Korea",loc:"Seoul International Park",dist:10,lid:11,type:"Kick In the Park",free:"Yes"},
+  {m:"28",date:"6/18/2026",time:"6:00 PM",stage:"Group A",host:"Guadalajara",t1:"Mexico",t2:"South Korea",loc:"Whitsett Fields",dist:2,lid:2,type:"Kick In the Park",free:"Yes"},
+  {m:"28",date:"6/18/2026",time:"6:00 PM",stage:"Group A",host:"Guadalajara",t1:"Mexico",t2:"South Korea",loc:"Sylmar Recreation Center",dist:7,lid:8,type:"Kick In the Park",free:"Yes"},
+  {m:"28",date:"6/18/2026",time:"6:00 PM",stage:"Group A",host:"Guadalajara",t1:"Mexico",t2:"South Korea",loc:"Northridge Recreation Center",dist:12,lid:13,type:"Kick In the Park",free:"Yes"},
+  {m:"28",date:"6/18/2026",time:"6:00 PM",stage:"Group A",host:"Guadalajara",t1:"Mexico",t2:"South Korea",loc:"The Original Farmers Market",dist:5,lid:90,type:"Official Fan Zone",free:"No"},
+  {m:"29",date:"6/19/2026",time:"3:00 PM",stage:"Group C",host:"Philadelphia",t1:"Brazil",t2:"Haiti",loc:"Cheviot Hills Recreation Center",dist:5,lid:5,type:"Kick In the Park",free:"Yes"},
+  {m:"29",date:"6/19/2026",time:"3:00 PM",stage:"Group C",host:"Philadelphia",t1:"Brazil",t2:"Haiti",loc:"South Park Recreation Center",dist:9,lid:10,type:"Kick In the Park",free:"Yes"},
+  {m:"29",date:"6/19/2026",time:"3:00 PM",stage:"Group C",host:"Philadelphia",t1:"Brazil",t2:"Haiti",loc:"El Sereno Recreation Center",dist:14,lid:15,type:"Kick In the Park",free:"Yes"},
+  {m:"29",date:"6/19/2026",time:"3:00 PM",stage:"Group C",host:"Philadelphia",t1:"Brazil",t2:"Haiti",loc:"The Original Farmers Market",dist:5,lid:90,type:"Official Fan Zone",free:"No"},
+  {m:"30",date:"6/19/2026",time:"3:00 PM",stage:"Group C",host:"Boston",t1:"Scotland",t2:"Morocco",loc:"Cheviot Hills Recreation Center",dist:5,lid:5,type:"Kick In the Park",free:"Yes"},
+  {m:"30",date:"6/19/2026",time:"3:00 PM",stage:"Group C",host:"Boston",t1:"Scotland",t2:"Morocco",loc:"South Park Recreation Center",dist:9,lid:10,type:"Kick In the Park",free:"Yes"},
+  {m:"30",date:"6/19/2026",time:"3:00 PM",stage:"Group C",host:"Boston",t1:"Scotland",t2:"Morocco",loc:"El Sereno Recreation Center",dist:14,lid:15,type:"Kick In the Park",free:"Yes"},
+  {m:"30",date:"6/19/2026",time:"3:00 PM",stage:"Group C",host:"Boston",t1:"Scotland",t2:"Morocco",loc:"The Original Farmers Market",dist:5,lid:90,type:"Official Fan Zone",free:"No"},
+  {m:"31",date:"6/19/2026",time:"7:00 PM",stage:"Group D",host:"San Francisco",t1:"Turkey",t2:"Paraguay",loc:"Cheviot Hills Recreation Center",dist:5,lid:5,type:"Kick In the Park",free:"Yes"},
+  {m:"31",date:"6/19/2026",time:"7:00 PM",stage:"Group D",host:"San Francisco",t1:"Turkey",t2:"Paraguay",loc:"South Park Recreation Center",dist:9,lid:10,type:"Kick In the Park",free:"Yes"},
+  {m:"31",date:"6/19/2026",time:"7:00 PM",stage:"Group D",host:"San Francisco",t1:"Turkey",t2:"Paraguay",loc:"El Sereno Recreation Center",dist:14,lid:15,type:"Kick In the Park",free:"Yes"},
+  {m:"31",date:"6/19/2026",time:"7:00 PM",stage:"Group D",host:"San Francisco",t1:"Turkey",t2:"Paraguay",loc:"The Original Farmers Market",dist:5,lid:90,type:"Official Fan Zone",free:"No"},
+  {m:"32",date:"6/19/2026",time:"12:00 PM",stage:"Group D",host:"Seattle",t1:"USA",t2:"Australia",loc:"Cheviot Hills Recreation Center",dist:5,lid:5,type:"Kick In the Park",free:"Yes"},
+  {m:"32",date:"6/19/2026",time:"12:00 PM",stage:"Group D",host:"Seattle",t1:"USA",t2:"Australia",loc:"South Park Recreation Center",dist:9,lid:10,type:"Kick In the Park",free:"Yes"},
+  {m:"32",date:"6/19/2026",time:"12:00 PM",stage:"Group D",host:"Seattle",t1:"USA",t2:"Australia",loc:"El Sereno Recreation Center",dist:14,lid:15,type:"Kick In the Park",free:"Yes"},
+  {m:"32",date:"6/19/2026",time:"12:00 PM",stage:"Group D",host:"Seattle",t1:"USA",t2:"Australia",loc:"The Original Farmers Market",dist:5,lid:90,type:"Official Fan Zone",free:"No"},
+  {m:"33",date:"6/20/2026",time:"1:00 PM",stage:"Group E",host:"Toronto",t1:"Germany",t2:"Ivory Coast",loc:"Sycamore Grove",dist:1,lid:1,type:"Kick In the Park",free:"Yes"},
+  {m:"33",date:"6/20/2026",time:"1:00 PM",stage:"Group E",host:"Toronto",t1:"Germany",t2:"Ivory Coast",loc:"Lanark Recreation Center",dist:3,lid:3,type:"Kick In the Park",free:"Yes"},
+  {m:"33",date:"6/20/2026",time:"1:00 PM",stage:"Group E",host:"Toronto",t1:"Germany",t2:"Ivory Coast",loc:"Northridge Recreation Center",dist:12,lid:13,type:"Kick In the Park",free:"Yes"},
+  {m:"33",date:"6/20/2026",time:"1:00 PM",stage:"Group E",host:"Toronto",t1:"Germany",t2:"Ivory Coast",loc:"The Original Farmers Market",dist:5,lid:90,type:"Official Fan Zone",free:"No"},
+  {m:"34",date:"6/20/2026",time:"5:00 PM",stage:"Group E",host:"Kansas City",t1:"Ecuador",t2:"Curaçao",loc:"Sycamore Grove",dist:1,lid:1,type:"Kick In the Park",free:"Yes"},
+  {m:"34",date:"6/20/2026",time:"5:00 PM",stage:"Group E",host:"Kansas City",t1:"Ecuador",t2:"Curaçao",loc:"Lanark Recreation Center",dist:3,lid:3,type:"Kick In the Park",free:"Yes"},
+  {m:"34",date:"6/20/2026",time:"5:00 PM",stage:"Group E",host:"Kansas City",t1:"Ecuador",t2:"Curaçao",loc:"Northridge Recreation Center",dist:12,lid:13,type:"Kick In the Park",free:"Yes"},
+  {m:"34",date:"6/20/2026",time:"5:00 PM",stage:"Group E",host:"Kansas City",t1:"Ecuador",t2:"Curaçao",loc:"The Original Farmers Market",dist:5,lid:90,type:"Official Fan Zone",free:"No"},
+  {m:"35",date:"6/20/2026",time:"10:00 AM",stage:"Group F",host:"Houston",t1:"Netherlands",t2:"Sweden",loc:"Sycamore Grove",dist:1,lid:1,type:"Kick In the Park",free:"Yes"},
+  {m:"35",date:"6/20/2026",time:"10:00 AM",stage:"Group F",host:"Houston",t1:"Netherlands",t2:"Sweden",loc:"Lanark Recreation Center",dist:3,lid:3,type:"Kick In the Park",free:"Yes"},
+  {m:"35",date:"6/20/2026",time:"10:00 AM",stage:"Group F",host:"Houston",t1:"Netherlands",t2:"Sweden",loc:"Northridge Recreation Center",dist:12,lid:13,type:"Kick In the Park",free:"Yes"},
+  {m:"35",date:"6/20/2026",time:"10:00 AM",stage:"Group F",host:"Houston",t1:"Netherlands",t2:"Sweden",loc:"The Original Farmers Market",dist:5,lid:90,type:"Official Fan Zone",free:"No"},
+  {m:"36",date:"6/20/2026",time:"7:00 PM",stage:"Group F",host:"Monterrey",t1:"Tunisia",t2:"Japan",loc:"Sycamore Grove",dist:1,lid:1,type:"Kick In the Park",free:"Yes"},
+  {m:"36",date:"6/20/2026",time:"7:00 PM",stage:"Group F",host:"Monterrey",t1:"Tunisia",t2:"Japan",loc:"Lanark Recreation Center",dist:3,lid:3,type:"Kick In the Park",free:"Yes"},
+  {m:"36",date:"6/20/2026",time:"7:00 PM",stage:"Group F",host:"Monterrey",t1:"Tunisia",t2:"Japan",loc:"Northridge Recreation Center",dist:12,lid:13,type:"Kick In the Park",free:"Yes"},
+  {m:"36",date:"6/20/2026",time:"7:00 PM",stage:"Group F",host:"Monterrey",t1:"Tunisia",t2:"Japan",loc:"The Original Farmers Market",dist:5,lid:90,type:"Official Fan Zone",free:"No"},
+  {m:"37",date:"6/21/2026",time:"3:00 PM",stage:"Group H",host:"Miami",t1:"Uruguay",t2:"Cabo Verde",loc:"Wilmington Recreation Center",dist:15,lid:16,type:"Kick In the Park",free:"Yes"},
+  {m:"37",date:"6/21/2026",time:"3:00 PM",stage:"Group H",host:"Miami",t1:"Uruguay",t2:"Cabo Verde",loc:"Echo Park",dist:13,lid:14,type:"Kick In the Park",free:"Yes"},
+  {m:"37",date:"6/21/2026",time:"3:00 PM",stage:"Group H",host:"Miami",t1:"Uruguay",t2:"Cabo Verde",loc:"Sheldon-Arleta Park",dist:6,lid:7,type:"Kick In the Park",free:"Yes"},
+  {m:"37",date:"6/21/2026",time:"3:00 PM",stage:"Group H",host:"Miami",t1:"Uruguay",t2:"Cabo Verde",loc:"The Original Farmers Market",dist:5,lid:90,type:"Official Fan Zone",free:"No"},
+  {m:"38",date:"6/21/2026",time:"9:00 AM",stage:"Group H",host:"Atlanta",t1:"Spain",t2:"Saudi Arabia",loc:"Wilmington Recreation Center",dist:15,lid:16,type:"Kick In the Park",free:"Yes"},
+  {m:"38",date:"6/21/2026",time:"9:00 AM",stage:"Group H",host:"Atlanta",t1:"Spain",t2:"Saudi Arabia",loc:"Echo Park",dist:13,lid:14,type:"Kick In the Park",free:"Yes"},
+  {m:"38",date:"6/21/2026",time:"9:00 AM",stage:"Group H",host:"Atlanta",t1:"Spain",t2:"Saudi Arabia",loc:"Sheldon-Arleta Park",dist:6,lid:7,type:"Kick In the Park",free:"Yes"},
+  {m:"38",date:"6/21/2026",time:"9:00 AM",stage:"Group H",host:"Atlanta",t1:"Spain",t2:"Saudi Arabia",loc:"The Original Farmers Market",dist:5,lid:90,type:"Official Fan Zone",free:"No"},
+  {m:"39",date:"6/21/2026",time:"12:00 PM",stage:"Group G",host:"Los Angeles",t1:"Belgium",t2:"Iran",loc:"Wilmington Recreation Center",dist:15,lid:16,type:"Kick In the Park",free:"Yes"},
+  {m:"39",date:"6/21/2026",time:"12:00 PM",stage:"Group G",host:"Los Angeles",t1:"Belgium",t2:"Iran",loc:"Echo Park",dist:13,lid:14,type:"Kick In the Park",free:"Yes"},
+  {m:"39",date:"6/21/2026",time:"12:00 PM",stage:"Group G",host:"Los Angeles",t1:"Belgium",t2:"Iran",loc:"Sheldon-Arleta Park",dist:6,lid:7,type:"Kick In the Park",free:"Yes"},
+  {m:"39",date:"6/21/2026",time:"12:00 PM",stage:"Group G",host:"Los Angeles",t1:"Belgium",t2:"Iran",loc:"The Original Farmers Market",dist:5,lid:90,type:"Official Fan Zone",free:"No"},
+  {m:"40",date:"6/21/2026",time:"6:00 PM",stage:"Group G",host:"Vancouver",t1:"New Zealand",t2:"Egypt",loc:"Wilmington Recreation Center",dist:15,lid:16,type:"Kick In the Park",free:"Yes"},
+  {m:"40",date:"6/21/2026",time:"6:00 PM",stage:"Group G",host:"Vancouver",t1:"New Zealand",t2:"Egypt",loc:"Echo Park",dist:13,lid:14,type:"Kick In the Park",free:"Yes"},
+  {m:"40",date:"6/21/2026",time:"6:00 PM",stage:"Group G",host:"Vancouver",t1:"New Zealand",t2:"Egypt",loc:"Sheldon-Arleta Park",dist:6,lid:7,type:"Kick In the Park",free:"Yes"},
+  {m:"40",date:"6/21/2026",time:"6:00 PM",stage:"Group G",host:"Vancouver",t1:"New Zealand",t2:"Egypt",loc:"The Original Farmers Market",dist:5,lid:90,type:"Official Fan Zone",free:"No"},
+  {m:"41",date:"6/22/2026",time:"5:00 PM",stage:"Group I",host:"New York/NJ",t1:"Norway",t2:"Senegal",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9,type:"Kick In the Park",free:"Yes"},
+  {m:"41",date:"6/22/2026",time:"5:00 PM",stage:"Group I",host:"New York/NJ",t1:"Norway",t2:"Senegal",loc:"Stoner Recreation Center",dist:11,lid:18,type:"Kick In the Park",free:"Yes"},
+  {m:"42",date:"6/22/2026",time:"2:00 PM",stage:"Group I",host:"Philadelphia",t1:"France",t2:"Iraq",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9,type:"Kick In the Park",free:"Yes"},
+  {m:"42",date:"6/22/2026",time:"2:00 PM",stage:"Group I",host:"Philadelphia",t1:"France",t2:"Iraq",loc:"Stoner Recreation Center",dist:11,lid:18,type:"Kick In the Park",free:"Yes"},
+  {m:"43",date:"6/22/2026",time:"10:00 AM",stage:"Group J",host:"Dallas",t1:"Argentina",t2:"Austria",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9,type:"Kick In the Park",free:"Yes"},
+  {m:"43",date:"6/22/2026",time:"10:00 AM",stage:"Group J",host:"Dallas",t1:"Argentina",t2:"Austria",loc:"Stoner Recreation Center",dist:11,lid:18,type:"Kick In the Park",free:"Yes"},
+  {m:"44",date:"6/22/2026",time:"8:00 PM",stage:"Group J",host:"San Francisco",t1:"Jordan",t2:"Algeria",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9,type:"Kick In the Park",free:"Yes"},
+  {m:"44",date:"6/22/2026",time:"8:00 PM",stage:"Group J",host:"San Francisco",t1:"Jordan",t2:"Algeria",loc:"Stoner Recreation Center",dist:11,lid:18,type:"Kick In the Park",free:"Yes"},
+  {m:"45",date:"6/23/2026",time:"12:00 PM",stage:"Group L",host:"Boston",t1:"England",t2:"Ghana",loc:"Seoul International Park",dist:10,lid:11,type:"Kick In the Park",free:"Yes"},
+  {m:"45",date:"6/23/2026",time:"12:00 PM",stage:"Group L",host:"Boston",t1:"England",t2:"Ghana",loc:"Whitsett Fields",dist:2,lid:2,type:"Kick In the Park",free:"Yes"},
+  {m:"45",date:"6/23/2026",time:"12:00 PM",stage:"Group L",host:"Boston",t1:"England",t2:"Ghana",loc:"Sylmar Recreation Center",dist:7,lid:8,type:"Kick In the Park",free:"Yes"},
+  {m:"46",date:"6/23/2026",time:"4:00 PM",stage:"Group L",host:"Toronto",t1:"Panama",t2:"Croatia",loc:"Seoul International Park",dist:10,lid:11,type:"Kick In the Park",free:"Yes"},
+  {m:"46",date:"6/23/2026",time:"4:00 PM",stage:"Group L",host:"Toronto",t1:"Panama",t2:"Croatia",loc:"Whitsett Fields",dist:2,lid:2,type:"Kick In the Park",free:"Yes"},
+  {m:"46",date:"6/23/2026",time:"4:00 PM",stage:"Group L",host:"Toronto",t1:"Panama",t2:"Croatia",loc:"Sylmar Recreation Center",dist:7,lid:8,type:"Kick In the Park",free:"Yes"},
+  {m:"47",date:"6/23/2026",time:"10:00 AM",stage:"Group K",host:"Houston",t1:"Portugal",t2:"Uzbekistan",loc:"Seoul International Park",dist:10,lid:11,type:"Kick In the Park",free:"Yes"},
+  {m:"47",date:"6/23/2026",time:"10:00 AM",stage:"Group K",host:"Houston",t1:"Portugal",t2:"Uzbekistan",loc:"Whitsett Fields",dist:2,lid:2,type:"Kick In the Park",free:"Yes"},
+  {m:"47",date:"6/23/2026",time:"10:00 AM",stage:"Group K",host:"Houston",t1:"Portugal",t2:"Uzbekistan",loc:"Sylmar Recreation Center",dist:7,lid:8,type:"Kick In the Park",free:"Yes"},
+  {m:"48",date:"6/23/2026",time:"4:00 PM",stage:"Group K",host:"Guadalajara",t1:"Colombia",t2:"Congo DR",loc:"Seoul International Park",dist:10,lid:11,type:"Kick In the Park",free:"Yes"},
+  {m:"48",date:"6/23/2026",time:"4:00 PM",stage:"Group K",host:"Guadalajara",t1:"Colombia",t2:"Congo DR",loc:"Whitsett Fields",dist:2,lid:2,type:"Kick In the Park",free:"Yes"},
+  {m:"48",date:"6/23/2026",time:"4:00 PM",stage:"Group K",host:"Guadalajara",t1:"Colombia",t2:"Congo DR",loc:"Sylmar Recreation Center",dist:7,lid:8,type:"Kick In the Park",free:"Yes"},
+  {m:"49",date:"6/24/2026",time:"3:00 PM",stage:"Group C",host:"Miami",t1:"Scotland",t2:"Brazil",loc:"Cheviot Hills Recreation Center",dist:5,lid:5,type:"Kick In the Park",free:"Yes"},
+  {m:"49",date:"6/24/2026",time:"3:00 PM",stage:"Group C",host:"Miami",t1:"Scotland",t2:"Brazil",loc:"South Park Recreation Center",dist:9,lid:10,type:"Kick In the Park",free:"Yes"},
+  {m:"49",date:"6/24/2026",time:"3:00 PM",stage:"Group C",host:"Miami",t1:"Scotland",t2:"Brazil",loc:"El Sereno Recreation Center",dist:14,lid:15,type:"Kick In the Park",free:"Yes"},
+  {m:"50",date:"6/24/2026",time:"12:00 PM",stage:"Group C",host:"Atlanta",t1:"Morocco",t2:"Haiti",loc:"Cheviot Hills Recreation Center",dist:5,lid:5,type:"Kick In the Park",free:"Yes"},
+  {m:"50",date:"6/24/2026",time:"12:00 PM",stage:"Group C",host:"Atlanta",t1:"Morocco",t2:"Haiti",loc:"South Park Recreation Center",dist:9,lid:10,type:"Kick In the Park",free:"Yes"},
+  {m:"50",date:"6/24/2026",time:"12:00 PM",stage:"Group C",host:"Atlanta",t1:"Morocco",t2:"Haiti",loc:"El Sereno Recreation Center",dist:14,lid:15,type:"Kick In the Park",free:"Yes"},
+  {m:"51",date:"6/24/2026",time:"12:00 PM",stage:"Group B",host:"Vancouver",t1:"Switzerland",t2:"Canada",loc:"Cheviot Hills Recreation Center",dist:5,lid:5,type:"Kick In the Park",free:"Yes"},
+  {m:"51",date:"6/24/2026",time:"12:00 PM",stage:"Group B",host:"Vancouver",t1:"Switzerland",t2:"Canada",loc:"South Park Recreation Center",dist:9,lid:10,type:"Kick In the Park",free:"Yes"},
+  {m:"51",date:"6/24/2026",time:"12:00 PM",stage:"Group B",host:"Vancouver",t1:"Switzerland",t2:"Canada",loc:"El Sereno Recreation Center",dist:14,lid:15,type:"Kick In the Park",free:"Yes"},
+  {m:"52",date:"6/24/2026",time:"12:00 PM",stage:"Group B",host:"Seattle",t1:"Bosnia-Herzegovina",t2:"Qatar",loc:"Cheviot Hills Recreation Center",dist:5,lid:5,type:"Kick In the Park",free:"Yes"},
+  {m:"52",date:"6/24/2026",time:"12:00 PM",stage:"Group B",host:"Seattle",t1:"Bosnia-Herzegovina",t2:"Qatar",loc:"South Park Recreation Center",dist:9,lid:10,type:"Kick In the Park",free:"Yes"},
+  {m:"52",date:"6/24/2026",time:"12:00 PM",stage:"Group B",host:"Seattle",t1:"Bosnia-Herzegovina",t2:"Qatar",loc:"El Sereno Recreation Center",dist:14,lid:15,type:"Kick In the Park",free:"Yes"},
+  {m:"53",date:"6/24/2026",time:"6:00 PM",stage:"Group A",host:"Mexico City",t1:"Czechia",t2:"Mexico",loc:"Cheviot Hills Recreation Center",dist:5,lid:5,type:"Kick In the Park",free:"Yes"},
+  {m:"53",date:"6/24/2026",time:"6:00 PM",stage:"Group A",host:"Mexico City",t1:"Czechia",t2:"Mexico",loc:"South Park Recreation Center",dist:9,lid:10,type:"Kick In the Park",free:"Yes"},
+  {m:"53",date:"6/24/2026",time:"6:00 PM",stage:"Group A",host:"Mexico City",t1:"Czechia",t2:"Mexico",loc:"El Sereno Recreation Center",dist:14,lid:15,type:"Kick In the Park",free:"Yes"},
+  {m:"54",date:"6/24/2026",time:"6:00 PM",stage:"Group A",host:"Monterrey",t1:"South Africa",t2:"South Korea",loc:"Cheviot Hills Recreation Center",dist:5,lid:5,type:"Kick In the Park",free:"Yes"},
+  {m:"54",date:"6/24/2026",time:"6:00 PM",stage:"Group A",host:"Monterrey",t1:"South Africa",t2:"South Korea",loc:"South Park Recreation Center",dist:9,lid:10,type:"Kick In the Park",free:"Yes"},
+  {m:"54",date:"6/24/2026",time:"6:00 PM",stage:"Group A",host:"Monterrey",t1:"South Africa",t2:"South Korea",loc:"El Sereno Recreation Center",dist:14,lid:15,type:"Kick In the Park",free:"Yes"},
+  {m:"55",date:"6/25/2026",time:"1:00 PM",stage:"Group E",host:"Philadelphia",t1:"Curaçao",t2:"Ivory Coast",loc:"MacArthur Park",dist:1,lid:17,type:"Kick In the Park",free:"Yes"},
+  {m:"55",date:"6/25/2026",time:"1:00 PM",stage:"Group E",host:"Philadelphia",t1:"Curaçao",t2:"Ivory Coast",loc:"Lanark Recreation Center",dist:3,lid:3,type:"Kick In the Park",free:"Yes"},
+  {m:"55",date:"6/25/2026",time:"1:00 PM",stage:"Group E",host:"Philadelphia",t1:"Curaçao",t2:"Ivory Coast",loc:"Northridge Recreation Center",dist:12,lid:13,type:"Kick In the Park",free:"Yes"},
+  {m:"55",date:"6/25/2026",time:"1:00 PM",stage:"Group E",host:"Philadelphia",t1:"Curaçao",t2:"Ivory Coast",loc:"Los Angeles Union Station",dist:14,lid:91,type:"Official Fan Zone",free:"Yes"},
+  {m:"56",date:"6/25/2026",time:"1:00 PM",stage:"Group E",host:"New York/NJ",t1:"Ecuador",t2:"Germany",loc:"MacArthur Park",dist:1,lid:17,type:"Kick In the Park",free:"Yes"},
+  {m:"56",date:"6/25/2026",time:"1:00 PM",stage:"Group E",host:"New York/NJ",t1:"Ecuador",t2:"Germany",loc:"Lanark Recreation Center",dist:3,lid:3,type:"Kick In the Park",free:"Yes"},
+  {m:"56",date:"6/25/2026",time:"1:00 PM",stage:"Group E",host:"New York/NJ",t1:"Ecuador",t2:"Germany",loc:"Northridge Recreation Center",dist:12,lid:13,type:"Kick In the Park",free:"Yes"},
+  {m:"56",date:"6/25/2026",time:"1:00 PM",stage:"Group E",host:"New York/NJ",t1:"Ecuador",t2:"Germany",loc:"Los Angeles Union Station",dist:14,lid:91,type:"Official Fan Zone",free:"Yes"},
+  {m:"57",date:"6/25/2026",time:"4:00 PM",stage:"Group F",host:"Dallas",t1:"Japan",t2:"Sweden",loc:"MacArthur Park",dist:1,lid:17,type:"Kick In the Park",free:"Yes"},
+  {m:"57",date:"6/25/2026",time:"4:00 PM",stage:"Group F",host:"Dallas",t1:"Japan",t2:"Sweden",loc:"Lanark Recreation Center",dist:3,lid:3,type:"Kick In the Park",free:"Yes"},
+  {m:"57",date:"6/25/2026",time:"4:00 PM",stage:"Group F",host:"Dallas",t1:"Japan",t2:"Sweden",loc:"Northridge Recreation Center",dist:12,lid:13,type:"Kick In the Park",free:"Yes"},
+  {m:"57",date:"6/25/2026",time:"4:00 PM",stage:"Group F",host:"Dallas",t1:"Japan",t2:"Sweden",loc:"Los Angeles Union Station",dist:14,lid:91,type:"Official Fan Zone",free:"Yes"},
+  {m:"58",date:"6/25/2026",time:"4:00 PM",stage:"Group F",host:"Kansas City",t1:"Tunisia",t2:"Netherlands",loc:"MacArthur Park",dist:1,lid:17,type:"Kick In the Park",free:"Yes"},
+  {m:"58",date:"6/25/2026",time:"4:00 PM",stage:"Group F",host:"Kansas City",t1:"Tunisia",t2:"Netherlands",loc:"Lanark Recreation Center",dist:3,lid:3,type:"Kick In the Park",free:"Yes"},
+  {m:"58",date:"6/25/2026",time:"4:00 PM",stage:"Group F",host:"Kansas City",t1:"Tunisia",t2:"Netherlands",loc:"Northridge Recreation Center",dist:12,lid:13,type:"Kick In the Park",free:"Yes"},
+  {m:"58",date:"6/25/2026",time:"4:00 PM",stage:"Group F",host:"Kansas City",t1:"Tunisia",t2:"Netherlands",loc:"Los Angeles Union Station",dist:14,lid:91,type:"Official Fan Zone",free:"Yes"},
+  {m:"59",date:"6/25/2026",time:"7:00 PM",stage:"Group D",host:"Los Angeles",t1:"Turkey",t2:"USA",loc:"MacArthur Park",dist:1,lid:17,type:"Kick In the Park",free:"Yes"},
+  {m:"59",date:"6/25/2026",time:"7:00 PM",stage:"Group D",host:"Los Angeles",t1:"Turkey",t2:"USA",loc:"Lanark Recreation Center",dist:3,lid:3,type:"Kick In the Park",free:"Yes"},
+  {m:"59",date:"6/25/2026",time:"7:00 PM",stage:"Group D",host:"Los Angeles",t1:"Turkey",t2:"USA",loc:"Northridge Recreation Center",dist:12,lid:13,type:"Kick In the Park",free:"Yes"},
+  {m:"59",date:"6/25/2026",time:"7:00 PM",stage:"Group D",host:"Los Angeles",t1:"Turkey",t2:"USA",loc:"Los Angeles Union Station",dist:14,lid:91,type:"Official Fan Zone",free:"Yes"},
+  {m:"60",date:"6/25/2026",time:"7:00 PM",stage:"Group D",host:"San Francisco",t1:"Paraguay",t2:"Australia",loc:"MacArthur Park",dist:1,lid:17,type:"Kick In the Park",free:"Yes"},
+  {m:"60",date:"6/25/2026",time:"7:00 PM",stage:"Group D",host:"San Francisco",t1:"Paraguay",t2:"Australia",loc:"Lanark Recreation Center",dist:3,lid:3,type:"Kick In the Park",free:"Yes"},
+  {m:"60",date:"6/25/2026",time:"7:00 PM",stage:"Group D",host:"San Francisco",t1:"Paraguay",t2:"Australia",loc:"Northridge Recreation Center",dist:12,lid:13,type:"Kick In the Park",free:"Yes"},
+  {m:"60",date:"6/25/2026",time:"7:00 PM",stage:"Group D",host:"San Francisco",t1:"Paraguay",t2:"Australia",loc:"Los Angeles Union Station",dist:14,lid:91,type:"Official Fan Zone",free:"Yes"},
+  {m:"61",date:"6/26/2026",time:"12:00 PM",stage:"Group I",host:"Boston",t1:"Norway",t2:"France",loc:"Wilmington Recreation Center",dist:15,lid:16,type:"Kick In the Park",free:"Yes"},
+  {m:"61",date:"6/26/2026",time:"12:00 PM",stage:"Group I",host:"Boston",t1:"Norway",t2:"France",loc:"Echo Park",dist:13,lid:14,type:"Kick In the Park",free:"Yes"},
+  {m:"61",date:"6/26/2026",time:"12:00 PM",stage:"Group I",host:"Boston",t1:"Norway",t2:"France",loc:"Sheldon-Arleta Park",dist:6,lid:7,type:"Kick In the Park",free:"Yes"},
+  {m:"61",date:"6/26/2026",time:"12:00 PM",stage:"Group I",host:"Boston",t1:"Norway",t2:"France",loc:"Los Angeles Union Station",dist:14,lid:91,type:"Official Fan Zone",free:"Yes"},
+  {m:"62",date:"6/26/2026",time:"12:00 PM",stage:"Group I",host:"Toronto",t1:"Senegal",t2:"Iraq",loc:"Wilmington Recreation Center",dist:15,lid:16,type:"Kick In the Park",free:"Yes"},
+  {m:"62",date:"6/26/2026",time:"12:00 PM",stage:"Group I",host:"Toronto",t1:"Senegal",t2:"Iraq",loc:"Echo Park",dist:13,lid:14,type:"Kick In the Park",free:"Yes"},
+  {m:"62",date:"6/26/2026",time:"12:00 PM",stage:"Group I",host:"Toronto",t1:"Senegal",t2:"Iraq",loc:"Sheldon-Arleta Park",dist:6,lid:7,type:"Kick In the Park",free:"Yes"},
+  {m:"62",date:"6/26/2026",time:"12:00 PM",stage:"Group I",host:"Toronto",t1:"Senegal",t2:"Iraq",loc:"Los Angeles Union Station",dist:14,lid:91,type:"Official Fan Zone",free:"Yes"},
+  {m:"63",date:"6/26/2026",time:"8:00 PM",stage:"Group G",host:"Seattle",t1:"Egypt",t2:"Iran",loc:"Wilmington Recreation Center",dist:15,lid:16,type:"Kick In the Park",free:"Yes"},
+  {m:"63",date:"6/26/2026",time:"8:00 PM",stage:"Group G",host:"Seattle",t1:"Egypt",t2:"Iran",loc:"Echo Park",dist:13,lid:14,type:"Kick In the Park",free:"Yes"},
+  {m:"63",date:"6/26/2026",time:"8:00 PM",stage:"Group G",host:"Seattle",t1:"Egypt",t2:"Iran",loc:"Sheldon-Arleta Park",dist:6,lid:7,type:"Kick In the Park",free:"Yes"},
+  {m:"63",date:"6/26/2026",time:"8:00 PM",stage:"Group G",host:"Seattle",t1:"Egypt",t2:"Iran",loc:"Los Angeles Union Station",dist:14,lid:91,type:"Official Fan Zone",free:"Yes"},
+  {m:"64",date:"6/26/2026",time:"8:00 PM",stage:"Group G",host:"Vancouver",t1:"New Zealand",t2:"Belgium",loc:"Wilmington Recreation Center",dist:15,lid:16,type:"Kick In the Park",free:"Yes"},
+  {m:"64",date:"6/26/2026",time:"8:00 PM",stage:"Group G",host:"Vancouver",t1:"New Zealand",t2:"Belgium",loc:"Echo Park",dist:13,lid:14,type:"Kick In the Park",free:"Yes"},
+  {m:"64",date:"6/26/2026",time:"8:00 PM",stage:"Group G",host:"Vancouver",t1:"New Zealand",t2:"Belgium",loc:"Sheldon-Arleta Park",dist:6,lid:7,type:"Kick In the Park",free:"Yes"},
+  {m:"64",date:"6/26/2026",time:"8:00 PM",stage:"Group G",host:"Vancouver",t1:"New Zealand",t2:"Belgium",loc:"Los Angeles Union Station",dist:14,lid:91,type:"Official Fan Zone",free:"Yes"},
+  {m:"65",date:"6/26/2026",time:"5:00 PM",stage:"Group H",host:"Houston",t1:"Uruguay",t2:"Spain",loc:"Wilmington Recreation Center",dist:15,lid:16,type:"Kick In the Park",free:"Yes"},
+  {m:"65",date:"6/26/2026",time:"5:00 PM",stage:"Group H",host:"Houston",t1:"Uruguay",t2:"Spain",loc:"Echo Park",dist:13,lid:14,type:"Kick In the Park",free:"Yes"},
+  {m:"65",date:"6/26/2026",time:"5:00 PM",stage:"Group H",host:"Houston",t1:"Uruguay",t2:"Spain",loc:"Sheldon-Arleta Park",dist:6,lid:7,type:"Kick In the Park",free:"Yes"},
+  {m:"65",date:"6/26/2026",time:"5:00 PM",stage:"Group H",host:"Houston",t1:"Uruguay",t2:"Spain",loc:"Los Angeles Union Station",dist:14,lid:91,type:"Official Fan Zone",free:"Yes"},
+  {m:"66",date:"6/26/2026",time:"5:00 PM",stage:"Group H",host:"Guadalajara",t1:"Cabo Verde",t2:"Saudi Arabia",loc:"Wilmington Recreation Center",dist:15,lid:16,type:"Kick In the Park",free:"Yes"},
+  {m:"66",date:"6/26/2026",time:"5:00 PM",stage:"Group H",host:"Guadalajara",t1:"Cabo Verde",t2:"Saudi Arabia",loc:"Echo Park",dist:13,lid:14,type:"Kick In the Park",free:"Yes"},
+  {m:"66",date:"6/26/2026",time:"5:00 PM",stage:"Group H",host:"Guadalajara",t1:"Cabo Verde",t2:"Saudi Arabia",loc:"Sheldon-Arleta Park",dist:6,lid:7,type:"Kick In the Park",free:"Yes"},
+  {m:"66",date:"6/26/2026",time:"5:00 PM",stage:"Group H",host:"Guadalajara",t1:"Cabo Verde",t2:"Saudi Arabia",loc:"Los Angeles Union Station",dist:14,lid:91,type:"Official Fan Zone",free:"Yes"},
+  {m:"67",date:"6/27/2026",time:"2:00 PM",stage:"Group L",host:"New York/NJ",t1:"Panama",t2:"England",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9,type:"Kick In the Park",free:"Yes"},
+  {m:"67",date:"6/27/2026",time:"2:00 PM",stage:"Group L",host:"New York/NJ",t1:"Panama",t2:"England",loc:"Venice Beach Recreation Center",dist:11,lid:12,type:"Kick In the Park",free:"Yes"},
+  {m:"67",date:"6/27/2026",time:"2:00 PM",stage:"Group L",host:"New York/NJ",t1:"Panama",t2:"England",loc:"Los Angeles Union Station",dist:14,lid:91,type:"Official Fan Zone",free:"Yes"},
+  {m:"68",date:"6/27/2026",time:"2:00 PM",stage:"Group L",host:"Philadelphia",t1:"Croatia",t2:"Ghana",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9,type:"Kick In the Park",free:"Yes"},
+  {m:"68",date:"6/27/2026",time:"2:00 PM",stage:"Group L",host:"Philadelphia",t1:"Croatia",t2:"Ghana",loc:"Venice Beach Recreation Center",dist:11,lid:12,type:"Kick In the Park",free:"Yes"},
+  {m:"68",date:"6/27/2026",time:"2:00 PM",stage:"Group L",host:"Philadelphia",t1:"Croatia",t2:"Ghana",loc:"Los Angeles Union Station",dist:14,lid:91,type:"Official Fan Zone",free:"Yes"},
+  {m:"69",date:"6/27/2026",time:"11:00 AM",stage:"Group J",host:"Kansas City",t1:"Algeria",t2:"Austria",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9,type:"Kick In the Park",free:"Yes"},
+  {m:"69",date:"6/27/2026",time:"11:00 AM",stage:"Group J",host:"Kansas City",t1:"Algeria",t2:"Austria",loc:"Venice Beach Recreation Center",dist:11,lid:12,type:"Kick In the Park",free:"Yes"},
+  {m:"69",date:"6/27/2026",time:"11:00 AM",stage:"Group J",host:"Kansas City",t1:"Algeria",t2:"Austria",loc:"Los Angeles Union Station",dist:14,lid:91,type:"Official Fan Zone",free:"Yes"},
+  {m:"70",date:"6/27/2026",time:"11:00 AM",stage:"Group J",host:"Dallas",t1:"Jordan",t2:"Argentina",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9,type:"Kick In the Park",free:"Yes"},
+  {m:"70",date:"6/27/2026",time:"11:00 AM",stage:"Group J",host:"Dallas",t1:"Jordan",t2:"Argentina",loc:"Venice Beach Recreation Center",dist:11,lid:12,type:"Kick In the Park",free:"Yes"},
+  {m:"70",date:"6/27/2026",time:"11:00 AM",stage:"Group J",host:"Dallas",t1:"Jordan",t2:"Argentina",loc:"Los Angeles Union Station",dist:14,lid:91,type:"Official Fan Zone",free:"Yes"},
+  {m:"71",date:"6/27/2026",time:"4:30 PM",stage:"Group K",host:"Miami",t1:"Colombia",t2:"Portugal",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9,type:"Kick In the Park",free:"Yes"},
+  {m:"71",date:"6/27/2026",time:"4:30 PM",stage:"Group K",host:"Miami",t1:"Colombia",t2:"Portugal",loc:"Venice Beach Recreation Center",dist:11,lid:12,type:"Kick In the Park",free:"Yes"},
+  {m:"71",date:"6/27/2026",time:"4:30 PM",stage:"Group K",host:"Miami",t1:"Colombia",t2:"Portugal",loc:"Los Angeles Union Station",dist:14,lid:91,type:"Official Fan Zone",free:"Yes"},
+  {m:"72",date:"6/27/2026",time:"4:30 PM",stage:"Group K",host:"Atlanta",t1:"Congo DR",t2:"Uzbekistan",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9,type:"Kick In the Park",free:"Yes"},
+  {m:"72",date:"6/27/2026",time:"4:30 PM",stage:"Group K",host:"Atlanta",t1:"Congo DR",t2:"Uzbekistan",loc:"Venice Beach Recreation Center",dist:11,lid:12,type:"Kick In the Park",free:"Yes"},
+  {m:"72",date:"6/27/2026",time:"4:30 PM",stage:"Group K",host:"Atlanta",t1:"Congo DR",t2:"Uzbekistan",loc:"Los Angeles Union Station",dist:14,lid:91,type:"Official Fan Zone",free:"Yes"},
+  {m:"73",date:"6/28/2026",time:"12:00 PM",stage:"Round of 32",host:"Los Angeles",t1:"2A",t2:"2B",loc:"Seoul International Park",dist:10,lid:11,type:"Kick In the Park",free:"Yes"},
+  {m:"73",date:"6/28/2026",time:"12:00 PM",stage:"Round of 32",host:"Los Angeles",t1:"2A",t2:"2B",loc:"Whitsett Fields",dist:2,lid:2,type:"Kick In the Park",free:"Yes"},
+  {m:"73",date:"6/28/2026",time:"12:00 PM",stage:"Round of 32",host:"Los Angeles",t1:"2A",t2:"2B",loc:"Sylmar Recreation Center",dist:7,lid:8,type:"Kick In the Park",free:"Yes"},
+  {m:"73",date:"6/28/2026",time:"12:00 PM",stage:"Round of 32",host:"Los Angeles",t1:"2A",t2:"2B",loc:"Los Angeles Union Station",dist:14,lid:91,type:"Official Fan Zone",free:"Yes"},
+  {m:"74",date:"6/29/2026",time:"9:00 AM",stage:"Round of 32",host:"Boston",t1:"1E",t2:"3 A/B/C/D/F",loc:"Westwood Recreation Center",dist:5,lid:6,type:"Kick In the Park",free:"Yes"},
+  {m:"74",date:"6/29/2026",time:"9:00 AM",stage:"Round of 32",host:"Boston",t1:"1E",t2:"3 A/B/C/D/F",loc:"South Park Recreation Center",dist:9,lid:10,type:"Kick In the Park",free:"Yes"},
+  {m:"74",date:"6/29/2026",time:"9:00 AM",stage:"Round of 32",host:"Boston",t1:"1E",t2:"3 A/B/C/D/F",loc:"El Sereno Recreation Center",dist:14,lid:15,type:"Kick In the Park",free:"Yes"},
+  {m:"75",date:"6/29/2026",time:"6:00 PM",stage:"Round of 32",host:"Monterrey",t1:"1F",t2:"2C",loc:"Westwood Recreation Center",dist:5,lid:6,type:"Kick In the Park",free:"Yes"},
+  {m:"75",date:"6/29/2026",time:"6:00 PM",stage:"Round of 32",host:"Monterrey",t1:"1F",t2:"2C",loc:"South Park Recreation Center",dist:9,lid:10,type:"Kick In the Park",free:"Yes"},
+  {m:"75",date:"6/29/2026",time:"6:00 PM",stage:"Round of 32",host:"Monterrey",t1:"1F",t2:"2C",loc:"El Sereno Recreation Center",dist:14,lid:15,type:"Kick In the Park",free:"Yes"},
+  {m:"76",date:"6/29/2026",time:"12:00 PM",stage:"Round of 32",host:"Houston",t1:"1C",t2:"2F",loc:"Westwood Recreation Center",dist:5,lid:6,type:"Kick In the Park",free:"Yes"},
+  {m:"76",date:"6/29/2026",time:"12:00 PM",stage:"Round of 32",host:"Houston",t1:"1C",t2:"2F",loc:"South Park Recreation Center",dist:9,lid:10,type:"Kick In the Park",free:"Yes"},
+  {m:"76",date:"6/29/2026",time:"12:00 PM",stage:"Round of 32",host:"Houston",t1:"1C",t2:"2F",loc:"El Sereno Recreation Center",dist:14,lid:15,type:"Kick In the Park",free:"Yes"},
+  {m:"77",date:"6/30/2026",time:"8:00 AM",stage:"Round of 32",host:"New York/NJ",t1:"1I",t2:"3 C/D/F/G/H",loc:"Sycamore Grove",dist:1,lid:1,type:"Kick In the Park",free:"Yes"},
+  {m:"77",date:"6/30/2026",time:"8:00 AM",stage:"Round of 32",host:"New York/NJ",t1:"1I",t2:"3 C/D/F/G/H",loc:"Lanark Recreation Center",dist:3,lid:3,type:"Kick In the Park",free:"Yes"},
+  {m:"77",date:"6/30/2026",time:"8:00 AM",stage:"Round of 32",host:"New York/NJ",t1:"1I",t2:"3 C/D/F/G/H",loc:"Northridge Recreation Center",dist:12,lid:13,type:"Kick In the Park",free:"Yes"},
+  {m:"78",date:"6/30/2026",time:"10:00 AM",stage:"Round of 32",host:"Dallas",t1:"2E",t2:"2I",loc:"Sycamore Grove",dist:1,lid:1,type:"Kick In the Park",free:"Yes"},
+  {m:"78",date:"6/30/2026",time:"10:00 AM",stage:"Round of 32",host:"Dallas",t1:"2E",t2:"2I",loc:"Lanark Recreation Center",dist:3,lid:3,type:"Kick In the Park",free:"Yes"},
+  {m:"78",date:"6/30/2026",time:"10:00 AM",stage:"Round of 32",host:"Dallas",t1:"2E",t2:"2I",loc:"Northridge Recreation Center",dist:12,lid:13,type:"Kick In the Park",free:"Yes"},
+  {m:"79",date:"6/30/2026",time:"2:00 PM",stage:"Round of 32",host:"Mexico City",t1:"1A",t2:"3 C/E/F/H/I",loc:"Sycamore Grove",dist:1,lid:1,type:"Kick In the Park",free:"Yes"},
+  {m:"79",date:"6/30/2026",time:"2:00 PM",stage:"Round of 32",host:"Mexico City",t1:"1A",t2:"3 C/E/F/H/I",loc:"Lanark Recreation Center",dist:3,lid:3,type:"Kick In the Park",free:"Yes"},
+  {m:"79",date:"6/30/2026",time:"2:00 PM",stage:"Round of 32",host:"Mexico City",t1:"1A",t2:"3 C/E/F/H/I",loc:"Northridge Recreation Center",dist:12,lid:13,type:"Kick In the Park",free:"Yes"},
+  {m:"80",date:"7/1/2026",time:"2:00 PM",stage:"Round of 32",host:"Atlanta",t1:"1L",t2:"3 E/H/I/J/K",loc:"Ken Malloy Harbor Regional Park",dist:15,lid:19,type:"Kick In the Park",free:"Yes"},
+  {m:"80",date:"7/1/2026",time:"2:00 PM",stage:"Round of 32",host:"Atlanta",t1:"1L",t2:"3 E/H/I/J/K",loc:"Echo Park",dist:13,lid:14,type:"Kick In the Park",free:"Yes"},
+  {m:"80",date:"7/1/2026",time:"2:00 PM",stage:"Round of 32",host:"Atlanta",t1:"1L",t2:"3 E/H/I/J/K",loc:"Sheldon-Arleta Park",dist:6,lid:7,type:"Kick In the Park",free:"Yes"},
+  {m:"81",date:"7/1/2026",time:"6:00 PM",stage:"Round of 32",host:"San Francisco",t1:"1D",t2:"3 B/E/F/I/J",loc:"Ken Malloy Harbor Regional Park",dist:15,lid:19,type:"Kick In the Park",free:"Yes"},
+  {m:"81",date:"7/1/2026",time:"6:00 PM",stage:"Round of 32",host:"San Francisco",t1:"1D",t2:"3 B/E/F/I/J",loc:"Echo Park",dist:13,lid:14,type:"Kick In the Park",free:"Yes"},
+  {m:"81",date:"7/1/2026",time:"6:00 PM",stage:"Round of 32",host:"San Francisco",t1:"1D",t2:"3 B/E/F/I/J",loc:"Sheldon-Arleta Park",dist:6,lid:7,type:"Kick In the Park",free:"Yes"},
+  {m:"82",date:"7/1/2026",time:"12:00 PM",stage:"Round of 32",host:"Seattle",t1:"1G",t2:"3 A/E/H/I/J",loc:"Ken Malloy Harbor Regional Park",dist:15,lid:19,type:"Kick In the Park",free:"Yes"},
+  {m:"82",date:"7/1/2026",time:"12:00 PM",stage:"Round of 32",host:"Seattle",t1:"1G",t2:"3 A/E/H/I/J",loc:"Echo Park",dist:13,lid:14,type:"Kick In the Park",free:"Yes"},
+  {m:"82",date:"7/1/2026",time:"12:00 PM",stage:"Round of 32",host:"Seattle",t1:"1G",t2:"3 A/E/H/I/J",loc:"Sheldon-Arleta Park",dist:6,lid:7,type:"Kick In the Park",free:"Yes"},
+  {m:"83",date:"7/2/2026",time:"2:00 PM",stage:"Round of 32",host:"Toronto",t1:"2K",t2:"2L",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9,type:"Kick In the Park",free:"Yes"},
+  {m:"83",date:"7/2/2026",time:"2:00 PM",stage:"Round of 32",host:"Toronto",t1:"2K",t2:"2L",loc:"Venice Beach Recreation Center",dist:11,lid:12,type:"Kick In the Park",free:"Yes"},
+  {m:"83",date:"7/2/2026",time:"2:00 PM",stage:"Round of 32",host:"Toronto",t1:"2K",t2:"2L",loc:"Hansen Dam",dist:7,lid:92,type:"Official Fan Zone",free:"No"},
+  {m:"84",date:"7/2/2026",time:"12:00 PM",stage:"Round of 32",host:"Los Angeles",t1:"1H",t2:"2J",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9,type:"Kick In the Park",free:"Yes"},
+  {m:"84",date:"7/2/2026",time:"12:00 PM",stage:"Round of 32",host:"Los Angeles",t1:"1H",t2:"2J",loc:"Venice Beach Recreation Center",dist:11,lid:12,type:"Kick In the Park",free:"Yes"},
+  {m:"84",date:"7/2/2026",time:"12:00 PM",stage:"Round of 32",host:"Los Angeles",t1:"1H",t2:"2J",loc:"Hansen Dam",dist:7,lid:92,type:"Official Fan Zone",free:"No"},
+  {m:"85",date:"7/2/2026",time:"6:00 PM",stage:"Round of 32",host:"Vancouver",t1:"1B",t2:"3 E/F/G/I/J",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9,type:"Kick In the Park",free:"Yes"},
+  {m:"85",date:"7/2/2026",time:"6:00 PM",stage:"Round of 32",host:"Vancouver",t1:"1B",t2:"3 E/F/G/I/J",loc:"Venice Beach Recreation Center",dist:11,lid:12,type:"Kick In the Park",free:"Yes"},
+  {m:"85",date:"7/2/2026",time:"6:00 PM",stage:"Round of 32",host:"Vancouver",t1:"1B",t2:"3 E/F/G/I/J",loc:"Hansen Dam",dist:7,lid:92,type:"Official Fan Zone",free:"No"},
+  {m:"86",date:"7/3/2026",time:"12:00 PM",stage:"Round of 32",host:"Miami",t1:"1J",t2:"2H",loc:"Seoul International Park",dist:10,lid:11,type:"Kick In the Park",free:"Yes"},
+  {m:"86",date:"7/3/2026",time:"12:00 PM",stage:"Round of 32",host:"Miami",t1:"1J",t2:"2H",loc:"Whitsett Fields",dist:2,lid:2,type:"Kick In the Park",free:"Yes"},
+  {m:"86",date:"7/3/2026",time:"12:00 PM",stage:"Round of 32",host:"Miami",t1:"1J",t2:"2H",loc:"Sylmar Recreation Center",dist:7,lid:8,type:"Kick In the Park",free:"Yes"},
+  {m:"86",date:"7/3/2026",time:"12:00 PM",stage:"Round of 32",host:"Miami",t1:"1J",t2:"2H",loc:"Hansen Dam",dist:7,lid:92,type:"Official Fan Zone",free:"No"},
+  {m:"87",date:"7/3/2026",time:"11:00 AM",stage:"Round of 32",host:"Kansas City",t1:"1K",t2:"3 D/E/I/J/L",loc:"Seoul International Park",dist:10,lid:11,type:"Kick In the Park",free:"Yes"},
+  {m:"87",date:"7/3/2026",time:"11:00 AM",stage:"Round of 32",host:"Kansas City",t1:"1K",t2:"3 D/E/I/J/L",loc:"Whitsett Fields",dist:2,lid:2,type:"Kick In the Park",free:"Yes"},
+  {m:"87",date:"7/3/2026",time:"11:00 AM",stage:"Round of 32",host:"Kansas City",t1:"1K",t2:"3 D/E/I/J/L",loc:"Sylmar Recreation Center",dist:7,lid:8,type:"Kick In the Park",free:"Yes"},
+  {m:"87",date:"7/3/2026",time:"11:00 AM",stage:"Round of 32",host:"Kansas City",t1:"1K",t2:"3 D/E/I/J/L",loc:"Hansen Dam",dist:7,lid:92,type:"Official Fan Zone",free:"No"},
+  {m:"88",date:"7/3/2026",time:"5:00 PM",stage:"Round of 32",host:"Dallas",t1:"2D",t2:"2G",loc:"Seoul International Park",dist:10,lid:11,type:"Kick In the Park",free:"Yes"},
+  {m:"88",date:"7/3/2026",time:"5:00 PM",stage:"Round of 32",host:"Dallas",t1:"2D",t2:"2G",loc:"Whitsett Fields",dist:2,lid:2,type:"Kick In the Park",free:"Yes"},
+  {m:"88",date:"7/3/2026",time:"5:00 PM",stage:"Round of 32",host:"Dallas",t1:"2D",t2:"2G",loc:"Sylmar Recreation Center",dist:7,lid:8,type:"Kick In the Park",free:"Yes"},
+  {m:"88",date:"7/3/2026",time:"5:00 PM",stage:"Round of 32",host:"Dallas",t1:"2D",t2:"2G",loc:"Hansen Dam",dist:7,lid:92,type:"Official Fan Zone",free:"No"},
+  {m:"89",date:"7/4/2026",time:"9:00 AM",stage:"Round of 16",host:"Philadelphia",t1:"W74",t2:"W77",loc:"Westwood Recreation Center",dist:5,lid:6,type:"Kick In the Park",free:"Yes"},
+  {m:"89",date:"7/4/2026",time:"9:00 AM",stage:"Round of 16",host:"Philadelphia",t1:"W74",t2:"W77",loc:"South Park Recreation Center",dist:9,lid:10,type:"Kick In the Park",free:"Yes"},
+  {m:"89",date:"7/4/2026",time:"9:00 AM",stage:"Round of 16",host:"Philadelphia",t1:"W74",t2:"W77",loc:"El Sereno Recreation Center",dist:14,lid:15,type:"Kick In the Park",free:"Yes"},
+  {m:"89",date:"7/4/2026",time:"9:00 AM",stage:"Round of 16",host:"Philadelphia",t1:"W74",t2:"W77",loc:"Hansen Dam",dist:7,lid:92,type:"Official Fan Zone",free:"No"},
+  {m:"90",date:"7/4/2026",time:"4:00 PM",stage:"Round of 16",host:"Houston",t1:"W73",t2:"W75",loc:"Westwood Recreation Center",dist:5,lid:6,type:"Kick In the Park",free:"Yes"},
+  {m:"90",date:"7/4/2026",time:"4:00 PM",stage:"Round of 16",host:"Houston",t1:"W73",t2:"W75",loc:"South Park Recreation Center",dist:9,lid:10,type:"Kick In the Park",free:"Yes"},
+  {m:"90",date:"7/4/2026",time:"4:00 PM",stage:"Round of 16",host:"Houston",t1:"W73",t2:"W75",loc:"El Sereno Recreation Center",dist:14,lid:15,type:"Kick In the Park",free:"Yes"},
+  {m:"90",date:"7/4/2026",time:"4:00 PM",stage:"Round of 16",host:"Houston",t1:"W73",t2:"W75",loc:"Hansen Dam",dist:7,lid:92,type:"Official Fan Zone",free:"No"},
+  {m:"91",date:"7/5/2026",time:"8:00 AM",stage:"Round of 16",host:"New York/NJ",t1:"W76",t2:"W78",loc:"MacArthur Park",dist:1,lid:17,type:"Kick In the Park",free:"Yes"},
+  {m:"91",date:"7/5/2026",time:"8:00 AM",stage:"Round of 16",host:"New York/NJ",t1:"W76",t2:"W78",loc:"Lanark Recreation Center",dist:3,lid:3,type:"Kick In the Park",free:"Yes"},
+  {m:"91",date:"7/5/2026",time:"8:00 AM",stage:"Round of 16",host:"New York/NJ",t1:"W76",t2:"W78",loc:"Northridge Recreation Center",dist:12,lid:13,type:"Kick In the Park",free:"Yes"},
+  {m:"91",date:"7/5/2026",time:"8:00 AM",stage:"Round of 16",host:"New York/NJ",t1:"W76",t2:"W78",loc:"Hansen Dam",dist:7,lid:92,type:"Official Fan Zone",free:"No"},
+  {m:"92",date:"7/5/2026",time:"5:00 PM",stage:"Round of 16",host:"Mexico City",t1:"W79",t2:"W80",loc:"MacArthur Park",dist:1,lid:17,type:"Kick In the Park",free:"Yes"},
+  {m:"92",date:"7/5/2026",time:"5:00 PM",stage:"Round of 16",host:"Mexico City",t1:"W79",t2:"W80",loc:"Lanark Recreation Center",dist:3,lid:3,type:"Kick In the Park",free:"Yes"},
+  {m:"92",date:"7/5/2026",time:"5:00 PM",stage:"Round of 16",host:"Mexico City",t1:"W79",t2:"W80",loc:"Northridge Recreation Center",dist:12,lid:13,type:"Kick In the Park",free:"Yes"},
+  {m:"92",date:"7/5/2026",time:"5:00 PM",stage:"Round of 16",host:"Mexico City",t1:"W79",t2:"W80",loc:"Hansen Dam",dist:7,lid:92,type:"Official Fan Zone",free:"No"},
+  {m:"93",date:"7/6/2026",time:"4:00 PM",stage:"Round of 16",host:"Dallas",t1:"W83",t2:"W84",loc:"Ken Malloy Harbor Regional Park",dist:15,lid:19,type:"Kick In the Park",free:"Yes"},
+  {m:"93",date:"7/6/2026",time:"4:00 PM",stage:"Round of 16",host:"Dallas",t1:"W83",t2:"W84",loc:"Echo Park",dist:13,lid:14,type:"Kick In the Park",free:"Yes"},
+  {m:"93",date:"7/6/2026",time:"4:00 PM",stage:"Round of 16",host:"Dallas",t1:"W83",t2:"W84",loc:"Sheldon-Arleta Park",dist:6,lid:7,type:"Kick In the Park",free:"Yes"},
+  {m:"94",date:"7/6/2026",time:"1:00 PM",stage:"Round of 16",host:"Seattle",t1:"W81",t2:"W82",loc:"Ken Malloy Harbor Regional Park",dist:15,lid:19,type:"Kick In the Park",free:"Yes"},
+  {m:"94",date:"7/6/2026",time:"1:00 PM",stage:"Round of 16",host:"Seattle",t1:"W81",t2:"W82",loc:"Echo Park",dist:13,lid:14,type:"Kick In the Park",free:"Yes"},
+  {m:"94",date:"7/6/2026",time:"1:00 PM",stage:"Round of 16",host:"Seattle",t1:"W81",t2:"W82",loc:"Sheldon-Arleta Park",dist:6,lid:7,type:"Kick In the Park",free:"Yes"},
+  {m:"95",date:"7/7/2026",time:"2:00 PM",stage:"Round of 16",host:"Atlanta",t1:"W86",t2:"W88",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9,type:"Kick In the Park",free:"Yes"},
+  {m:"95",date:"7/7/2026",time:"2:00 PM",stage:"Round of 16",host:"Atlanta",t1:"W86",t2:"W88",loc:"Stoner Recreation Center",dist:11,lid:18,type:"Kick In the Park",free:"Yes"},
+  {m:"96",date:"7/7/2026",time:"7:00 PM",stage:"Round of 16",host:"Vancouver",t1:"W85",t2:"W87",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9,type:"Kick In the Park",free:"Yes"},
+  {m:"96",date:"7/7/2026",time:"7:00 PM",stage:"Round of 16",host:"Vancouver",t1:"W85",t2:"W87",loc:"Stoner Recreation Center",dist:11,lid:18,type:"Kick In the Park",free:"Yes"},
+  {m:"97",date:"7/9/2026",time:"2:00 PM",stage:"Quarter Final",host:"Boston",t1:"W89",t2:"W90",loc:"Seoul International Park",dist:10,lid:11,type:"Kick In the Park",free:"Yes"},
+  {m:"97",date:"7/9/2026",time:"2:00 PM",stage:"Quarter Final",host:"Boston",t1:"W89",t2:"W90",loc:"Whitsett Fields",dist:2,lid:2,type:"Kick In the Park",free:"Yes"},
+  {m:"97",date:"7/9/2026",time:"2:00 PM",stage:"Quarter Final",host:"Boston",t1:"W89",t2:"W90",loc:"Sylmar Recreation Center",dist:7,lid:8,type:"Kick In the Park",free:"Yes"},
+  {m:"98",date:"7/10/2026",time:"7:00 PM",stage:"Quarter Final",host:"Los Angeles",t1:"W93",t2:"W94",loc:"Westwood Recreation Center",dist:5,lid:6,type:"Kick In the Park",free:"Yes"},
+  {m:"98",date:"7/10/2026",time:"7:00 PM",stage:"Quarter Final",host:"Los Angeles",t1:"W93",t2:"W94",loc:"South Park Recreation Center",dist:9,lid:10,type:"Kick In the Park",free:"Yes"},
+  {m:"98",date:"7/10/2026",time:"7:00 PM",stage:"Quarter Final",host:"Los Angeles",t1:"W93",t2:"W94",loc:"El Sereno Recreation Center",dist:14,lid:15,type:"Kick In the Park",free:"Yes"},
+  {m:"98",date:"7/10/2026",time:"7:00 PM",stage:"Quarter Final",host:"Los Angeles",t1:"W93",t2:"W94",loc:"MacArthur Park",dist:1,lid:17,type:"Kick In the Park",free:"Yes"},
+  {m:"99",date:"7/11/2026",time:"2:00 PM",stage:"Quarter Final",host:"Miami",t1:"W91",t2:"W92",loc:"Sycamore Grove",dist:1,lid:1,type:"Kick In the Park",free:"Yes"},
+  {m:"99",date:"7/11/2026",time:"2:00 PM",stage:"Quarter Final",host:"Miami",t1:"W91",t2:"W92",loc:"Lanark Recreation Center",dist:3,lid:3,type:"Kick In the Park",free:"Yes"},
+  {m:"99",date:"7/11/2026",time:"2:00 PM",stage:"Quarter Final",host:"Miami",t1:"W91",t2:"W92",loc:"Northridge Recreation Center",dist:12,lid:13,type:"Kick In the Park",free:"Yes"},
+  {m:"99",date:"7/11/2026",time:"2:00 PM",stage:"Quarter Final",host:"Miami",t1:"W91",t2:"W92",loc:"Venice Beach",dist:11,lid:93,type:"Official Fan Zone",free:"Yes"},
+  {m:"100",date:"7/11/2026",time:"6:00 PM",stage:"Quarter Final",host:"Kansas City",t1:"W95",t2:"W96",loc:"Sycamore Grove",dist:1,lid:1,type:"Kick In the Park",free:"Yes"},
+  {m:"100",date:"7/11/2026",time:"6:00 PM",stage:"Quarter Final",host:"Kansas City",t1:"W95",t2:"W96",loc:"Lanark Recreation Center",dist:3,lid:3,type:"Kick In the Park",free:"Yes"},
+  {m:"100",date:"7/11/2026",time:"6:00 PM",stage:"Quarter Final",host:"Kansas City",t1:"W95",t2:"W96",loc:"Northridge Recreation Center",dist:12,lid:13,type:"Kick In the Park",free:"Yes"},
+  {m:"100",date:"7/11/2026",time:"6:00 PM",stage:"Quarter Final",host:"Kansas City",t1:"W95",t2:"W96",loc:"Venice Beach",dist:11,lid:93,type:"Official Fan Zone",free:"Yes"},
+  {m:"101",date:"7/14/2026",time:"5:00 PM",stage:"Semi Final",host:"Dallas",t1:"W97",t2:"W98",loc:"Ken Malloy Harbor Regional Park",dist:15,lid:19,type:"Kick In the Park",free:"Yes"},
+  {m:"101",date:"7/14/2026",time:"5:00 PM",stage:"Semi Final",host:"Dallas",t1:"W97",t2:"W98",loc:"Sheldon-Arleta Park",dist:6,lid:7,type:"Kick In the Park",free:"Yes"},
+  {m:"101",date:"7/14/2026",time:"5:00 PM",stage:"Semi Final",host:"Dallas",t1:"W97",t2:"W98",loc:"Echo Park",dist:13,lid:14,type:"Kick In the Park",free:"Yes"},
+  {m:"101",date:"7/14/2026",time:"5:00 PM",stage:"Semi Final",host:"Dallas",t1:"W97",t2:"W98",loc:"West Harbor Los Angeles",dist:15,lid:94,type:"Official Fan Zone",free:"No"},
+  {m:"102",date:"7/15/2026",time:"5:00 PM",stage:"Semi Final",host:"Atlanta",t1:"W99",t2:"W100",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9,type:"Kick In the Park",free:"Yes"},
+  {m:"102",date:"7/15/2026",time:"5:00 PM",stage:"Semi Final",host:"Atlanta",t1:"W99",t2:"W100",loc:"Venice Beach Recreation Center",dist:11,lid:12,type:"Kick In the Park",free:"Yes"},
+  {m:"102",date:"7/15/2026",time:"5:00 PM",stage:"Semi Final",host:"Atlanta",t1:"W99",t2:"W100",loc:"West Harbor Los Angeles",dist:15,lid:94,type:"Official Fan Zone",free:"No"},
+  {m:"103",date:"7/18/2026",time:"5:00 PM",stage:"Bronze Final",host:"Miami",t1:"L101",t2:"L102",loc:"Seoul International Park",dist:10,lid:11,type:"Kick In the Park",free:"Yes"},
+  {m:"103",date:"7/18/2026",time:"5:00 PM",stage:"Bronze Final",host:"Miami",t1:"L101",t2:"L102",loc:"Whitsett Fields",dist:2,lid:2,type:"Kick In the Park",free:"Yes"},
+  {m:"103",date:"7/18/2026",time:"5:00 PM",stage:"Bronze Final",host:"Miami",t1:"L101",t2:"L102",loc:"Sylmar Recreation Center",dist:7,lid:8,type:"Kick In the Park",free:"Yes"},
+  {m:"103",date:"7/18/2026",time:"5:00 PM",stage:"Bronze Final",host:"Miami",t1:"L101",t2:"L102",loc:"West Harbor Los Angeles",dist:15,lid:94,type:"Official Fan Zone",free:"No"},
+  {m:"104",date:"7/19/2026",time:"12:00 PM",stage:"Final",host:"New York/NJ",t1:"W101",t2:"W102",loc:"Westwood Recreation Center",dist:5,lid:6,type:"Kick In the Park",free:"Yes"},
+  {m:"104",date:"7/19/2026",time:"12:00 PM",stage:"Final",host:"New York/NJ",t1:"W101",t2:"W102",loc:"South Park Recreation Center",dist:9,lid:10,type:"Kick In the Park",free:"Yes"},
+  {m:"104",date:"7/19/2026",time:"12:00 PM",stage:"Final",host:"New York/NJ",t1:"W101",t2:"W102",loc:"El Sereno Recreation Center",dist:14,lid:15,type:"Kick In the Park",free:"Yes"},
+  {m:"104",date:"7/19/2026",time:"12:00 PM",stage:"Final",host:"New York/NJ",t1:"W101",t2:"W102",loc:"Lanark Recreation Center",dist:3,lid:3,type:"Kick In the Park",free:"Yes"},
+  {m:"104",date:"7/19/2026",time:"12:00 PM",stage:"Final",host:"New York/NJ",t1:"W101",t2:"W102",loc:"West Harbor Los Angeles",dist:15,lid:94,type:"Official Fan Zone",free:"No"}
 ];
+
+const TRANSIT_DATA = {"Sycamore Grove": {"id": "sycamore-grove", "name": "Sycamore Grove", "address": "4702 N Figueroa St, Los Angeles, CA 90042", "transit": {"rail": [{"line": "Metro L Line (Gold)", "station": "Southwest Museum Station", "distance_mi": 0.3, "walk_min": 7}], "bus": [{"line": "Metro Local 81", "distance_mi": 0.0}, {"line": "Metro Local 182", "distance_mi": 0.0}, {"line": "DASH Highland Park/Eagle Rock", "distance_mi": 0.5}]}, "notes": "Metro L Line (Gold) Southwest Museum Station is a 7-min walk."}, "MacArthur Park": {"id": "macarthur-park", "name": "MacArthur Park", "address": "2230 W 6th St, Los Angeles, CA 90057", "transit": {"rail": [{"line": "Metro B Line (Red)", "station": "Westlake / MacArthur Park Station", "distance_mi": 0.4, "walk_min": 7}, {"line": "Metro D Line (Purple)", "station": "Westlake / MacArthur Park Station", "distance_mi": 0.4, "walk_min": 7}], "bus": [{"line": "Metro Local 33", "distance_mi": 0.1}, {"line": "Metro Local 18", "distance_mi": 0.1}, {"line": "DASH Pico Union/Echo Park", "distance_mi": 0.2}]}, "notes": "Excellent transit. B/D Line Westlake/MacArthur Park Station is a 7-min walk."}, "Whitsett Fields": {"id": "whitsett-fields", "name": "Whitsett Fields", "address": "12445 Vanowen St, North Hollywood, CA 91605", "transit": {"rail": [], "bus": [{"line": "Metro Local 165", "distance_mi": 0.1}, {"line": "DASH North Hollywood Clockwise", "distance_mi": 0.1}, {"line": "DASH North Hollywood Counterclockwise", "distance_mi": 0.1}, {"line": "Metro Local 230", "distance_mi": 0.2}, {"line": "Metro Local 152", "distance_mi": 0.3}, {"line": "Metro Local 224", "distance_mi": 0.3}]}, "notes": "Bus-served area. No Metro Rail nearby."}, "Lanark Recreation Center": {"id": "lanark-recreation-center", "name": "Lanark Recreation Center", "address": "21816 Lanark St, Canoga Park, CA 91304", "transit": {"rail": [{"line": "Metro G Line (Orange) 901", "station": "Canoga Station", "distance_mi": 0.6}], "bus": [{"line": "Metro Local 152", "distance_mi": 0.2}, {"line": "Metro Local 150", "distance_mi": 0.3}, {"line": "Metro Local 169", "distance_mi": 0.5}]}, "notes": "Metro G Line (Orange) Canoga Station is roughly 0.6 mi away."}, "Westwood": {"id": "westwood", "name": "Westwood", "address": "1350 S Sepulveda Blvd, Los Angeles, CA 90025", "transit": {"rail": [{"line": "Metro E Line (Expo)", "station": "Expo / Sepulveda Station", "distance_mi": 0.5, "walk_min": 10}], "bus": [{"line": "Metro Rapid 733", "distance_mi": 0.1}, {"line": "Metro Local 6 (Sepulveda Blvd)", "distance_mi": 0.1}, {"line": "Culver City Bus 17", "distance_mi": 0.2}, {"line": "Metro Local 7 (Pico Blvd)", "distance_mi": 0.3}]}, "notes": "Metro E Line (Expo) Expo/Sepulveda Station is ~10-min walk. Sepulveda Blvd well-served by buses."}, "Cheviot Hills Recreation Center": {"id": "cheviot-hills", "name": "Cheviot Hills Recreation Center", "address": "2551 Motor Ave, Los Angeles, CA 90064", "transit": {"rail": [{"line": "Metro E Line (Expo)", "station": "Palms Station", "distance_mi": 0.8}], "bus": [{"line": "Metro Local 5 (Olympic Blvd)", "distance_mi": 0.2}, {"line": "Metro Local 7 (Pico Blvd)", "distance_mi": 0.4}, {"line": "Culver City Bus 3 (Culver City)", "distance_mi": 0.3}, {"line": "Metro Rapid R12", "distance_mi": 0.3}]}, "notes": "Metro E Line Palms Station is approx. 0.8 mi. Buses on Olympic/Pico are closest options."}, "Sheldon-Arleta": {"id": "sheldon-arleta", "name": "Sheldon-Arleta", "address": "12455 Wicks St, Sun Valley, CA 91352", "transit": {"rail": [{"line": "Metrolink Antelope Valley Line", "station": "Sun Valley Station", "distance_mi": 1.2}], "bus": [{"line": "Metro Local 224", "distance_mi": 0.3}, {"line": "Metro Local 90", "distance_mi": 0.5}]}, "notes": "Limited transit. Sun Valley Metrolink Station is approx. 1.2 mi."}, "Sylmar Recreation Center": {"id": "sylmar-recreation-center", "name": "Sylmar Recreation Center", "address": "13109 Borden Ave, Sylmar, CA 91342", "transit": {"rail": [{"line": "Metrolink Antelope Valley Line", "station": "Sylmar / San Fernando Station", "distance_mi": 1.5}], "bus": [{"line": "Metro Local 90", "distance_mi": 0.3}, {"line": "Metro Local 230", "distance_mi": 0.5}]}, "notes": "Limited transit. Sylmar/San Fernando Metrolink Station is approx. 1.5 mi."}, "Jackie Tatum Harvard Recreation Center": {"id": "jackie-tatum-harvard", "name": "Jackie Tatum Harvard Recreation Center", "address": "1535 W 62nd St, Los Angeles, CA 90047", "transit": {"rail": [], "bus": [{"line": "Metro Local 40 (Crenshaw Blvd)", "distance_mi": 0.2}, {"line": "Metro Local 206 (Harvard Blvd)", "distance_mi": 0.1}, {"line": "Metro Local 207 (Vermont Ave)", "distance_mi": 0.4}, {"line": "DASH Vermont/Main", "distance_mi": 0.5}]}, "notes": "Bus-only area. Crenshaw Blvd and Harvard Blvd buses are closest options."}, "South Park Recreation Center": {"id": "south-park", "name": "South Park Recreation Center", "address": "345 E 51st St, Los Angeles, CA 90011", "transit": {"rail": [{"line": "Metro A Line (Blue)", "station": "Slauson Station", "distance_mi": 0.4}], "bus": [{"line": "Metro Local 51 (Avalon Blvd)", "distance_mi": 0.2}, {"line": "DASH Southeast Clockwise", "distance_mi": 0.2}, {"line": "DASH Southeast Counterclockwise", "distance_mi": 0.2}, {"line": "Metro Local 10/48", "distance_mi": 0.3}]}, "notes": "Metro A Line (Blue) Slauson Station is approx. 0.4 mi. Bus stop at Avalon/51st is 0.2 mi."}, "Seoul International": {"id": "seoul-international", "name": "Seoul International", "address": "3250 San Marino St., Los Angeles, CA 90006", "transit": {"rail": [{"line": "Metro D Line (Purple)", "station": "Wilshire / Normandie Station", "distance_mi": 0.5, "walk_min": 11}], "bus": [{"line": "Metro Local 18 (Wilshire Blvd)", "distance_mi": 0.3}, {"line": "Metro Local 207 (Vermont Ave)", "distance_mi": 0.3}, {"line": "Metro Rapid 720", "distance_mi": 0.3}, {"line": "DASH Koreatown", "distance_mi": 0.2}]}, "notes": "Excellent transit in Koreatown. D Line Wilshire/Normandie Station is ~11-min walk."}, "Venice Beach Recreation Center": {"id": "venice-beach-recreation-center", "name": "Venice Beach Recreation Center", "address": "1800 Ocean Front Walk, Venice, CA 90291", "transit": {"rail": [], "bus": [{"line": "Big Blue Bus 18 (Rapid)", "distance_mi": 0.2}, {"line": "Metro Local 108 (Lincoln Blvd)", "distance_mi": 0.4}, {"line": "Big Blue Bus 1 (Main St)", "distance_mi": 0.3}]}, "notes": "No Metro Rail. Big Blue Bus serves the Venice Beach area. Limited transit near the boardwalk."}, "Stoner Recreation Center": {"id": "stoner-recreation-center", "name": "Stoner Recreation Center", "address": "1835 Stoner Ave, Los Angeles, CA 90025", "transit": {"rail": [{"line": "Metro E Line (Expo)", "station": "Expo / Bundy Station", "distance_mi": 0.5}], "bus": [{"line": "Metro Local 4 (Santa Monica Blvd)", "distance_mi": 0.3}, {"line": "Big Blue Bus 3 (Pico Blvd)", "distance_mi": 0.4}, {"line": "Metro Local 5 (Olympic Blvd)", "distance_mi": 0.4}]}, "notes": "Metro E Line Expo/Bundy Station is approx. 0.5 mi."}, "Northridge": {"id": "northridge", "name": "Northridge", "address": "18300 Lemarsh St, Northridge, CA 91324", "transit": {"rail": [], "bus": [{"line": "Metro Local 167 (Reseda Blvd)", "distance_mi": 0.4}, {"line": "Metro Local 164 (Devonshire St)", "distance_mi": 0.5}]}, "notes": "Car-dependent area. Limited bus service only."}, "Echo Park": {"id": "echo-park", "name": "Echo Park", "address": "1632 Bellevue Ave, Los Angeles, CA 90026", "transit": {"rail": [{"line": "Metro B Line (Red)", "station": "Westlake / MacArthur Park Station", "distance_mi": 0.3, "walk_min": 7}, {"line": "Metro D Line (Purple)", "station": "Westlake / MacArthur Park Station", "distance_mi": 0.3, "walk_min": 7}], "bus": [{"line": "Metro Local 2 (Sunset Blvd)", "distance_mi": 0.2}, {"line": "Metro Local 4 (Santa Monica Blvd)", "distance_mi": 0.3}, {"line": "Metro Local 92 (Glendale Blvd)", "distance_mi": 0.1}, {"line": "DASH Echo Park", "distance_mi": 0.1}, {"line": "Metro Local 10/48", "distance_mi": 0.3}]}, "notes": "Good transit. B/D Line Westlake/MacArthur Park Station is ~7-min walk. Buses on Glendale Blvd are closest."}, "El Sereno Recreation Center": {"id": "el-sereno", "name": "El Sereno Recreation Center", "address": "4721 Klamath St, Los Angeles, CA 90032", "transit": {"rail": [], "bus": [{"line": "Metro Local 70 (Huntington Dr)", "distance_mi": 0.3}, {"line": "Metro Local 71 (Alhambra Ave)", "distance_mi": 0.4}, {"line": "Metro Local 256 (Valley Blvd)", "distance_mi": 0.5}]}, "notes": "Bus-only area. Limited transit options."}, "Ken Malloy Harbor Regional Park": {"id": "ken-malloy-harbor", "name": "Ken Malloy Harbor Regional Park", "address": "25820 Vermont Ave, Harbor City, CA 90710", "transit": {"rail": [], "bus": [{"line": "Metro Local 205 (Vermont Ave)", "distance_mi": 0.1}, {"line": "Metro Local 246 (Sepulveda Blvd)", "distance_mi": 0.5}]}, "notes": "Limited transit. Bus 205 on Vermont Ave is the closest option."}, "Wilmington Recreation Center": {"id": "wilmington-recreation-center", "name": "Wilmington Recreation Center", "address": "325 N Neptune Ave, Wilmington, CA 90744", "transit": {"rail": [], "bus": [{"line": "Metro Local 550 (Pacific Ave)", "distance_mi": 0.3}, {"line": "Metro Local 232 (Anaheim St)", "distance_mi": 0.4}]}, "notes": "Limited transit in Wilmington. Bus-only options."}, "The Original Farmers Market": {"id": "farmers-market", "name": "The Original Farmers Market", "address": "6333 W. 3rd St, Los Angeles, CA 90036", "transit": {"rail": [{"line": "Metro D Line (Purple)", "station": "Wilshire / La Brea Station", "distance_mi": 0.6}], "bus": [{"line": "Metro Local 16 (3rd St)", "distance_mi": 0.1}, {"line": "Metro Rapid 316 (3rd St)", "distance_mi": 0.1}, {"line": "DASH Fairfax", "distance_mi": 0.1}, {"line": "Metro Local 217 (Fairfax Ave)", "distance_mi": 0.2}]}, "notes": "Well-served by bus. D Line Wilshire/La Brea Station is ~0.6 mi south."}, "Los Angeles Union Station": {"id": "union-station", "name": "Los Angeles Union Station", "address": "800 N. Alameda Street, Los Angeles, CA 90012", "transit": {"rail": [{"line": "Metro A Line (Blue)", "station": "Union Station", "distance_mi": 0.0}, {"line": "Metro B Line (Red)", "station": "Union Station", "distance_mi": 0.0}, {"line": "Metro D Line (Purple)", "station": "Union Station", "distance_mi": 0.0}, {"line": "Metro L Line (Gold)", "station": "Union Station", "distance_mi": 0.0}, {"line": "Metrolink (all lines)", "station": "Union Station", "distance_mi": 0.0}, {"line": "Amtrak", "station": "Union Station", "distance_mi": 0.0}], "bus": [{"line": "Metro Local 40 (multiple)", "distance_mi": 0.1}, {"line": "DASH A/B/D", "distance_mi": 0.1}, {"line": "Metro Rapid 720", "distance_mi": 0.2}]}, "notes": "Major transit hub. A, B, D, L Lines + all Metrolink + Amtrak routes all stop here."}, "Hansen Dam": {"id": "hansen-dam", "name": "Hansen Dam", "address": "11770 Foothill Blvd, Sylmar, CA 91342", "transit": {"rail": [], "bus": [{"line": "Metro Local 90 (Foothill Blvd)", "distance_mi": 0.2}, {"line": "Metro Local 230 (Van Nuys Blvd)", "distance_mi": 0.6}]}, "notes": "Very limited transit. Bus 90 on Foothill Blvd is the primary option."}, "Venice Beach": {"id": "venice-beach", "name": "Venice Beach", "address": "Windward Ave, Venice Beach, Los Angeles, CA 90291", "transit": {"rail": [], "bus": [{"line": "Big Blue Bus 18 (Rapid)", "distance_mi": 0.2}, {"line": "Big Blue Bus 1 (Main St)", "distance_mi": 0.3}, {"line": "Metro Local 33 (Venice Blvd)", "distance_mi": 0.4}]}, "notes": "No Metro Rail. Big Blue Bus primary transit option. Venice Blvd bus provides broader connectivity."}, "West Harbor Los Angeles": {"id": "west-harbor", "name": "West Harbor Los Angeles", "address": "461 W. 6th Street, San Pedro, CA 90731", "transit": {"rail": [], "bus": [{"line": "Metro Local 246 (Gaffey St)", "distance_mi": 0.3}, {"line": "Metro Local 550 (Pacific Ave)", "distance_mi": 0.4}, {"line": "DASH San Pedro", "distance_mi": 0.2}]}, "notes": "No Metro Rail. DASH San Pedro and bus 246 are the closest options."}, "Los Angeles Memorial Coliseum": {"id": "la-memorial-coliseum", "name": "Los Angeles Memorial Coliseum", "address": "3911 S Figueroa St, Los Angeles, CA 90037", "transit": {"rail": [{"line": "Metro E Line (Expo)", "station": "Exposition Park / USC Station", "distance_mi": 0.1, "walk_min": 2}], "bus": [{"line": "Metro Local 81 (Figueroa St)", "distance_mi": 0.1}, {"line": "DASH USC / Exposition Park", "distance_mi": 0.1}, {"line": "Metro Local 40 (Flower St)", "distance_mi": 0.3}]}, "notes": "Excellent transit. Metro E Line Expo/USC Station is steps away (~2-min walk)."}, "The Autry Museum": {"id": "autry-museum", "name": "The Autry Museum", "address": "4700 Western Heritage Way, Griffith Park, Los Angeles, CA 90027", "transit": {"rail": [{"line": "Metro L Line (Gold)", "station": "Downtown Burbank Station", "distance_mi": 1.5}], "bus": [{"line": "DASH Griffith Park", "distance_mi": 0.2}, {"line": "Metro Local 96 (Los Feliz Blvd)", "distance_mi": 0.5}]}, "notes": "Limited transit inside Griffith Park. DASH Griffith Park seasonal shuttle is the best option."}, "Van Nuys/Sherman Oaks Recreation Center": {"id": "van-nuys-sherman-oaks", "name": "Van Nuys/Sherman Oaks Recreation Center", "address": "14201 Huston St, Sherman Oaks, CA 91423", "transit": {"rail": [], "bus": [{"line": "Metro Local 150 (Ventura Blvd)", "distance_mi": 0.3}, {"line": "Metro Local 240 (Van Nuys Blvd)", "distance_mi": 0.5}, {"line": "Metro Rapid 750 (Ventura Blvd)", "distance_mi": 0.3}]}, "notes": "Bus-only. Ventura Blvd buses are the closest options."}};
+
+// Find transit info for a site by name
+function getTransit(siteName){
+  const keys = Object.keys(TRANSIT_DATA);
+  const match = keys.find(k => TRANSIT_DATA[k] && siteName.toLowerCase().includes(TRANSIT_DATA[k].name?.toLowerCase()?.split(' ')[0]));
+  if(match) return TRANSIT_DATA[match];
+  // Try exact match
+  const exact = keys.find(k => TRANSIT_DATA[k]?.name === siteName);
+  return exact ? TRANSIT_DATA[exact] : null;
+}
+
+// Better transit lookup by site ID
+const TRANSIT_BY_ID = (() => {
+  const map = {};
+  const nameMap = {};
+  Object.values(TRANSIT_DATA).forEach(t => { nameMap[t.name.toLowerCase()] = t; });
+  SITES.forEach(s => {
+    // Try exact name match first
+    const key = s.name.toLowerCase();
+    if(nameMap[key]) { map[s.id] = nameMap[key]; return; }
+    // Try partial match
+    const found = Object.values(TRANSIT_DATA).find(t =>
+      key.includes(t.name.toLowerCase()) || t.name.toLowerCase().includes(key.split(' ')[0])
+    );
+    if(found) map[s.id] = found;
+  });
+  return map;
+})();
 
 // ─── HELPERS ───
 const isPlaceholder=(n)=>/^(W\d|L\d|\d[A-L]|3\s)/.test(n);
@@ -558,28 +845,82 @@ const sortDates=(a,b)=>parseDate(a)-parseDate(b);
 const TEAM_OVERRIDES={};
 const resolveTeam=(n)=>TEAM_OVERRIDES[n]||n;
 
-const MATCHES=(()=>{const map=new Map();CALENDAR_RAW.forEach(r=>{const k=r.m,t1=resolveTeam(r.t1),t2=resolveTeam(r.t2);if(!map.has(k))map.set(k,{...r,t1,t2,locations:[{name:r.loc,dist:r.dist,lid:r.lid}]});else map.get(k).locations.push({name:r.loc,dist:r.dist,lid:r.lid})});return[...map.values()]})();
+const MATCHES=(()=>{const map=new Map();CALENDAR_RAW.forEach(r=>{const k=r.m,t1=resolveTeam(r.t1),t2=resolveTeam(r.t2);if(!map.has(k))map.set(k,{...r,t1,t2,locations:[{name:r.loc,dist:r.dist,lid:r.lid,type:r.type,free:r.free}]});else map.get(k).locations.push({name:r.loc,dist:r.dist,lid:r.lid,type:r.type,free:r.free})});return[...map.values()]})();
 const ALL_DATES=[...new Set(CALENDAR_RAW.map(r=>r.date))].sort(sortDates);
 const ALL_TEAMS=[...new Set(MATCHES.flatMap(m=>[m.t1,m.t2]).filter(isRealTeam))].sort();
 const ALL_LOCATIONS=SITES.map(s=>s.name).sort();
 const ALL_DISTRICTS=[...new Set(SITES.map(s=>s.district))].sort((a,b)=>a-b);
+const ALL_TYPES=[...new Set(SITES.map(s=>s.type))].sort();
 const STAGES=["Group Stage","Round of 32","Round of 16","Quarter Final","Semi Final","Bronze Final","Final"];
 const stageCategory=(s)=>s.startsWith("Group")?"Group Stage":s;
 
 const STAGE_COLORS={"Group Stage":"#304FFE","Round of 32":"#7C4DFF","Round of 16":"#651FFF","Quarter Final":"#FF6D00","Semi Final":"#F50057","Bronze Final":"#cd7f32",Final:"#D50000"};
+
+// Pin colors and shapes by type
+const TYPE_STYLES={
+  "Kick In the Park":{color:"#2B9051",shape:"circle",label:"⚽"},
+  "Official Fan Zone":{color:"#FF6D00",shape:"square",label:"🎪"},
+  "FIFA Fan Festival":{color:"#D50000",shape:"star",label:"🏟️"},
+  "Community Activations":{color:"#26C5DA",shape:"diamond",label:"🎨"},
+};
 
 // ─── MAP ───
 function MapView({sites,selectedSite,onSelectSite,filteredLocationIds}){
   const mapRef=useRef(null),mapI=useRef(null),markers=useRef([]);
   useEffect(()=>{if(mapI.current)return;const L=window.L;if(!L)return;const map=L.map(mapRef.current,{center:[34.05,-118.35],zoom:11,zoomControl:true,scrollWheelZoom:true});L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',maxZoom:19}).addTo(map);mapI.current=map;return()=>{map.remove();mapI.current=null}},[]);
   useEffect(()=>{const L=window.L;if(!L||!mapI.current)return;const map=mapI.current;markers.current.forEach(m=>map.removeLayer(m));markers.current=[];
-    sites.forEach(site=>{const isActive=filteredLocationIds.size===0||filteredLocationIds.has(site.id);const isSel=selectedSite?.id===site.id;const sz=isSel?24:16;const color=isSel?"#D50000":isActive?"#304FFE":"#aaa";const op=isActive?1:.35;
-      const icon=L.divIcon({className:"",html:`<div style="width:${sz}px;height:${sz}px;background:${color};border:3px solid #fff;border-radius:50%;box-shadow:0 0 ${isSel?14:6}px ${color},0 2px 6px rgba(0,0,0,.4);opacity:${op};cursor:pointer;transition:all .15s"></div>`,iconSize:[sz,sz],iconAnchor:[sz/2,sz/2]});
+    sites.forEach(site=>{
+      const isActive=filteredLocationIds.size===0||filteredLocationIds.has(site.id);
+      const isSel=selectedSite?.id===site.id;
+      const ts=TYPE_STYLES[site.type]||TYPE_STYLES["Kick In the Park"];
+      const sz=isSel?24:16;
+      const color=isSel?"#D50000":isActive?ts.color:"#bbb";
+      const op=isActive?1:.3;
+      const shape=ts.shape;
+      const borderR=shape==="circle"?"50%":shape==="square"?"3px":shape==="diamond"?"2px":"50%";
+      const transform=shape==="diamond"?"rotate(45deg)":"none";
+      const actualSz=shape==="diamond"?Math.round(sz*0.75):sz;
+
+      const icon=L.divIcon({className:"",html:`<div style="width:${actualSz}px;height:${actualSz}px;background:${color};border:3px solid #fff;border-radius:${borderR};box-shadow:0 0 ${isSel?14:6}px ${color},0 2px 6px rgba(0,0,0,.4);opacity:${op};cursor:pointer;transition:all .15s;transform:${transform}"></div>`,iconSize:[sz,sz],iconAnchor:[sz/2,sz/2]});
+
+      // Build popup with transit info
+      const transit=TRANSIT_BY_ID[site.id];
+      let transitHtml="";
+      if(transit){
+        const rails=(transit.transit?.rail||[]).map(r=>`<span style="display:inline-block;background:#304FFE;color:#fff;font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px;margin:1px">${r.line} · ${r.walk_min}min walk</span>`).join("");
+        const buses=(transit.transit?.bus||[]).slice(0,3).map(b=>`<span style="display:inline-block;background:#eee;color:#333;font-size:9px;font-weight:600;padding:1px 5px;border-radius:3px;margin:1px">${b.line}</span>`).join("");
+        transitHtml=`<div style="margin-top:6px;border-top:1px solid #ddd;padding-top:5px"><div style="font-size:9px;font-weight:700;color:#555;margin-bottom:3px">🚌 TRANSIT</div>${rails}${buses}</div>`;
+      }
+      const freeLabel=site.free==="Yes"?`<span style="background:#e8f5e9;color:#2e7d32;font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px">FREE</span>`:`<span style="background:#fde7e7;color:#8a1a1a;font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px">TICKETED</span>`;
+      const typeLabel=`<span style="background:#f0f0f0;color:#555;font-size:9px;font-weight:600;padding:1px 5px;border-radius:3px">${site.type}</span>`;
+
       const marker=L.marker([site.lat,site.lng],{icon}).on("click",()=>onSelectSite(site)).addTo(map);
-      if(isSel)marker.bindPopup(`<div style="font-family:system-ui;font-size:13px;color:#111"><strong>${site.name}</strong><br><span style="color:#555">District ${site.district}</span><br><span style="font-size:11px;color:#777">${site.address}</span></div>`,{closeButton:false}).openPopup();
-      markers.current.push(marker)})
+      if(isSel)marker.bindPopup(`<div style="font-family:system-ui;font-size:13px;color:#111;min-width:180px"><strong>${site.name}</strong><br><span style="color:#555">District ${site.district}</span> ${freeLabel} ${typeLabel}<br><span style="font-size:11px;color:#777">${site.address}</span>${transitHtml}</div>`,{closeButton:false,maxWidth:280}).openPopup();
+      markers.current.push(marker)
+    })
   },[sites,selectedSite,filteredLocationIds,onSelectSite]);
   return <div ref={mapRef} style={{width:"100%",height:"100%",borderRadius:10,minHeight:420}}/>
+}
+
+// ─── TRANSIT PANEL ───
+function TransitInfo({siteId}){
+  const transit=TRANSIT_BY_ID[siteId];
+  if(!transit)return null;
+  const rails=transit.transit?.rail||[];
+  const buses=transit.transit?.bus||[];
+  if(!rails.length&&!buses.length)return null;
+  return(<div style={{marginTop:8,padding:"8px 10px",background:"var(--light)",borderRadius:6,fontSize:12}}>
+    <div style={{fontWeight:700,fontSize:11,color:"var(--muted)",marginBottom:4}}>🚌 Transit Options</div>
+    {rails.map((r,i)=><div key={"r"+i} style={{display:"flex",alignItems:"center",gap:6,marginBottom:3}}>
+      <span style={{background:"#304FFE",color:"#fff",fontSize:10,fontWeight:700,padding:"1px 6px",borderRadius:3}}>🚇</span>
+      <span style={{color:"var(--text)",fontSize:11}}>{r.line} — {r.station} ({r.walk_min} min walk)</span>
+    </div>)}
+    {buses.slice(0,4).map((b,i)=><div key={"b"+i} style={{display:"flex",alignItems:"center",gap:6,marginBottom:2}}>
+      <span style={{background:"var(--orange)",color:"#fff",fontSize:10,fontWeight:700,padding:"1px 6px",borderRadius:3}}>🚌</span>
+      <span style={{color:"var(--text)",fontSize:11}}>{b.line}</span>
+    </div>)}
+    {transit.notes&&<div style={{fontSize:10,color:"var(--muted)",marginTop:4,fontStyle:"italic"}}>{transit.notes}</div>}
+  </div>);
 }
 
 // ─── MAIN APP ───
@@ -590,45 +931,48 @@ function App(){
   const[locationFilter,setLocationFilter]=useState("");
   const[districtFilter,setDistrictFilter]=useState("");
   const[stageFilter,setStageFilter]=useState("");
+  const[typeFilter,setTypeFilter]=useState("");
 
-  // FIX: When filtering by location, only show THAT location on map
   const filteredMatches=useMemo(()=>MATCHES.filter(m=>{
     if(dateFilter&&m.date!==dateFilter)return false;
     if(teamFilter&&m.t1!==teamFilter&&m.t2!==teamFilter)return false;
     if(locationFilter&&!m.locations.some(l=>l.name===locationFilter))return false;
     if(districtFilter&&!m.locations.some(l=>String(l.dist)===districtFilter))return false;
     if(stageFilter&&stageCategory(m.stage)!==stageFilter)return false;
+    if(typeFilter&&!m.locations.some(l=>l.type===typeFilter))return false;
     return true;
-  }),[dateFilter,teamFilter,locationFilter,districtFilter,stageFilter]);
+  }),[dateFilter,teamFilter,locationFilter,districtFilter,stageFilter,typeFilter]);
 
-  // FIX: Map highlighting - when location or district filter is active, only highlight those specific sites
   const filteredLocationIds=useMemo(()=>{
-    if(!dateFilter&&!teamFilter&&!locationFilter&&!districtFilter&&!stageFilter&&!selectedSite)return new Set();
+    if(!dateFilter&&!teamFilter&&!locationFilter&&!districtFilter&&!stageFilter&&!typeFilter&&!selectedSite)return new Set();
     if(selectedSite)return new Set([selectedSite.id]);
-    if(locationFilter){
-      const site=SITES.find(s=>s.name===locationFilter);
-      return site?new Set([site.id]):new Set();
-    }
-    if(districtFilter){
-      return new Set(SITES.filter(s=>String(s.district)===districtFilter).map(s=>s.id));
-    }
-    const ids=new Set();
-    filteredMatches.forEach(m=>m.locations.forEach(l=>ids.add(l.lid)));
-    return ids;
-  },[filteredMatches,dateFilter,teamFilter,locationFilter,districtFilter,stageFilter,selectedSite]);
+    if(locationFilter){const site=SITES.find(s=>s.name===locationFilter);return site?new Set([site.id]):new Set()}
+    if(districtFilter)return new Set(SITES.filter(s=>String(s.district)===districtFilter).map(s=>s.id));
+    if(typeFilter)return new Set(SITES.filter(s=>s.type===typeFilter).map(s=>s.id));
+    const ids=new Set();filteredMatches.forEach(m=>m.locations.forEach(l=>ids.add(l.lid)));return ids;
+  },[filteredMatches,dateFilter,teamFilter,locationFilter,districtFilter,stageFilter,typeFilter,selectedSite]);
 
   const siteMatches=useMemo(()=>{if(!selectedSite)return[];return MATCHES.filter(m=>m.locations.some(l=>l.lid===selectedSite.id)).sort((a,b)=>sortDates(a.date,b.date))},[selectedSite]);
   const matchesByDate=useMemo(()=>{const g={};const src=selectedSite?siteMatches:filteredMatches;src.forEach(m=>{if(!g[m.date])g[m.date]=[];g[m.date].push(m)});return Object.entries(g).sort(([a],[b])=>sortDates(a,b))},[filteredMatches,siteMatches,selectedSite]);
 
-  const clearFilters=()=>{setDateFilter("");setTeamFilter("");setLocationFilter("");setDistrictFilter("");setStageFilter("");setSelectedSite(null)};
-  const hasFilters=dateFilter||teamFilter||locationFilter||districtFilter||stageFilter||selectedSite;
+  const clearFilters=()=>{setDateFilter("");setTeamFilter("");setLocationFilter("");setDistrictFilter("");setStageFilter("");setTypeFilter("");setSelectedSite(null)};
+  const hasFilters=dateFilter||teamFilter||locationFilter||districtFilter||stageFilter||typeFilter||selectedSite;
 
-  const sel={background:"#fff",color:"var(--text)",border:"1.5px solid var(--border)",borderRadius:8,padding:"10px 12px",fontSize:14,outline:"none",cursor:"pointer",minWidth:0,flex:"1 1 140px",maxWidth:"none",appearance:"none",WebkitAppearance:"none",backgroundImage:`url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235a6475' stroke-width='1.5' fill='none'/%3E%3C/svg%3E")`,backgroundRepeat:"no-repeat",backgroundPosition:"right 10px center",paddingRight:30,minHeight:44};
+  const sel={background:"#fff",color:"var(--text)",border:"1.5px solid var(--border)",borderRadius:8,padding:"10px 12px",fontSize:14,outline:"none",cursor:"pointer",minWidth:0,flex:"1 1 130px",maxWidth:"none",appearance:"none",WebkitAppearance:"none",backgroundImage:`url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235a6475' stroke-width='1.5' fill='none'/%3E%3C/svg%3E")`,backgroundRepeat:"no-repeat",backgroundPosition:"right 10px center",paddingRight:30,minHeight:44};
 
   return(<div>
     <div style={{marginBottom:16}}>
       <div className="section-eyebrow">Find Your Watch Party</div>
       <h2 className="section-title">Game Schedule &amp; Locations</h2>
+    </div>
+
+    {/* Legend */}
+    <div style={{display:"flex",flexWrap:"wrap",gap:12,marginBottom:14,fontSize:12,alignItems:"center"}}>
+      <span style={{fontWeight:700,color:"var(--muted)"}}>Map Legend:</span>
+      {Object.entries(TYPE_STYLES).map(([type,s])=><span key={type} style={{display:"inline-flex",alignItems:"center",gap:4}}>
+        <span style={{width:12,height:12,background:s.color,borderRadius:s.shape==="circle"?"50%":s.shape==="square"?"2px":"1px",transform:s.shape==="diamond"?"rotate(45deg) scale(0.8)":"none",display:"inline-block",border:"2px solid #fff",boxShadow:"0 0 3px rgba(0,0,0,.3)"}}></span>
+        <span style={{color:"var(--text)",fontWeight:500}}>{type}</span>
+      </span>)}
     </div>
 
     {/* Filters */}
@@ -643,6 +987,7 @@ function App(){
         <select aria-label="Filter by location" value={locationFilter} onChange={e=>setLocationFilter(e.target.value)} style={sel}><option value="">All locations</option>{ALL_LOCATIONS.map(l=><option key={l} value={l}>{l}</option>)}</select>
         <select aria-label="Filter by district" value={districtFilter} onChange={e=>setDistrictFilter(e.target.value)} style={sel}><option value="">All districts</option>{ALL_DISTRICTS.map(d=><option key={d} value={String(d)}>District {d}</option>)}</select>
         <select aria-label="Filter by stage" value={stageFilter} onChange={e=>setStageFilter(e.target.value)} style={sel}><option value="">All stages</option>{STAGES.map(s=><option key={s} value={s}>{s}</option>)}</select>
+        <select aria-label="Filter by type" value={typeFilter} onChange={e=>setTypeFilter(e.target.value)} style={sel}><option value="">All types</option>{ALL_TYPES.map(t=><option key={t} value={t}>{t}</option>)}</select>
       </div>
     </nav>
 
@@ -657,10 +1002,18 @@ function App(){
 
       <section aria-label="Game schedule" style={{border:"1px solid var(--border)",borderRadius:10,overflow:"hidden",display:"flex",flexDirection:"column",background:"#fff"}}>
         <div style={{padding:"12px 18px",borderBottom:"1px solid var(--border)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-          <h3 style={{fontSize:15,fontWeight:700,margin:0,fontFamily:"'Barlow Condensed',sans-serif",textTransform:"uppercase"}}>{selectedSite?selectedSite.name:"Schedule"}</h3>
+          <div>
+            <h3 style={{fontSize:15,fontWeight:700,margin:0,fontFamily:"'Barlow Condensed',sans-serif",textTransform:"uppercase"}}>{selectedSite?selectedSite.name:"Schedule"}</h3>
+            {selectedSite&&<div style={{display:"flex",gap:6,marginTop:3}}>
+              <span style={{fontSize:11,color:"var(--muted)"}}>District {selectedSite.district}</span>
+              {selectedSite.free==="Yes"?<span style={{fontSize:10,fontWeight:700,background:"#e8f5e9",color:"#2e7d32",padding:"0 5px",borderRadius:3}}>FREE</span>:<span style={{fontSize:10,fontWeight:700,background:"#fde7e7",color:"#8a1a1a",padding:"0 5px",borderRadius:3}}>TICKETED</span>}
+              <span style={{fontSize:10,fontWeight:600,background:"#f0f0f0",color:"#555",padding:"0 5px",borderRadius:3}}>{selectedSite.type}</span>
+            </div>}
+          </div>
           <span aria-live="polite" style={{fontSize:12,color:"var(--muted)"}}>{selectedSite?`${siteMatches.length} games`:`${filteredMatches.length} games`}</span>
         </div>
-        <div className="kickit-schedule-list" style={{flex:1,overflowY:"auto",padding:"0 10px 10px",maxHeight:480}}>
+        {selectedSite&&<TransitInfo siteId={selectedSite.id}/>}
+        <div className="kickit-schedule-list" style={{flex:1,overflowY:"auto",padding:"0 10px 10px",maxHeight:selectedSite?400:480}}>
           {matchesByDate.length===0?(<div style={{padding:40,textAlign:"center",color:"var(--muted)"}}><div style={{fontSize:32,marginBottom:8}}>⚽</div>No games match your filters</div>):(
             matchesByDate.map(([date,matches])=><div key={date}>
               <div style={{position:"sticky",top:0,zIndex:1,background:"#fff",padding:"10px 6px 4px",fontSize:13,fontWeight:700,color:"var(--blue)",borderBottom:"1px solid var(--border)"}}>{formatDate(date)}</div>
@@ -689,13 +1042,24 @@ function App(){
     <section aria-label="All celebration sites" style={{marginTop:28}}>
       <h2 className="section-title" style={{fontSize:20,marginBottom:14}}>All Celebration Sites</h2>
       <div className="kickit-sites-grid" role="list" style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(250px,1fr))",gap:10}}>
-        {SITES.map(site=>{const isSel=selectedSite?.id===site.id;
-          return<button key={site.id} role="listitem" aria-pressed={isSel} aria-label={`${site.name}, District ${site.district}`}
-            onClick={()=>setSelectedSite(isSel?null:site)}
-            style={{background:isSel?"rgba(48,79,254,.08)":"#fff",border:`1.5px solid ${isSel?"var(--blue)":"var(--border)"}`,borderRadius:10,padding:"12px 14px",cursor:"pointer",textAlign:"left",transition:"all .15s",color:"var(--text)",fontFamily:"inherit",fontSize:"inherit"}}>
-            <div style={{fontSize:14,fontWeight:700,marginBottom:3}}>{site.name}</div>
-            <div style={{fontSize:11,color:"var(--muted)"}}>District {site.district}</div>
-          </button>})}
+        {SITES.map(site=>{const isSel=selectedSite?.id===site.id;const ts=TYPE_STYLES[site.type]||{};
+          return<div key={site.id} role="listitem">
+            <button aria-pressed={isSel} aria-label={`${site.name}, District ${site.district}, ${site.type}`}
+              onClick={()=>setSelectedSite(isSel?null:site)}
+              style={{width:"100%",background:isSel?"rgba(48,79,254,.08)":"#fff",border:`1.5px solid ${isSel?"var(--blue)":"var(--border)"}`,borderRadius:10,padding:"12px 14px",cursor:"pointer",textAlign:"left",transition:"all .15s",color:"var(--text)",fontFamily:"inherit",fontSize:"inherit"}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",gap:6}}>
+                <div>
+                  <div style={{fontSize:14,fontWeight:700,marginBottom:3}}>{site.name}</div>
+                  <div style={{fontSize:11,color:"var(--muted)",marginBottom:4}}>District {site.district} · {site.type}</div>
+                </div>
+                <div style={{display:"flex",flexDirection:"column",gap:3,alignItems:"flex-end",flexShrink:0}}>
+                  {site.free==="Yes"?<span style={{fontSize:10,fontWeight:700,background:"#e8f5e9",color:"#2e7d32",padding:"1px 6px",borderRadius:4}}>FREE</span>:<span style={{fontSize:10,fontWeight:700,background:"#fde7e7",color:"#8a1a1a",padding:"1px 6px",borderRadius:4}}>💲</span>}
+                  <span style={{width:10,height:10,background:ts.color||"#888",borderRadius:ts.shape==="circle"?"50%":"2px",display:"inline-block"}}></span>
+                </div>
+              </div>
+            </button>
+            {isSel&&<TransitInfo siteId={site.id}/>}
+          </div>})}
       </div>
     </section>
   </div>);
