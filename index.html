@@ -60,7 +60,7 @@ a{color:var(--blue)}
 .cd-sep{font-family:'Barlow Condensed',sans-serif;font-size:1.6rem;color:rgba(255,255,255,.3);align-self:center;margin-top:-4px}
 
 /* Stats bar */
-.stats-bar{background:var(--orange);padding:.8rem 2rem;display:flex;justify-content:center;flex-wrap:wrap;gap:.5rem}
+.stats-bar{background:#D32F2F;padding:.8rem 2rem;display:flex;justify-content:center;flex-wrap:wrap;gap:.5rem}
 .stat-item{display:flex;align-items:center;gap:.5rem;padding:.2rem 1.5rem;border-right:1px solid rgba(255,255,255,.3)}
 .stat-item:last-child{border-right:none}
 .stat-num{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.5rem;color:#fff;line-height:1}
@@ -117,8 +117,8 @@ a{color:var(--blue)}
 .transit-link{display:inline-flex;align-items:center;gap:.3rem;font-size:.75rem;font-weight:700;text-decoration:none;padding:.3rem .75rem;border-radius:6px;transition:opacity .2s;color:#fff}
 .transit-link:hover{opacity:.85}
 .transit-link.blue{background:var(--blue)}
-.transit-link.red{background:var(--orange)}
-.transit-link.green{background:#2B9051}
+.transit-link.red{background:#D32F2F}
+.transit-link.green{background:#1B7A3D}
 .transit-callout{margin-top:1.5rem;background:var(--light);border-left:4px solid var(--blue);border-radius:0 var(--radius) var(--radius) 0;padding:.9rem 1.2rem;font-size:.88rem;color:var(--text);line-height:1.6}
 .transit-callout a{color:var(--blue);font-weight:600;text-decoration:none}
 
@@ -142,7 +142,7 @@ a{color:var(--blue)}
 .footer h4{color:#fff;font-size:.85rem;font-weight:700;margin-bottom:.6rem}
 .footer-links{list-style:none}
 .footer-links li{margin-bottom:.4rem}
-.footer-links a{color:rgba(255,255,255,.6);text-decoration:none;font-size:.82rem}
+.footer-links a{color:#b0bee4;text-decoration:none;font-size:.82rem}
 .footer-links a:hover{color:#fff}
 .footer-brand-name{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.1rem;color:#fff;margin-bottom:.4rem}
 .footer-desc{font-size:.78rem;line-height:1.55}
@@ -161,12 +161,7 @@ a{color:var(--blue)}
 .lang-dropdown.open{display:block}
 .lang-dropdown button{display:block;width:100%;text-align:left;background:none;border:none;color:rgba(255,255,255,.8);font-size:.78rem;font-weight:500;padding:6px 10px;border-radius:4px;cursor:pointer;font-family:inherit}
 .lang-dropdown button:hover{background:rgba(255,255,255,.12);color:#fff}
-/* Hide Google Translate default bar but keep combo accessible for JS */
-.goog-te-banner-frame{display:none!important}
-body>.skiptranslate{height:0!important;overflow:hidden!important;visibility:hidden!important;position:absolute!important}
-.goog-te-gadget{font-size:0!important}
-#google_translate_element{position:fixed;left:-9999px;top:0;width:1px;height:1px;overflow:hidden}
-body{top:0!important}
+/* Language bar translations handled via JS — no external service */
 </style>
 </head>
 <body>
@@ -179,52 +174,34 @@ body{top:0!important}
   <button class="lang-btn active" onclick="switchLang('en')" aria-label="English">English</button>
   <button class="lang-btn" onclick="switchLang('es')" aria-label="Español">Español</button>
   <button class="lang-btn" onclick="switchLang('ko')" aria-label="한국어">한국어</button>
-  <button class="lang-btn" onclick="switchLang('zh-CN')" aria-label="中文">中文</button>
-  <button class="lang-btn" onclick="switchLang('hy')" aria-label="Հայերեն">Հայերեն</button>
-  <button class="lang-btn" onclick="switchLang('tl')" aria-label="Tagalog">Tagalog</button>
-  <div class="lang-more-wrap">
-    <button class="lang-more" onclick="toggleLangDropdown()" aria-expanded="false" aria-controls="lang-dropdown-menu">More languages ▾</button>
-    <div class="lang-dropdown" id="lang-dropdown-menu" role="menu">
-      <button role="menuitem" onclick="switchLang('fr')">Français</button>
-      <button role="menuitem" onclick="switchLang('ja')">日本語</button>
-      <button role="menuitem" onclick="switchLang('vi')">Tiếng Việt</button>
-      <button role="menuitem" onclick="switchLang('ar')">العربية</button>
-      <button role="menuitem" onclick="switchLang('ru')">Русский</button>
-      <button role="menuitem" onclick="switchLang('pt')">Português</button>
-      <button role="menuitem" onclick="switchLang('de')">Deutsch</button>
-      <button role="menuitem" onclick="switchLang('hi')">हिन्दी</button>
-      <button role="menuitem" onclick="switchLang('fa')">فارسی</button>
-      <button role="menuitem" onclick="switchLang('th')">ไทย</button>
-      <button role="menuitem" onclick="switchLang('am')">አማርኛ</button>
-    </div>
-  </div>
+  <span style="font-size:.65rem;color:rgba(255,255,255,.35);margin-left:.5rem">More languages coming soon</span>
 </nav>
 
 <!-- HERO -->
 <header class="hero" role="banner">
-<div class="hero-eyebrow">⚽ Los Angeles · FIFA World Cup 2026</div>
+<div class="hero-eyebrow" data-i18n="heroEyebrow">⚽ Los Angeles · FIFA World Cup 2026</div>
 <h1 aria-label="Kick it in the Park">Kick It In<br><em>The Park</em></h1>
-<p class="hero-sub">Free community watch parties across the City of Los Angeles. Bring your chairs, your neighbors, and your World Cup spirit.</p>
+<p class="hero-sub" data-i18n="heroSub">Free community watch parties across the City of Los Angeles. Bring your chairs, your neighbors, and your World Cup spirit.</p>
 <div class="hero-row">
   <div class="countdown" id="countdown" aria-label="Countdown to opening match">
-    <div class="cd-unit"><span class="cd-num" id="cd-days">—</span><span class="cd-label">Days</span></div>
+    <div class="cd-unit"><span class="cd-num" id="cd-days">—</span><span class="cd-label" data-i18n="cdDays">Days</span></div>
     <span class="cd-sep" aria-hidden="true">:</span>
-    <div class="cd-unit"><span class="cd-num" id="cd-hours">—</span><span class="cd-label">Hours</span></div>
+    <div class="cd-unit"><span class="cd-num" id="cd-hours">—</span><span class="cd-label" data-i18n="cdHours">Hours</span></div>
     <span class="cd-sep" aria-hidden="true">:</span>
-    <div class="cd-unit"><span class="cd-num" id="cd-mins">—</span><span class="cd-label">Mins</span></div>
+    <div class="cd-unit"><span class="cd-num" id="cd-mins">—</span><span class="cd-label" data-i18n="cdMins">Mins</span></div>
     <span class="cd-sep" aria-hidden="true">:</span>
-    <div class="cd-unit"><span class="cd-num" id="cd-secs">—</span><span class="cd-label">Secs</span></div>
+    <div class="cd-unit"><span class="cd-num" id="cd-secs">—</span><span class="cd-label" data-i18n="cdSecs">Secs</span></div>
   </div>
 </div>
-<div style="font-size:.7rem;color:rgba(255,255,255,.4);margin-top:.6rem">Until the Opening Kick-Off · June 11, 2026</div>
+<div style="font-size:.7rem;color:rgba(255,255,255,.4);margin-top:.6rem"data-i18n="cdUntil">Until the Opening Kick-Off · June 11, 2026</div>
 </header>
 
 <!-- STATS BAR -->
 <div class="stats-bar" role="status" aria-label="Event statistics">
-  <div class="stat-item"><span class="stat-num">18</span><div class="stat-desc">Park<br>Sites</div></div>
-  <div class="stat-item"><span class="stat-num">100+</span><div class="stat-desc">Free<br>Screenings</div></div>
-  <div class="stat-item"><span class="stat-num">34</span><div class="stat-desc">Match<br>Days</div></div>
-  <div class="stat-item"><span class="stat-num">48</span><div class="stat-desc">Teams<br>Playing</div></div>
+  <div class="stat-item"><span class="stat-num">18</span><div class="stat-desc" data-i18n="statParks">Park<br>Sites</div></div>
+  <div class="stat-item"><span class="stat-num">100+</span><div class="stat-desc" data-i18n="statScreenings">Free<br>Screenings</div></div>
+  <div class="stat-item"><span class="stat-num">34</span><div class="stat-desc" data-i18n="statDays">Match<br>Days</div></div>
+  <div class="stat-item"><span class="stat-num">48</span><div class="stat-desc" data-i18n="statTeams">Teams<br>Playing</div></div>
 </div>
 
 <main id="main-content">
@@ -234,15 +211,15 @@ body{top:0!important}
 <div class="container">
 <div class="about-grid">
   <div>
-    <div class="section-eyebrow">About the Kick It In the Park Program</div>
-    <h2 class="section-title">The World Cup<br>in Every Neighborhood</h2>
-    <p class="section-lead" style="margin-bottom:.8rem">Kick It In the Park, a partnership between Council Districts, Recreation &amp; Parks, and the Mayor's Office, ensures the World Cup reaches every corner of the city — from the San Fernando Valley to the Harbor, from Westside parks to East LA recreation centers.</p>
-    <p class="section-lead">These free, family-friendly events transform City of LA Recreation &amp; Parks sites into vibrant gathering spaces where Angelenos watch the matches on large LED screens surrounded by youth soccer clinics, neighborhood programming, and community resources. No ticket, no cost, no barriers.</p>
+    <div class="section-eyebrow"data-i18n="aboutEyebrow">About the Kick It In the Park Program</div>
+    <h2 class="section-title" data-i18n="aboutTitle">The World Cup<br>in Every Neighborhood</h2>
+    <p class="section-lead" data-i18n="aboutLead1" style="margin-bottom:.8rem">Kick It In the Park, a partnership between Council Districts, Recreation &amp; Parks, and the Mayor's Office, ensures the World Cup reaches every corner of the city — from the San Fernando Valley to the Harbor, from Westside parks to East LA recreation centers.</p>
+    <p class="section-lead" data-i18n="aboutLead2">These free, family-friendly events transform City of LA Recreation &amp; Parks sites into vibrant gathering spaces where Angelenos watch the matches on large LED screens surrounded by youth soccer clinics, neighborhood programming, and community resources. No ticket, no cost, no barriers.</p>
   </div>
   <div class="about-badge-col">
-    <div class="about-badge yellow"><div class="about-badge-num">June 11 – July 19</div><p>Tournament dates for the 2026 FIFA World Cup.</p></div>
-    <div class="about-badge blue"><div class="about-badge-num">Free for All</div><p>No tickets, no registration required. Just show up, bring your blankets and chairs, and enjoy the game with your neighbors.</p></div>
-    <div class="about-badge" style="background:var(--teal);color:#fff"><div class="about-badge-num">Rotating Schedule</div><p>Different Rec &amp; Park sites are activated each match day, with participating Council Districts hosting 7 celebrations across the tournament.</p></div>
+    <div class="about-badge yellow"><div class="about-badge-num" data-i18n="aboutDates">June 11 – July 19</div><p data-i18n="aboutDatesDesc">Tournament dates for the 2026 FIFA World Cup.</p></div>
+    <div class="about-badge blue"><div class="about-badge-num" data-i18n="aboutFree">Free for All</div><p data-i18n="aboutFreeDesc">No tickets, no registration required. Just show up, bring your blankets and chairs, and enjoy the game with your neighbors.</p></div>
+    <div class="about-badge" style="background:#0d7f8e;color:#fff"><div class="about-badge-num" data-i18n="aboutRotating">Rotating Schedule</div><p data-i18n="aboutRotatingDesc">Different Rec &amp; Park sites are activated each match day, with participating Council Districts hosting 7 celebrations across the tournament.</p></div>
   </div>
 </div>
 </div>
@@ -251,29 +228,29 @@ body{top:0!important}
 <!-- WHAT TO EXPECT -->
 <section class="section section-light" id="expect">
 <div class="container">
-  <div class="section-eyebrow">What's at Every Celebration</div>
-  <h2 class="section-title">What to Expect at Kick It In the Park Events</h2>
-  <p class="section-lead">Each Council District may put their own spin on the events, with local activations, vendors, and experiences. Each day may look a little different, but it will always feature the World Cup games!</p>
+  <div class="section-eyebrow"data-i18n="expectEyebrow">What's at Every Celebration</div>
+  <h2 class="section-title" data-i18n="expectTitle">What to Expect at Kick It In the Park Events</h2>
+  <p class="section-lead" data-i18n="expectLead">Each Council District may put their own spin on the events, with local activations, vendors, and experiences. Each day may look a little different, but it will always feature the World Cup games!</p>
   <div class="expect-grid">
-    <div class="expect-card"><span class="expect-icon">📺</span><h3>Live Match Screenings</h3><p>Large mobile LED screens broadcast every World Cup match in real-time so you don't miss a goal.</p></div>
-    <div class="expect-card"><span class="expect-icon">⚽</span><h3>PlayLA Soccer Clinics</h3><p>Free youth soccer mini-clinics and skill activities at select sites run by the City's PlayLA program for kids of all ages.</p></div>
-    <div class="expect-card"><span class="expect-icon">🎉</span><h3>Family Fun Zones</h3><p>Interactive activities, local park stations, and family-friendly programming.</p></div>
-    <div class="expect-card"><span class="expect-icon">🏛️</span><h3>City Services &amp; Resources</h3><p>Resource tables connecting residents with City departments, community organizations, and local services.</p></div>
+    <div class="expect-card"><span class="expect-icon" aria-hidden="true">📺</span><h3 data-i18n="expectScreen">Live Match Screenings</h3><p data-i18n="expectScreenDesc">Large mobile LED screens broadcast every World Cup match in real-time so you don't miss a goal.</p></div>
+    <div class="expect-card"><span class="expect-icon" aria-hidden="true">⚽</span><h3 data-i18n="expectPlay">PlayLA Soccer Clinics</h3><p data-i18n="expectPlayDesc">Free youth soccer mini-clinics and skill activities at select sites run by the City's PlayLA program for kids of all ages.</p></div>
+    <div class="expect-card"><span class="expect-icon" aria-hidden="true">🎉</span><h3 data-i18n="expectFamily">Family Fun Zones</h3><p data-i18n="expectFamilyDesc">Interactive activities, local park stations, and family-friendly programming.</p></div>
+    <div class="expect-card"><span class="expect-icon" aria-hidden="true">🏛️</span><h3 data-i18n="expectCity">City Services &amp; Resources</h3><p data-i18n="expectCityDesc">Resource tables connecting residents with City departments, community organizations, and local services.</p></div>
   </div>
-  <div class="expect-tip">Bring your own blankets, chairs, and snacks. All events are free and open to the public, up to 1,000 people at a time.</div>
+  <div class="expect-tip" data-i18n="expectTip">Bring your own blankets, chairs, and snacks. All events are free and open to the public, up to 1,000 people at a time.</div>
 </div>
 </section>
 
 <!-- BEYOND THE NEIGHBORHOOD -->
 <section class="section" id="beyond">
 <div class="container">
-  <div class="section-eyebrow">Beyond the Neighborhood</div>
-  <h2 class="section-title">Other World Cup Celebrations</h2>
-  <p class="section-lead" style="margin-bottom:1.5rem">In addition to the free Kick It In the Park community celebrations, there will be many other opportunities across the City to celebrate the World Cup!</p>
+  <div class="section-eyebrow"data-i18n="beyondEyebrow">Beyond the Neighborhood</div>
+  <h2 class="section-title" data-i18n="beyondTitle">Other World Cup Celebrations</h2>
+  <p class="section-lead" data-i18n="beyondLead" style="margin-bottom:1.5rem">In addition to the free Kick It In the Park community celebrations, there will be many other opportunities across the City to celebrate the World Cup!</p>
   <div class="beyond-grid">
-    <div class="beyond-card"><div style="font-size:2rem;margin-bottom:.6rem">🏟️</div><h3>FIFA Fan Festival</h3><p>The Memorial Coliseum will come alive for a five-day festival, from June 11–15, to create an unforgettable opening weekend celebration.</p><span class="badge-ticket">Ticketed · At Cost</span></div>
-    <div class="beyond-card"><div style="font-size:2rem;margin-bottom:.6rem">⚽</div><h3>Official Fan Zones</h3><p>The Los Angeles Sports &amp; Entertainment Commission will be hosting multiple Fan Zones across L.A.</p><span class="badge-ticket">Ticketed · At Cost</span></div>
-    <div class="beyond-card"><div style="font-size:2rem;margin-bottom:.6rem">📚</div><h3>Other City Watch Parties</h3><p>Our local City of L.A. libraries and Department of Cultural Affairs facilities will also be broadcasting matches.</p><span class="badge-free">Free</span></div>
+    <div class="beyond-card"><div style="font-size:2rem;margin-bottom:.6rem" aria-hidden="true">🏟️</div><h3>FIFA Fan Festival</h3><p>The Memorial Coliseum will come alive for a five-day festival, from June 11–15, to create an unforgettable opening weekend celebration.</p><span class="badge-ticket">Ticketed · At Cost</span><div style="margin-top:.6rem"><a href="https://www.lacoliseum.com/events/fifa-fan-festival-los-angeles/" target="_blank" style="font-size:.8rem;font-weight:700;color:var(--blue);text-decoration:none">Learn more ↗</a></div></div>
+    <div class="beyond-card"><div style="font-size:2rem;margin-bottom:.6rem" aria-hidden="true">⚽</div><h3>Official Fan Zones</h3><p>The Los Angeles Sports &amp; Entertainment Commission will be hosting multiple Fan Zones across L.A., some free of charge and some at cost.</p><span class="badge-free">Free</span> <span class="badge-ticket">Ticketed · At Cost</span><div style="margin-top:.6rem"><a href="https://losangelesfwc26.com/los-angeles-world-cup-26-fan-zones/" target="_blank" style="font-size:.8rem;font-weight:700;color:var(--blue);text-decoration:none">Learn more ↗</a></div></div>
+    <div class="beyond-card"><div style="font-size:2rem;margin-bottom:.6rem" aria-hidden="true">📚</div><h3>Other City Watch Parties</h3><p>Our local City of L.A. libraries and Department of Cultural Affairs facilities will also be broadcasting matches.</p><span class="badge-free">Free</span></div>
   </div>
 </div>
 </section>
@@ -281,13 +258,13 @@ body{top:0!important}
 <!-- PLAN YOUR TRIP -->
 <section class="section section-light" id="getting-there">
 <div class="container">
-  <div class="section-eyebrow">Plan Your Trip</div>
-  <h2 class="section-title">Getting to the Celebrations</h2>
-  <p class="section-lead">Most celebrations are free and open to the public — and the best way to get there is without a car.</p>
+  <div class="section-eyebrow"data-i18n="transitEyebrow">Plan Your Trip</div>
+  <h2 class="section-title" data-i18n="transitTitle">Getting to the Celebrations</h2>
+  <p class="section-lead" data-i18n="transitLead">Most celebrations are free and open to the public — and the best way to get there is without a car.</p>
   <div class="transit-grid">
-    <div class="transit-card"><span class="transit-icon">🚲</span><h3>Bike There</h3><p>Riding is a great way to get to your local watch party. Metro Bike Share stations are located across L.A.</p><div class="transit-links"><a href="https://bikeshare.metro.net/" target="_blank" class="transit-link blue">Metro Bike Share ↗</a></div></div>
-    <div class="transit-card"><span class="transit-icon">🚌</span><h3>Take Transit</h3><p>L.A. Metro and LADOT Dash connect neighborhoods across the city. Use their trip planners to find the best route.</p><div class="transit-links"><a href="https://www.metro.net/riding/trip-planner/" target="_blank" class="transit-link blue">Metro Trip Planner ↗</a><a href="https://www.ladottransit.com/dash/" target="_blank" class="transit-link red">LADOT Dash ↗</a></div></div>
-    <div class="transit-card"><span class="transit-icon">🚶♿</span><h3>Walk or Roll</h3><p>With sites spread across every corner of the city, chances are there's a watch party near your neighborhood.</p><div class="transit-links"><a href="#finder" class="transit-link green">Find My Nearest Site ↓</a></div></div>
+    <div class="transit-card"><span class="transit-icon" aria-hidden="true">🚲</span><h3>Bike There</h3><p>Riding is a great way to get to your local watch party. Metro Bike Share stations are located across L.A.</p><div class="transit-links"><a href="https://bikeshare.metro.net/" target="_blank" class="transit-link blue">Metro Bike Share ↗</a></div></div>
+    <div class="transit-card"><span class="transit-icon" aria-hidden="true">🚌</span><h3>Take Transit</h3><p>L.A. Metro and LADOT Dash connect neighborhoods across the city. Use their trip planners to find the best route.</p><div class="transit-links"><a href="https://www.metro.net/riding/trip-planner/" target="_blank" class="transit-link blue">Metro Trip Planner ↗</a><a href="https://www.ladottransit.com/dash/" target="_blank" class="transit-link red">LADOT Dash ↗</a></div></div>
+    <div class="transit-card"><span class="transit-icon" aria-hidden="true">🚶♿</span><h3>Walk or Roll</h3><p>With sites spread across every corner of the city, chances are there's a watch party near your neighborhood.</p><div class="transit-links"><a href="#finder" class="transit-link green">Find My Nearest Site ↓</a></div></div>
   </div>
   <div class="transit-callout">📍 Use the <a href="#finder">interactive map below</a> to find your nearest watch party location — each site card includes a direct link to turn-by-turn directions.</div>
 </div>
@@ -303,8 +280,8 @@ body{top:0!important}
 <!-- FAQ -->
 <section class="section section-light" id="faq">
 <div class="container" style="max-width:800px">
-  <div class="section-eyebrow">Frequently Asked Questions</div>
-  <h2 class="section-title">What You Need to Know</h2>
+  <div class="section-eyebrow"data-i18n="faqEyebrow">Frequently Asked Questions</div>
+  <h2 class="section-title" data-i18n="faqTitle">What You Need to Know</h2>
   <div id="faq-list"></div>
 </div>
 </section>
@@ -314,74 +291,241 @@ body{top:0!important}
 <!-- FOOTER -->
 <footer class="footer">
 <div class="footer-inner">
-  <div><div class="footer-brand-name">⚽ Kick It In the Park 2026</div><p class="footer-desc">A City of Los Angeles initiative bringing the 2026 FIFA World Cup to every neighborhood — free, accessible, and community-centered. Produced in partnership with L.A. City Council Districts, L.A. Recreation &amp; Parks, and the Mayor's Office.</p></div>
-  <div><h4>Quick Links</h4><ul class="footer-links"><li><a href="#about">About the Program</a></li><li><a href="#expect">What to Expect</a></li><li><a href="#finder">Find Your Site</a></li><li><a href="#faq">FAQ</a></li></ul></div>
-  <div><h4>City Resources</h4><ul class="footer-links"><li><a href="https://mayor.lacity.gov" target="_blank">Mayor Karen Bass</a></li><li><a href="https://www.laparks.org" target="_blank">L.A. Recreation &amp; Parks</a></li><li><a href="https://losangelesfwc26.com/" target="_blank">Los Angeles FIFA</a></li><li><a href="https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums" target="_blank">FIFA Match Schedule</a></li></ul></div>
+  <div><div class="footer-brand-name" data-i18n="footerBrand">⚽ Kick It In the Park 2026</div><p class="footer-desc" data-i18n="footerDesc">A City of Los Angeles initiative bringing the 2026 FIFA World Cup to every neighborhood — free, accessible, and community-centered. Produced in partnership with L.A. City Council Districts, L.A. Recreation &amp; Parks, and the Mayor's Office.</p></div>
+  <div><h4 data-i18n="footerQuick">Quick Links</h4><ul class="footer-links"><li><a href="#about">About the Program</a></li><li><a href="#expect">What to Expect</a></li><li><a href="#finder">Find Your Site</a></li><li><a href="#faq">FAQ</a></li></ul></div>
+  <div><h4 data-i18n="footerResources">City Resources</h4><ul class="footer-links"><li><a href="https://mayor.lacity.gov" target="_blank">Mayor Karen Bass</a></li><li><a href="https://www.laparks.org" target="_blank">L.A. Recreation &amp; Parks</a></li><li><a href="https://losangelesfwc26.com/" target="_blank">Los Angeles FIFA</a></li><li><a href="https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums" target="_blank">FIFA Match Schedule</a></li></ul></div>
 </div>
 <div class="footer-bottom"><span>© 2026 City of Los Angeles · All Rights Reserved</span></div>
 </footer>
 
 <script>
-// ── GOOGLE TRANSLATE (no cookies, no reload) ──
-function googleTranslateElementInit(){
-  new google.translate.TranslateElement({
-    pageLanguage:'en',
-    autoDisplay:false,
-    multilanguagePage:false
-  },'google_translate_element');
-}
+// ── TRANSLATIONS ──
+const T = {
+en: {
+  // Hero
+  heroEyebrow: "⚽ Los Angeles · FIFA World Cup 2026",
+  heroSub: "Free community watch parties across the City of Los Angeles. Bring your chairs, your neighbors, and your World Cup spirit.",
+  cdDays:"Days",cdHours:"Hours",cdMins:"Mins",cdSecs:"Secs",
+  cdUntil: "Until the Opening Kick-Off · June 11, 2026",
+  cdBegun: "The World Cup has begun!",
+  // Stats
+  statParks:"Park<br>Sites",statScreenings:"Free<br>Screenings",statDays:"Match<br>Days",statTeams:"Teams<br>Playing",
+  // About
+  aboutEyebrow:"About the Kick It In the Park Program",
+  aboutTitle:"The World Cup<br>in Every Neighborhood",
+  aboutLead1:"Kick It In the Park, a partnership between Council Districts, Recreation &amp; Parks, and the Mayor's Office, ensures the World Cup reaches every corner of the city — from the San Fernando Valley to the Harbor, from Westside parks to East LA recreation centers.",
+  aboutLead2:"These free, family-friendly events transform City of LA Recreation &amp; Parks sites into vibrant gathering spaces where Angelenos watch the matches on large LED screens surrounded by youth soccer clinics, neighborhood programming, and community resources. No ticket, no cost, no barriers.",
+  aboutDates:"June 11 – July 19",aboutDatesDesc:"Tournament dates for the 2026 FIFA World Cup.",
+  aboutFree:"Free for All",aboutFreeDesc:"No tickets, no registration required. Just show up, bring your blankets and chairs, and enjoy the game with your neighbors.",
+  aboutRotating:"Rotating Schedule",aboutRotatingDesc:"Different Rec &amp; Park sites are activated each match day, with participating Council Districts hosting 7 celebrations across the tournament.",
+  // Expect
+  expectEyebrow:"What's at Every Celebration",
+  expectTitle:"What to Expect at Kick It In the Park Events",
+  expectLead:"Each Council District may put their own spin on the events, with local activations, vendors, and experiences. Each day may look a little different, but it will always feature the World Cup games!",
+  expectScreen:"Live Match Screenings",expectScreenDesc:"Large mobile LED screens broadcast every World Cup match in real-time so you don't miss a goal.",
+  expectPlay:"PlayLA Soccer Clinics",expectPlayDesc:"Free youth soccer mini-clinics and skill activities at select sites run by the City's PlayLA program for kids of all ages.",
+  expectFamily:"Family Fun Zones",expectFamilyDesc:"Interactive activities, local park stations, and family-friendly programming.",
+  expectCity:"City Services &amp; Resources",expectCityDesc:"Resource tables connecting residents with City departments, community organizations, and local services.",
+  expectTip:"Bring your own blankets, chairs, and snacks. All events are free and open to the public, up to 1,000 people at a time.",
+  // Beyond
+  beyondEyebrow:"Beyond the Neighborhood",beyondTitle:"Other World Cup Celebrations",
+  beyondLead:"In addition to the free Kick It In the Park community celebrations, there will be many other opportunities across the City to celebrate the World Cup!",
+  beyondFifa:"FIFA Fan Festival",beyondFifaDesc:"The Memorial Coliseum will come alive for a five-day festival, from June 11–15, to create an unforgettable opening weekend celebration.",
+  beyondFanZones:"Official Fan Zones",beyondFanZonesDesc:"The Los Angeles Sports &amp; Entertainment Commission will be hosting multiple Fan Zones across L.A., some free of charge and some at cost.",
+  beyondOther:"Other City Watch Parties",beyondOtherDesc:"Our local City of L.A. libraries and Department of Cultural Affairs facilities will also be broadcasting matches.",
+  learnMore:"Learn more ↗",ticketed:"Ticketed · At Cost",free:"Free",
+  // Transit
+  transitEyebrow:"Plan Your Trip",transitTitle:"Getting to the Celebrations",
+  transitLead:"Most celebrations are free and open to the public — and the best way to get there is without a car.",
+  transitBike:"Bike There",transitBikeDesc:"Riding is a great way to get to your local watch party. Metro Bike Share stations are located across L.A.",
+  transitBus:"Take Transit",transitBusDesc:"L.A. Metro and LADOT Dash connect neighborhoods across the city. Use their trip planners to find the best route.",
+  transitWalk:"Walk or Roll",transitWalkDesc:"With sites spread across every corner of the city, chances are there's a watch party near your neighborhood.",
+  transitFind:"Find My Nearest Site ↓",
+  transitCallout:"📍 Use the interactive map below to find your nearest watch party location — each site card includes a direct link to turn-by-turn directions.",
+  // FAQ
+  faqEyebrow:"Frequently Asked Questions",faqTitle:"What You Need to Know",
+  faq:[
+    {q:"Do I need a ticket or registration to attend?",a:"No tickets, no registration, and no cost. Kick It in the Park events are fully free and open to all Los Angeles residents and visitors up to 1,000 people. Simply show up at the listed Recreation & Parks site. You do, however, need to purchase a ticket for the Official FIFA Fan Fests and Fan Zones."},
+    {q:"What should I bring?",a:"We recommend bringing:<ul><li>Folding chairs or a blanket to sit on</li><li>Water and snacks</li><li>Sunscreen (events are outdoors in summer)</li><li>Your energy and World Cup spirit!</li></ul>"},
+    {q:"Are the events indoors or outdoors?",a:"All Kick It In the Park events are held outdoors at L.A. Recreation & Parks sites, leveraging existing park infrastructure. Bring lots of water to stay cool!"},
+    {q:"Which sites are active on a given day?",a:"2–4 sites are activated on each of the 34 match days, rotating across council districts so that each participating neighborhood hosts 7 celebrations during the tournament. Use the Schedule section to see which sites are active on each match day."},
+    {q:"What is PlayLA?",a:"PlayLA is the City of Los Angeles's youth sports program run by Recreation & Parks. At many of the Kick It In the Park events, PlayLA will offer free soccer mini-clinics and skill activities for kids of all ages."},
+    {q:"How are these different from the official FIFA Fan Fests?",a:"The official FIFA Fan Fest and Los Angeles World Cup 26 Fan Zones are large-scale, ticketed events in central Los Angeles locations. The City's Kick It In the Park celebrations are intentionally neighborhood-based — bringing the World Cup experience directly to local parks, free of charge, in all Council Districts across the city."},
+    {q:"Interested in hosting a watch party?",a:'Visit <a href="https://losangelesfwc26.com/" target="_blank">losangelesfwc26.com</a> to learn more and access the toolkit.'},
+    {q:"How do I keep myself safe in the heat?",a:'It can be hot during the L.A. summer! Most of these events are outside, so prepare accordingly. Check out <a href="https://www.climate4la.org/heat-relief-4-la/" target="_blank">HeatRelief4LA</a>, where you can access the Cool Spots L.A. map, featuring cooling centers, hydration stations, pools, and more.'},
+    {q:"Is there parking available?",a:"Parking availability varies by site. We encourage residents to use public transit, bike, or walk when possible. Transit directions are available via the 'Get Directions' link for each site."},
+    {q:"Are the events accessible for people with disabilities?",a:"All City of L.A. Recreation & Parks sites are ADA-accessible. The City is committed to ensuring these events are welcoming to residents of all abilities. Contact the individual rec center for specific accessibility accommodations."},
+    {q:"How can I volunteer?",a:'Select sites will be running pilot volunteer operations. If you are interested in joining, sign up here: <a href="https://kickit.lacity.gov/volunteer" target="_blank">kickit.lacity.gov/volunteer</a>. You can also participate in a ShineLA event in April or May to get our parks ready!'},
+  ],
+  // Footer
+  footerBrand:"⚽ Kick It In the Park 2026",
+  footerDesc:"A City of Los Angeles initiative bringing the 2026 FIFA World Cup to every neighborhood — free, accessible, and community-centered. Produced in partnership with L.A. City Council Districts, L.A. Recreation &amp; Parks, and the Mayor's Office.",
+  footerQuick:"Quick Links",footerResources:"City Resources",
+  footerAbout:"About the Program",footerExpect:"What to Expect",footerFinder:"Find Your Site",footerFAQ:"FAQ",
+  footerCopy:"© 2026 City of Los Angeles · All Rights Reserved",
+  // React UI
+  uiFinderEyebrow:"Find Your Watch Party",uiFinderTitle:"Game Schedule & Locations",
+  uiFilterGames:"Filter Games",uiClearAll:"Clear all",
+  uiAllDates:"All dates",uiAllTeams:"All teams",uiAllLocations:"All locations",uiAllDistricts:"All districts",uiAllStages:"All stages",uiAllTypes:"All types",
+  uiMapLegend:"Map Legend:",uiSchedule:"Schedule",uiNoGames:"No games match your filters",
+  uiAllSites:"All Celebration Sites",uiTransitOptions:"🚌 Transit Options",
+  uiActiveSite:"active site",uiActiveSites:"active sites",uiCelebrationSites:"celebration sites",uiGames:"games",
+},
+es: {
+  heroEyebrow: "⚽ Los Ángeles · Copa Mundial FIFA 2026",
+  heroSub: "Fiestas comunitarias gratuitas en toda la Ciudad de Los Ángeles. Trae tus sillas, tus vecinos y tu espíritu mundialista.",
+  cdDays:"Días",cdHours:"Horas",cdMins:"Min",cdSecs:"Seg",
+  cdUntil: "Hasta el inicio · 11 de junio de 2026",
+  cdBegun: "¡La Copa del Mundo ha comenzado!",
+  statParks:"Parques",statScreenings:"Proyecciones<br>Gratuitas",statDays:"Días de<br>Partido",statTeams:"Equipos",
+  aboutEyebrow:"Sobre el programa Kick It In the Park",
+  aboutTitle:"La Copa del Mundo<br>en cada vecindario",
+  aboutLead1:"Kick It In the Park, una colaboración entre los Distritos del Concejo, Recreación y Parques, y la Oficina del Alcalde, garantiza que la Copa del Mundo llegue a cada rincón de la ciudad — desde el Valle de San Fernando hasta el Puerto, desde los parques del Westside hasta los centros recreativos del Este de LA.",
+  aboutLead2:"Estos eventos gratuitos y familiares transforman los sitios de Recreación y Parques de la Ciudad de LA en espacios vibrantes donde los angelinos ven los partidos en grandes pantallas LED rodeados de clínicas de fútbol juvenil, programación comunitaria y recursos. Sin boleto, sin costo, sin barreras.",
+  aboutDates:"11 de junio – 19 de julio",aboutDatesDesc:"Fechas del torneo de la Copa Mundial FIFA 2026.",
+  aboutFree:"Gratis para todos",aboutFreeDesc:"No se necesitan boletos ni registro. Solo ven, trae tus mantas y sillas, y disfruta el partido con tus vecinos.",
+  aboutRotating:"Calendario rotativo",aboutRotatingDesc:"Diferentes sitios de Recreación y Parques se activan cada día de partido, con los Distritos del Concejo participantes organizando 7 celebraciones durante el torneo.",
+  expectEyebrow:"Qué hay en cada celebración",
+  expectTitle:"Qué esperar en los eventos Kick It In the Park",
+  expectLead:"Cada Distrito del Concejo puede darle su propio toque a los eventos, con activaciones locales, vendedores y experiencias. Cada día puede verse un poco diferente, ¡pero siempre tendrá los partidos del Mundial!",
+  expectScreen:"Transmisiones en vivo",expectScreenDesc:"Grandes pantallas LED móviles transmiten cada partido del Mundial en tiempo real para que no te pierdas ningún gol.",
+  expectPlay:"Clínicas de fútbol PlayLA",expectPlayDesc:"Mini-clínicas de fútbol gratuitas y actividades para niños de todas las edades en sitios selectos, organizadas por el programa PlayLA de la Ciudad.",
+  expectFamily:"Zonas familiares",expectFamilyDesc:"Actividades interactivas, estaciones del parque local y programación para toda la familia.",
+  expectCity:"Servicios y recursos de la Ciudad",expectCityDesc:"Mesas de recursos que conectan a los residentes con departamentos de la Ciudad, organizaciones comunitarias y servicios locales.",
+  expectTip:"Trae tus propias mantas, sillas y bocadillos. Todos los eventos son gratuitos y abiertos al público, hasta 1,000 personas a la vez.",
+  beyondEyebrow:"Más allá del vecindario",beyondTitle:"Otras celebraciones del Mundial",
+  beyondLead:"Además de las celebraciones comunitarias gratuitas Kick It In the Park, ¡habrá muchas otras oportunidades en toda la Ciudad para celebrar la Copa del Mundo!",
+  beyondFifa:"Festival de Fans FIFA",beyondFifaDesc:"El Coliseo Memorial de Los Ángeles cobrará vida con un festival de cinco días, del 11 al 15 de junio, para crear una celebración inolvidable del fin de semana inaugural.",
+  beyondFanZones:"Zonas Oficiales de Fans",beyondFanZonesDesc:"La Comisión de Deportes y Entretenimiento de Los Ángeles organizará múltiples Zonas de Fans en toda L.A., algunas gratuitas y otras con costo.",
+  beyondOther:"Otras fiestas de la Ciudad",beyondOtherDesc:"Nuestras bibliotecas locales y las instalaciones del Departamento de Asuntos Culturales también transmitirán los partidos.",
+  learnMore:"Más información ↗",ticketed:"Con boleto · Con costo",free:"Gratis",
+  transitEyebrow:"Planifica tu viaje",transitTitle:"Cómo llegar a las celebraciones",
+  transitLead:"La mayoría de las celebraciones son gratuitas y abiertas al público — y la mejor manera de llegar es sin auto.",
+  transitBike:"En bicicleta",transitBikeDesc:"Andar en bicicleta es una excelente manera de llegar a tu fiesta local. Las estaciones de Metro Bike Share están ubicadas en todo L.A.",
+  transitBus:"En transporte público",transitBusDesc:"L.A. Metro y LADOT Dash conectan vecindarios en toda la ciudad. Usa sus planificadores de viaje para encontrar la mejor ruta.",
+  transitWalk:"Camina o rueda",transitWalkDesc:"Con sitios en cada rincón de la ciudad, es probable que haya una fiesta cerca de tu vecindario.",
+  transitFind:"Encuentra tu sitio más cercano ↓",
+  transitCallout:"📍 Usa el mapa interactivo a continuación para encontrar tu ubicación de fiesta más cercana — cada tarjeta de sitio incluye un enlace directo a las indicaciones.",
+  faqEyebrow:"Preguntas frecuentes",faqTitle:"Lo que necesitas saber",
+  faq:[
+    {q:"¿Necesito boleto o registro para asistir?",a:"No se necesitan boletos, registro ni costo. Los eventos Kick It in the Park son completamente gratuitos y abiertos a todos los residentes y visitantes de Los Ángeles hasta 1,000 personas. Simplemente preséntate en el sitio de Recreación y Parques indicado. Sin embargo, necesitas comprar un boleto para los Fan Fests y Fan Zones oficiales de FIFA."},
+    {q:"¿Qué debo llevar?",a:"Recomendamos llevar:<ul><li>Sillas plegables o una manta para sentarse</li><li>Agua y bocadillos</li><li>Protector solar (los eventos son al aire libre en verano)</li><li>¡Tu energía y espíritu mundialista!</li></ul>"},
+    {q:"¿Los eventos son en interiores o al aire libre?",a:"Todos los eventos Kick It In the Park se realizan al aire libre en sitios de Recreación y Parques de L.A. ¡Trae mucha agua para mantenerte fresco!"},
+    {q:"¿Qué sitios están activos en un día determinado?",a:"Se activan 2–4 sitios en cada uno de los 34 días de partido, rotando entre distritos del concejo para que cada vecindario participante tenga 7 celebraciones durante el torneo. Usa la sección de Calendario para ver qué sitios están activos cada día."},
+    {q:"¿Qué es PlayLA?",a:"PlayLA es el programa deportivo juvenil de la Ciudad de Los Ángeles administrado por Recreación y Parques. En muchos de los eventos Kick It In the Park, PlayLA ofrecerá mini-clínicas de fútbol gratuitas y actividades para niños de todas las edades."},
+    {q:"¿En qué se diferencian de los Fan Fests oficiales de FIFA?",a:"El Fan Fest oficial de FIFA y las Fan Zones de Los Angeles World Cup 26 son eventos a gran escala con boleto en ubicaciones centrales de Los Ángeles. Las celebraciones Kick It In the Park de la Ciudad son intencionalmente basadas en el vecindario — llevando la experiencia del Mundial directamente a los parques locales, sin cargo, en todos los Distritos del Concejo de la ciudad."},
+    {q:"¿Interesado en organizar una fiesta?",a:'Visita <a href="https://losangelesfwc26.com/" target="_blank">losangelesfwc26.com</a> para obtener más información y acceder al kit de herramientas.'},
+    {q:"¿Cómo me protejo del calor?",a:'¡Puede hacer mucho calor durante el verano en L.A.! La mayoría de estos eventos son al aire libre, así que prepárate. Consulta <a href="https://www.climate4la.org/heat-relief-4-la/" target="_blank">HeatRelief4LA</a>, donde puedes acceder al mapa Cool Spots L.A., con centros de enfriamiento, estaciones de hidratación, piscinas y más.'},
+    {q:"¿Hay estacionamiento disponible?",a:"La disponibilidad de estacionamiento varía según el sitio. Animamos a los residentes a usar transporte público, bicicleta o caminar cuando sea posible."},
+    {q:"¿Los eventos son accesibles para personas con discapacidad?",a:"Todos los sitios de Recreación y Parques de la Ciudad de L.A. son accesibles según la ADA. La Ciudad se compromete a garantizar que estos eventos sean acogedores para residentes de todas las capacidades. Contacta al centro recreativo individual para adaptaciones específicas."},
+    {q:"¿Cómo puedo ser voluntario?",a:'Algunos sitios ejecutarán operaciones piloto de voluntariado. Si estás interesado, regístrate aquí: <a href="https://kickit.lacity.gov/volunteer" target="_blank">kickit.lacity.gov/volunteer</a>. ¡También puedes participar en un evento ShineLA en abril o mayo para preparar nuestros parques!'},
+  ],
+  footerBrand:"⚽ Kick It In the Park 2026",
+  footerDesc:"Una iniciativa de la Ciudad de Los Ángeles que lleva la Copa Mundial FIFA 2026 a cada vecindario — gratuita, accesible y centrada en la comunidad. Producida en colaboración con los Distritos del Concejo de la Ciudad de L.A., Recreación y Parques de L.A., y la Oficina del Alcalde.",
+  footerQuick:"Enlaces rápidos",footerResources:"Recursos de la Ciudad",
+  footerAbout:"Sobre el programa",footerExpect:"Qué esperar",footerFinder:"Encuentra tu sitio",footerFAQ:"Preguntas frecuentes",
+  footerCopy:"© 2026 Ciudad de Los Ángeles · Todos los derechos reservados",
+  uiFinderEyebrow:"Encuentra tu fiesta",uiFinderTitle:"Calendario de partidos y ubicaciones",
+  uiFilterGames:"Filtrar partidos",uiClearAll:"Limpiar todo",
+  uiAllDates:"Todas las fechas",uiAllTeams:"Todos los equipos",uiAllLocations:"Todas las ubicaciones",uiAllDistricts:"Todos los distritos",uiAllStages:"Todas las etapas",uiAllTypes:"Todos los tipos",
+  uiMapLegend:"Leyenda del mapa:",uiSchedule:"Calendario",uiNoGames:"Ningún partido coincide con tus filtros",
+  uiAllSites:"Todos los sitios de celebración",uiTransitOptions:"🚌 Opciones de transporte",
+  uiActiveSite:"sitio activo",uiActiveSites:"sitios activos",uiCelebrationSites:"sitios de celebración",uiGames:"partidos",
+},
+ko: {
+  heroEyebrow: "⚽ 로스앤젤레스 · FIFA 월드컵 2026",
+  heroSub: "로스앤젤레스 전역에서 무료 커뮤니티 관람 파티를 즐기세요. 의자, 이웃, 그리고 월드컵 열정을 가져오세요.",
+  cdDays:"일",cdHours:"시간",cdMins:"분",cdSecs:"초",
+  cdUntil:"개막전까지 · 2026년 6월 11일",cdBegun:"월드컵이 시작되었습니다!",
+  statParks:"공원<br>장소",statScreenings:"무료<br>상영",statDays:"경기<br>일",statTeams:"참가<br>팀",
+  aboutEyebrow:"Kick It In the Park 프로그램 소개",
+  aboutTitle:"모든 동네에서<br>월드컵을",
+  aboutLead1:"Kick It In the Park은 시의회 지구, 레크리에이션 & 공원부, 시장실의 파트너십으로 월드컵이 도시 곳곳에 도달하도록 합니다.",
+  aboutLead2:"이 무료, 가족 친화적 이벤트는 LA 시의 레크리에이션 & 공원 시설을 활기찬 모임 공간으로 변환시킵니다. 티켓 없음, 비용 없음, 장벽 없음.",
+  aboutDates:"6월 11일 – 7월 19일",aboutDatesDesc:"2026 FIFA 월드컵 대회 일정.",
+  aboutFree:"모두 무료",aboutFreeDesc:"티켓이나 등록이 필요 없습니다. 담요와 의자를 가져와 이웃과 함께 경기를 즐기세요.",
+  aboutRotating:"순환 일정",aboutRotatingDesc:"매 경기일마다 다른 레크리에이션 & 공원 시설이 활성화됩니다.",
+  expectEyebrow:"모든 축제에서 만나보세요",expectTitle:"Kick It In the Park 이벤트에서 기대할 것",
+  expectLead:"각 시의회 지구는 지역 활성화, 판매자, 경험으로 자체적인 특색을 더할 수 있습니다. 매일 다를 수 있지만, 항상 월드컵 경기가 있습니다!",
+  expectScreen:"실시간 경기 상영",expectScreenDesc:"대형 모바일 LED 스크린에서 모든 월드컵 경기를 실시간으로 방송합니다.",
+  expectPlay:"PlayLA 축구 클리닉",expectPlayDesc:"PlayLA 프로그램이 운영하는 무료 유소년 축구 미니 클리닉.",
+  expectFamily:"가족 놀이 구역",expectFamilyDesc:"인터랙티브 활동, 지역 공원 스테이션, 가족 친화적 프로그래밍.",
+  expectCity:"시 서비스 및 자원",expectCityDesc:"시 부서, 커뮤니티 조직 및 지역 서비스와 연결하는 자원 테이블.",
+  expectTip:"담요, 의자, 간식을 가져오세요. 모든 이벤트는 무료이며 일반에 공개됩니다 (최대 1,000명).",
+  beyondEyebrow:"동네를 넘어서",beyondTitle:"기타 월드컵 축제",
+  beyondLead:"무료 Kick It In the Park 커뮤니티 축제 외에도 도시 전역에서 월드컵을 축하할 다양한 기회가 있습니다!",
+  beyondFifa:"FIFA 팬 페스티벌",beyondFifaDesc:"로스앤젤레스 메모리얼 콜로세움에서 6월 11-15일 5일간의 페스티벌이 열립니다.",
+  beyondFanZones:"공식 팬 존",beyondFanZonesDesc:"로스앤젤레스 스포츠 & 엔터테인먼트 위원회가 L.A. 전역에 여러 팬 존을 운영합니다. 일부는 무료, 일부는 유료입니다.",
+  beyondOther:"기타 시 관람 파티",beyondOtherDesc:"L.A. 시의 도서관 및 문화부 시설에서도 경기를 방송합니다.",
+  learnMore:"자세히 보기 ↗",ticketed:"유료 · 티켓 필요",free:"무료",
+  transitEyebrow:"여행 계획",transitTitle:"축제장 가는 방법",
+  transitLead:"대부분의 축제는 무료이며 일반에 공개됩니다 — 자동차 없이 가는 것이 가장 좋은 방법입니다.",
+  transitBike:"자전거",transitBikeDesc:"Metro Bike Share 스테이션이 L.A. 전역에 있습니다.",
+  transitBus:"대중교통",transitBusDesc:"L.A. Metro와 LADOT Dash가 도시의 동네를 연결합니다.",
+  transitWalk:"걷기 또는 휠체어",transitWalkDesc:"도시 곳곳에 장소가 있어 근처에 관람 파티가 있을 수 있습니다.",
+  transitFind:"가장 가까운 장소 찾기 ↓",
+  transitCallout:"📍 아래 인터랙티브 지도를 사용하여 가장 가까운 관람 파티 장소를 찾으세요.",
+  faqEyebrow:"자주 묻는 질문",faqTitle:"알아야 할 것",
+  faq:[
+    {q:"티켓이나 등록이 필요한가요?",a:"티켓, 등록, 비용이 필요 없습니다. Kick It in the Park 이벤트는 완전히 무료이며 최대 1,000명의 로스앤젤레스 주민과 방문객에게 개방됩니다."},
+    {q:"무엇을 가져가야 하나요?",a:"가져오기 추천:<ul><li>접이식 의자 또는 담요</li><li>물과 간식</li><li>자외선 차단제 (여름 야외 이벤트)</li><li>에너지와 월드컵 열정!</li></ul>"},
+    {q:"실내인가요 야외인가요?",a:"모든 Kick It In the Park 이벤트는 L.A. 레크리에이션 & 공원 시설에서 야외로 진행됩니다. 물을 많이 가져오세요!"},
+    {q:"특정 날에 어떤 장소가 활성화되나요?",a:"34개 경기일 중 각각 2-4개 장소가 활성화되며, 시의회 지구별로 순환하여 각 참여 동네가 토너먼트 동안 7번의 축제를 개최합니다."},
+    {q:"PlayLA란 무엇인가요?",a:"PlayLA는 레크리에이션 & 공원부가 운영하는 로스앤젤레스 시의 유소년 스포츠 프로그램입니다."},
+    {q:"공식 FIFA 팬 페스트와 어떻게 다른가요?",a:"공식 FIFA 팬 페스트와 Fan Zone은 대규모 유료 이벤트입니다. Kick It In the Park 축제는 의도적으로 동네 기반으로 — 무료로 지역 공원에 직접 월드컵 경험을 제공합니다."},
+    {q:"관람 파티를 주최하고 싶으신가요?",a:'<a href="https://losangelesfwc26.com/" target="_blank">losangelesfwc26.com</a>을 방문하세요.'},
+    {q:"더위에서 어떻게 안전하게 지내나요?",a:'L.A. 여름은 더울 수 있습니다! <a href="https://www.climate4la.org/heat-relief-4-la/" target="_blank">HeatRelief4LA</a>를 확인하세요.'},
+    {q:"주차가 가능한가요?",a:"주차 가능 여부는 장소마다 다릅니다. 대중교통, 자전거 또는 도보를 권장합니다."},
+    {q:"장애인도 접근 가능한가요?",a:"모든 L.A. 시 레크리에이션 & 공원 시설은 ADA 접근 가능합니다."},
+    {q:"자원봉사는 어떻게 하나요?",a:'일부 장소에서 자원봉사 운영을 시작합니다. <a href="https://kickit.lacity.gov/volunteer" target="_blank">kickit.lacity.gov/volunteer</a>에서 등록하세요.'},
+  ],
+  footerBrand:"⚽ Kick It In the Park 2026",
+  footerDesc:"로스앤젤레스 시의 이니셔티브로 2026 FIFA 월드컵을 모든 동네에 — 무료, 접근 가능, 커뮤니티 중심.",
+  footerQuick:"빠른 링크",footerResources:"시 자원",
+  footerAbout:"프로그램 소개",footerExpect:"기대할 것",footerFinder:"장소 찾기",footerFAQ:"FAQ",
+  footerCopy:"© 2026 로스앤젤레스 시 · 모든 권리 보유",
+  uiFinderEyebrow:"관람 파티 찾기",uiFinderTitle:"경기 일정 및 장소",
+  uiFilterGames:"경기 필터",uiClearAll:"전체 해제",
+  uiAllDates:"모든 날짜",uiAllTeams:"모든 팀",uiAllLocations:"모든 장소",uiAllDistricts:"모든 지구",uiAllStages:"모든 단계",uiAllTypes:"모든 유형",
+  uiMapLegend:"지도 범례:",uiSchedule:"일정",uiNoGames:"필터와 일치하는 경기가 없습니다",
+  uiAllSites:"모든 축제 장소",uiTransitOptions:"🚌 교통 옵션",
+  uiActiveSite:"활성 장소",uiActiveSites:"활성 장소",uiCelebrationSites:"축제 장소",uiGames:"경기",
+},
+};
+
+// Current language
+let currentLang = "en";
+window.LANG = T.en; // Global for React to access
 
 function switchLang(lang){
-  // Close dropdown if open
   const dd=document.getElementById("lang-dropdown-menu");
   if(dd)dd.classList.remove("open");
 
-  if(lang==='en'){
-    // Restore original page — find the "Show original" button or reset the translate frame
-    try{
-      const frame=document.querySelector('.goog-te-banner-frame');
-      if(frame){
-        const btn=frame.contentDocument.querySelector('.goog-close-link');
-        if(btn){btn.click();updateActiveBtn('en');return}
-      }
-    }catch(e){}
-    // Fallback: manipulate the select dropdown
-    const sel=document.querySelector('.goog-te-combo');
-    if(sel){sel.value='';sel.dispatchEvent(new Event('change'));updateActiveBtn('en');return}
-    // Last resort: clear cookies and reload
-    clearTranslateCookies();
-    window.location.reload();
-    return;
-  }
+  if(!T[lang]) return;
+  currentLang = lang;
+  window.LANG = T[lang];
 
-  // Wait for Google Translate widget to be ready, then select the language
-  function trySet(){
-    const sel=document.querySelector('.goog-te-combo');
-    if(sel){
-      sel.value=lang;
-      sel.dispatchEvent(new Event('change'));
-      updateActiveBtn(lang);
-    } else {
-      // Widget not ready yet, retry
-      setTimeout(trySet,300);
-    }
-  }
-  trySet();
-}
-
-function clearTranslateCookies(){
-  const domains=['','.'+window.location.hostname];
-  domains.forEach(d=>{
-    document.cookie="googtrans=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;"+(d?"domain="+d+";":"");
+  // Update all data-i18n elements
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.getAttribute("data-i18n");
+    if(T[lang][key] !== undefined) el.innerHTML = T[lang][key];
   });
-}
 
-function updateActiveBtn(lang){
-  document.querySelectorAll(".lang-btn").forEach(btn=>{
+  // Rebuild FAQ with translated content
+  buildFAQ();
+
+  // Re-render React app with new language
+  if(window.rerenderApp) window.rerenderApp();
+
+  // Update active button
+  document.querySelectorAll(".lang-btn").forEach(btn => {
     btn.classList.remove("active");
-    const attr=btn.getAttribute("onclick")||"";
-    if(attr.includes("'"+lang+"'"))btn.classList.add("active");
+    const attr = btn.getAttribute("onclick") || "";
+    if(attr.includes("'" + lang + "'")) btn.classList.add("active");
   });
+
+  // Update HTML lang attribute
+  document.documentElement.lang = lang === "es" ? "es" : lang === "ko" ? "ko" : "en";
 }
 
 function toggleLangDropdown(){
@@ -410,22 +554,11 @@ function updateCountdown(){
 updateCountdown();setInterval(updateCountdown,1000);
 
 // ── FAQ ──
-const FAQS=[
-  {q:"Do I need a ticket or registration to attend?",a:"No tickets, no registration, and no cost. Kick It in the Park events are fully free and open to all Los Angeles residents and visitors up to 1,000 people. Simply show up at the listed Recreation & Parks site. You do, however, need to purchase a ticket for the Official FIFA Fan Fests and Fan Zones."},
-  {q:"What should I bring?",a:"We recommend bringing:<ul><li>Folding chairs or a blanket to sit on</li><li>Water and snacks</li><li>Sunscreen (events are outdoors in summer)</li><li>Your energy and World Cup spirit!</li></ul>"},
-  {q:"Are the events indoors or outdoors?",a:"All Kick It In the Park events are held outdoors at L.A. Recreation & Parks sites, leveraging existing park infrastructure. Bring lots of water to stay cool!"},
-  {q:"Which sites are active on a given day?",a:"2–4 sites are activated on each of the 34 match days, rotating across council districts so that each participating neighborhood hosts 7 celebrations during the tournament. Use the Schedule section to see which sites are active on each match day."},
-  {q:"What is PlayLA?",a:"PlayLA is the City of Los Angeles's youth sports program run by Recreation & Parks. At many of the Kick It In the Park events, PlayLA will offer free soccer mini-clinics and skill activities for kids of all ages."},
-  {q:"How are these different from the official FIFA Fan Fests?",a:"The official FIFA Fan Fest and Los Angeles World Cup 26 Fan Zones are large-scale, ticketed events in central Los Angeles locations. The City's Kick It In the Park celebrations are intentionally neighborhood-based — bringing the World Cup experience directly to local parks, free of charge, in all Council Districts across the city."},
-  {q:"Interested in hosting a watch party?",a:'Visit <a href="https://losangelesfwc26.com/" target="_blank">losangelesfwc26.com</a> to learn more and access the toolkit.'},
-  {q:"How do I keep myself safe in the heat?",a:'It can be hot during the L.A. summer! Most of these events are outside, so prepare accordingly. Check out <a href="https://heatrelief4la.org" target="_blank">HeatRelief4LA</a>, where you can access the Cool Spots L.A. map, featuring cooling centers, hydration stations, pools, and more.'},
-  {q:"Is there parking available?",a:"Parking availability varies by site. We encourage residents to use public transit, bike, or walk when possible. Transit directions are available via the 'Get Directions' link for each site."},
-  {q:"Are the events accessible for people with disabilities?",a:"All City of L.A. Recreation & Parks sites are ADA-accessible. The City is committed to ensuring these events are welcoming to residents of all abilities. Contact the individual rec center for specific accessibility accommodations."},
-  {q:"How can I volunteer?",a:'Select sites will be running pilot volunteer operations. If you are interested in joining, sign up here: <a href="https://kickit.lacity.gov/volunteer" target="_blank">kickit.lacity.gov/volunteer</a>. You can also participate in a ShineLA event in April or May to get our parks ready!'},
-];
-(function buildFAQ(){
+function buildFAQ(){
   const list=document.getElementById("faq-list");
-  FAQS.forEach((item,i)=>{
+  list.innerHTML=""; // Clear for rebuild
+  const faqs = window.LANG.faq || T.en.faq;
+  faqs.forEach((item,i)=>{
     const div=document.createElement("div");div.className="faq-item";
     div.innerHTML=`<button class="faq-q" aria-expanded="false" aria-controls="faq-a-${i}"><span>${item.q}</span><span class="faq-chevron" aria-hidden="true">▾</span></button><div class="faq-a" id="faq-a-${i}" role="region"><div class="faq-a-inner">${item.a}</div></div>`;
     const btn=div.querySelector(".faq-q");
@@ -437,7 +570,8 @@ const FAQS=[
     });
     list.appendChild(div);
   });
-})();
+}
+buildFAQ();
 </script>
 
 <script type="text/babel">
@@ -835,7 +969,7 @@ const CALENDAR_RAW = [
   {m:"104",date:"7/19/2026",time:"12:00 PM",stage:"Final",host:"New York/NJ",t1:"W101",t2:"W102",loc:"West Harbor Los Angeles",dist:15,lid:94,type:"Official Fan Zone",free:"No"}
 ];
 
-const TRANSIT_DATA = {"Sycamore Grove": {"id": "sycamore-grove", "name": "Sycamore Grove", "address": "4702 N Figueroa St, Los Angeles, CA 90042", "transit": {"rail": [{"line": "Metro L Line (Gold)", "station": "Southwest Museum Station", "distance_mi": 0.3, "walk_min": 7}], "bus": [{"line": "Metro Local 81", "distance_mi": 0.0}, {"line": "Metro Local 182", "distance_mi": 0.0}, {"line": "DASH Highland Park/Eagle Rock", "distance_mi": 0.5}]}, "notes": "Metro L Line (Gold) Southwest Museum Station is a 7-min walk."}, "MacArthur Park": {"id": "macarthur-park", "name": "MacArthur Park", "address": "2230 W 6th St, Los Angeles, CA 90057", "transit": {"rail": [{"line": "Metro B Line (Red)", "station": "Westlake / MacArthur Park Station", "distance_mi": 0.4, "walk_min": 7}, {"line": "Metro D Line (Purple)", "station": "Westlake / MacArthur Park Station", "distance_mi": 0.4, "walk_min": 7}], "bus": [{"line": "Metro Local 33", "distance_mi": 0.1}, {"line": "Metro Local 18", "distance_mi": 0.1}, {"line": "DASH Pico Union/Echo Park", "distance_mi": 0.2}]}, "notes": "Excellent transit. B/D Line Westlake/MacArthur Park Station is a 7-min walk."}, "Whitsett Fields": {"id": "whitsett-fields", "name": "Whitsett Fields", "address": "12445 Vanowen St, North Hollywood, CA 91605", "transit": {"rail": [], "bus": [{"line": "Metro Local 165", "distance_mi": 0.1}, {"line": "DASH North Hollywood Clockwise", "distance_mi": 0.1}, {"line": "DASH North Hollywood Counterclockwise", "distance_mi": 0.1}, {"line": "Metro Local 230", "distance_mi": 0.2}, {"line": "Metro Local 152", "distance_mi": 0.3}, {"line": "Metro Local 224", "distance_mi": 0.3}]}, "notes": "Bus-served area. No Metro Rail nearby."}, "Lanark Recreation Center": {"id": "lanark-recreation-center", "name": "Lanark Recreation Center", "address": "21816 Lanark St, Canoga Park, CA 91304", "transit": {"rail": [{"line": "Metro G Line (Orange) 901", "station": "Canoga Station", "distance_mi": 0.6}], "bus": [{"line": "Metro Local 152", "distance_mi": 0.2}, {"line": "Metro Local 150", "distance_mi": 0.3}, {"line": "Metro Local 169", "distance_mi": 0.5}]}, "notes": "Metro G Line (Orange) Canoga Station is roughly 0.6 mi away."}, "Westwood": {"id": "westwood", "name": "Westwood", "address": "1350 S Sepulveda Blvd, Los Angeles, CA 90025", "transit": {"rail": [{"line": "Metro E Line (Expo)", "station": "Expo / Sepulveda Station", "distance_mi": 0.5, "walk_min": 10}], "bus": [{"line": "Metro Rapid 733", "distance_mi": 0.1}, {"line": "Metro Local 6 (Sepulveda Blvd)", "distance_mi": 0.1}, {"line": "Culver City Bus 17", "distance_mi": 0.2}, {"line": "Metro Local 7 (Pico Blvd)", "distance_mi": 0.3}]}, "notes": "Metro E Line (Expo) Expo/Sepulveda Station is ~10-min walk. Sepulveda Blvd well-served by buses."}, "Cheviot Hills Recreation Center": {"id": "cheviot-hills", "name": "Cheviot Hills Recreation Center", "address": "2551 Motor Ave, Los Angeles, CA 90064", "transit": {"rail": [{"line": "Metro E Line (Expo)", "station": "Palms Station", "distance_mi": 0.8}], "bus": [{"line": "Metro Local 5 (Olympic Blvd)", "distance_mi": 0.2}, {"line": "Metro Local 7 (Pico Blvd)", "distance_mi": 0.4}, {"line": "Culver City Bus 3 (Culver City)", "distance_mi": 0.3}, {"line": "Metro Rapid R12", "distance_mi": 0.3}]}, "notes": "Metro E Line Palms Station is approx. 0.8 mi. Buses on Olympic/Pico are closest options."}, "Sheldon-Arleta": {"id": "sheldon-arleta", "name": "Sheldon-Arleta", "address": "12455 Wicks St, Sun Valley, CA 91352", "transit": {"rail": [{"line": "Metrolink Antelope Valley Line", "station": "Sun Valley Station", "distance_mi": 1.2}], "bus": [{"line": "Metro Local 224", "distance_mi": 0.3}, {"line": "Metro Local 90", "distance_mi": 0.5}]}, "notes": "Limited transit. Sun Valley Metrolink Station is approx. 1.2 mi."}, "Sylmar Recreation Center": {"id": "sylmar-recreation-center", "name": "Sylmar Recreation Center", "address": "13109 Borden Ave, Sylmar, CA 91342", "transit": {"rail": [{"line": "Metrolink Antelope Valley Line", "station": "Sylmar / San Fernando Station", "distance_mi": 1.5}], "bus": [{"line": "Metro Local 90", "distance_mi": 0.3}, {"line": "Metro Local 230", "distance_mi": 0.5}]}, "notes": "Limited transit. Sylmar/San Fernando Metrolink Station is approx. 1.5 mi."}, "Jackie Tatum Harvard Recreation Center": {"id": "jackie-tatum-harvard", "name": "Jackie Tatum Harvard Recreation Center", "address": "1535 W 62nd St, Los Angeles, CA 90047", "transit": {"rail": [], "bus": [{"line": "Metro Local 40 (Crenshaw Blvd)", "distance_mi": 0.2}, {"line": "Metro Local 206 (Harvard Blvd)", "distance_mi": 0.1}, {"line": "Metro Local 207 (Vermont Ave)", "distance_mi": 0.4}, {"line": "DASH Vermont/Main", "distance_mi": 0.5}]}, "notes": "Bus-only area. Crenshaw Blvd and Harvard Blvd buses are closest options."}, "South Park Recreation Center": {"id": "south-park", "name": "South Park Recreation Center", "address": "345 E 51st St, Los Angeles, CA 90011", "transit": {"rail": [{"line": "Metro A Line (Blue)", "station": "Slauson Station", "distance_mi": 0.4}], "bus": [{"line": "Metro Local 51 (Avalon Blvd)", "distance_mi": 0.2}, {"line": "DASH Southeast Clockwise", "distance_mi": 0.2}, {"line": "DASH Southeast Counterclockwise", "distance_mi": 0.2}, {"line": "Metro Local 10/48", "distance_mi": 0.3}]}, "notes": "Metro A Line (Blue) Slauson Station is approx. 0.4 mi. Bus stop at Avalon/51st is 0.2 mi."}, "Seoul International": {"id": "seoul-international", "name": "Seoul International", "address": "3250 San Marino St., Los Angeles, CA 90006", "transit": {"rail": [{"line": "Metro D Line (Purple)", "station": "Wilshire / Normandie Station", "distance_mi": 0.5, "walk_min": 11}], "bus": [{"line": "Metro Local 18 (Wilshire Blvd)", "distance_mi": 0.3}, {"line": "Metro Local 207 (Vermont Ave)", "distance_mi": 0.3}, {"line": "Metro Rapid 720", "distance_mi": 0.3}, {"line": "DASH Koreatown", "distance_mi": 0.2}]}, "notes": "Excellent transit in Koreatown. D Line Wilshire/Normandie Station is ~11-min walk."}, "Venice Beach Recreation Center": {"id": "venice-beach-recreation-center", "name": "Venice Beach Recreation Center", "address": "1800 Ocean Front Walk, Venice, CA 90291", "transit": {"rail": [], "bus": [{"line": "Big Blue Bus 18 (Rapid)", "distance_mi": 0.2}, {"line": "Metro Local 108 (Lincoln Blvd)", "distance_mi": 0.4}, {"line": "Big Blue Bus 1 (Main St)", "distance_mi": 0.3}]}, "notes": "No Metro Rail. Big Blue Bus serves the Venice Beach area. Limited transit near the boardwalk."}, "Stoner Recreation Center": {"id": "stoner-recreation-center", "name": "Stoner Recreation Center", "address": "1835 Stoner Ave, Los Angeles, CA 90025", "transit": {"rail": [{"line": "Metro E Line (Expo)", "station": "Expo / Bundy Station", "distance_mi": 0.5}], "bus": [{"line": "Metro Local 4 (Santa Monica Blvd)", "distance_mi": 0.3}, {"line": "Big Blue Bus 3 (Pico Blvd)", "distance_mi": 0.4}, {"line": "Metro Local 5 (Olympic Blvd)", "distance_mi": 0.4}]}, "notes": "Metro E Line Expo/Bundy Station is approx. 0.5 mi."}, "Northridge": {"id": "northridge", "name": "Northridge", "address": "18300 Lemarsh St, Northridge, CA 91324", "transit": {"rail": [], "bus": [{"line": "Metro Local 167 (Reseda Blvd)", "distance_mi": 0.4}, {"line": "Metro Local 164 (Devonshire St)", "distance_mi": 0.5}]}, "notes": "Car-dependent area. Limited bus service only."}, "Echo Park": {"id": "echo-park", "name": "Echo Park", "address": "1632 Bellevue Ave, Los Angeles, CA 90026", "transit": {"rail": [{"line": "Metro B Line (Red)", "station": "Westlake / MacArthur Park Station", "distance_mi": 0.3, "walk_min": 7}, {"line": "Metro D Line (Purple)", "station": "Westlake / MacArthur Park Station", "distance_mi": 0.3, "walk_min": 7}], "bus": [{"line": "Metro Local 2 (Sunset Blvd)", "distance_mi": 0.2}, {"line": "Metro Local 4 (Santa Monica Blvd)", "distance_mi": 0.3}, {"line": "Metro Local 92 (Glendale Blvd)", "distance_mi": 0.1}, {"line": "DASH Echo Park", "distance_mi": 0.1}, {"line": "Metro Local 10/48", "distance_mi": 0.3}]}, "notes": "Good transit. B/D Line Westlake/MacArthur Park Station is ~7-min walk. Buses on Glendale Blvd are closest."}, "El Sereno Recreation Center": {"id": "el-sereno", "name": "El Sereno Recreation Center", "address": "4721 Klamath St, Los Angeles, CA 90032", "transit": {"rail": [], "bus": [{"line": "Metro Local 70 (Huntington Dr)", "distance_mi": 0.3}, {"line": "Metro Local 71 (Alhambra Ave)", "distance_mi": 0.4}, {"line": "Metro Local 256 (Valley Blvd)", "distance_mi": 0.5}]}, "notes": "Bus-only area. Limited transit options."}, "Ken Malloy Harbor Regional Park": {"id": "ken-malloy-harbor", "name": "Ken Malloy Harbor Regional Park", "address": "25820 Vermont Ave, Harbor City, CA 90710", "transit": {"rail": [], "bus": [{"line": "Metro Local 205 (Vermont Ave)", "distance_mi": 0.1}, {"line": "Metro Local 246 (Sepulveda Blvd)", "distance_mi": 0.5}]}, "notes": "Limited transit. Bus 205 on Vermont Ave is the closest option."}, "Wilmington Recreation Center": {"id": "wilmington-recreation-center", "name": "Wilmington Recreation Center", "address": "325 N Neptune Ave, Wilmington, CA 90744", "transit": {"rail": [], "bus": [{"line": "Metro Local 550 (Pacific Ave)", "distance_mi": 0.3}, {"line": "Metro Local 232 (Anaheim St)", "distance_mi": 0.4}]}, "notes": "Limited transit in Wilmington. Bus-only options."}, "The Original Farmers Market": {"id": "farmers-market", "name": "The Original Farmers Market", "address": "6333 W. 3rd St, Los Angeles, CA 90036", "transit": {"rail": [{"line": "Metro D Line (Purple)", "station": "Wilshire / La Brea Station", "distance_mi": 0.6}], "bus": [{"line": "Metro Local 16 (3rd St)", "distance_mi": 0.1}, {"line": "Metro Rapid 316 (3rd St)", "distance_mi": 0.1}, {"line": "DASH Fairfax", "distance_mi": 0.1}, {"line": "Metro Local 217 (Fairfax Ave)", "distance_mi": 0.2}]}, "notes": "Well-served by bus. D Line Wilshire/La Brea Station is ~0.6 mi south."}, "Los Angeles Union Station": {"id": "union-station", "name": "Los Angeles Union Station", "address": "800 N. Alameda Street, Los Angeles, CA 90012", "transit": {"rail": [{"line": "Metro A Line (Blue)", "station": "Union Station", "distance_mi": 0.0}, {"line": "Metro B Line (Red)", "station": "Union Station", "distance_mi": 0.0}, {"line": "Metro D Line (Purple)", "station": "Union Station", "distance_mi": 0.0}, {"line": "Metro L Line (Gold)", "station": "Union Station", "distance_mi": 0.0}, {"line": "Metrolink (all lines)", "station": "Union Station", "distance_mi": 0.0}, {"line": "Amtrak", "station": "Union Station", "distance_mi": 0.0}], "bus": [{"line": "Metro Local 40 (multiple)", "distance_mi": 0.1}, {"line": "DASH A/B/D", "distance_mi": 0.1}, {"line": "Metro Rapid 720", "distance_mi": 0.2}]}, "notes": "Major transit hub. A, B, D, L Lines + all Metrolink + Amtrak routes all stop here."}, "Hansen Dam": {"id": "hansen-dam", "name": "Hansen Dam", "address": "11770 Foothill Blvd, Sylmar, CA 91342", "transit": {"rail": [], "bus": [{"line": "Metro Local 90 (Foothill Blvd)", "distance_mi": 0.2}, {"line": "Metro Local 230 (Van Nuys Blvd)", "distance_mi": 0.6}]}, "notes": "Very limited transit. Bus 90 on Foothill Blvd is the primary option."}, "Venice Beach": {"id": "venice-beach", "name": "Venice Beach", "address": "Windward Ave, Venice Beach, Los Angeles, CA 90291", "transit": {"rail": [], "bus": [{"line": "Big Blue Bus 18 (Rapid)", "distance_mi": 0.2}, {"line": "Big Blue Bus 1 (Main St)", "distance_mi": 0.3}, {"line": "Metro Local 33 (Venice Blvd)", "distance_mi": 0.4}]}, "notes": "No Metro Rail. Big Blue Bus primary transit option. Venice Blvd bus provides broader connectivity."}, "West Harbor Los Angeles": {"id": "west-harbor", "name": "West Harbor Los Angeles", "address": "461 W. 6th Street, San Pedro, CA 90731", "transit": {"rail": [], "bus": [{"line": "Metro Local 246 (Gaffey St)", "distance_mi": 0.3}, {"line": "Metro Local 550 (Pacific Ave)", "distance_mi": 0.4}, {"line": "DASH San Pedro", "distance_mi": 0.2}]}, "notes": "No Metro Rail. DASH San Pedro and bus 246 are the closest options."}, "Los Angeles Memorial Coliseum": {"id": "la-memorial-coliseum", "name": "Los Angeles Memorial Coliseum", "address": "3911 S Figueroa St, Los Angeles, CA 90037", "transit": {"rail": [{"line": "Metro E Line (Expo)", "station": "Exposition Park / USC Station", "distance_mi": 0.1, "walk_min": 2}], "bus": [{"line": "Metro Local 81 (Figueroa St)", "distance_mi": 0.1}, {"line": "DASH USC / Exposition Park", "distance_mi": 0.1}, {"line": "Metro Local 40 (Flower St)", "distance_mi": 0.3}]}, "notes": "Excellent transit. Metro E Line Expo/USC Station is steps away (~2-min walk)."}, "The Autry Museum": {"id": "autry-museum", "name": "The Autry Museum", "address": "4700 Western Heritage Way, Griffith Park, Los Angeles, CA 90027", "transit": {"rail": [{"line": "Metro L Line (Gold)", "station": "Downtown Burbank Station", "distance_mi": 1.5}], "bus": [{"line": "DASH Griffith Park", "distance_mi": 0.2}, {"line": "Metro Local 96 (Los Feliz Blvd)", "distance_mi": 0.5}]}, "notes": "Limited transit inside Griffith Park. DASH Griffith Park seasonal shuttle is the best option."}, "Van Nuys/Sherman Oaks Recreation Center": {"id": "van-nuys-sherman-oaks", "name": "Van Nuys/Sherman Oaks Recreation Center", "address": "14201 Huston St, Sherman Oaks, CA 91423", "transit": {"rail": [], "bus": [{"line": "Metro Local 150 (Ventura Blvd)", "distance_mi": 0.3}, {"line": "Metro Local 240 (Van Nuys Blvd)", "distance_mi": 0.5}, {"line": "Metro Rapid 750 (Ventura Blvd)", "distance_mi": 0.3}]}, "notes": "Bus-only. Ventura Blvd buses are the closest options."}};
+const TRANSIT_DATA = {"Sycamore Grove": {"id": "sycamore-grove", "name": "Sycamore Grove", "address": "4702 N Figueroa St, Los Angeles, CA 90042", "transit": {"rail": [{"line": "Metro L Line (Gold)", "station": "Southwest Museum Station", "distance_mi": 0.3, "walk_min": 7}], "bus": [{"line": "Metro Local 81", "distance_mi": 0.0}, {"line": "Metro Local 182", "distance_mi": 0.0}, {"line": "DASH Highland Park/Eagle Rock", "distance_mi": 0.5}]}, "notes": "Metro L Line (Gold) Southwest Museum Station is a 7-min walk."}, "MacArthur Park": {"id": "macarthur-park", "name": "MacArthur Park", "address": "2230 W 6th St, Los Angeles, CA 90057", "transit": {"rail": [{"line": "Metro B Line (Red)", "station": "Westlake / MacArthur Park Station", "distance_mi": 0.4, "walk_min": 7}, {"line": "Metro D Line (Purple)", "station": "Westlake / MacArthur Park Station", "distance_mi": 0.4, "walk_min": 7}], "bus": [{"line": "Metro Local 33", "distance_mi": 0.1}, {"line": "Metro Local 18", "distance_mi": 0.1}, {"line": "DASH Pico Union/Echo Park", "distance_mi": 0.2}]}, "notes": "Excellent transit. B/D Line Westlake/MacArthur Park Station is a 7-min walk."}, "Whitsett Fields": {"id": "whitsett-fields", "name": "Whitsett Fields", "address": "12445 Vanowen St, North Hollywood, CA 91605", "transit": {"rail": [], "bus": [{"line": "Metro Local 165", "distance_mi": 0.1}, {"line": "DASH North Hollywood Clockwise", "distance_mi": 0.1}, {"line": "DASH North Hollywood Counterclockwise", "distance_mi": 0.1}, {"line": "Metro Local 230", "distance_mi": 0.2}, {"line": "Metro Local 152", "distance_mi": 0.3}, {"line": "Metro Local 224", "distance_mi": 0.3}]}, "notes": "Bus-served area. No Metro Rail nearby."}, "Lanark Recreation Center": {"id": "lanark-recreation-center", "name": "Lanark Recreation Center", "address": "21816 Lanark St, Canoga Park, CA 91304", "transit": {"rail": [{"line": "Metro G Line (Orange) 901", "station": "Canoga Station", "distance_mi": 0.6}], "bus": [{"line": "Metro Local 152", "distance_mi": 0.2}, {"line": "Metro Local 150", "distance_mi": 0.3}, {"line": "Metro Local 169", "distance_mi": 0.5}]}, "notes": "Metro G Line (Orange) Canoga Station is roughly 0.6 mi away."}, "Westwood": {"id": "westwood", "name": "Westwood", "address": "1350 S Sepulveda Blvd, Los Angeles, CA 90025", "transit": {"rail": [{"line": "Metro E Line (Expo)", "station": "Expo / Sepulveda Station", "distance_mi": 0.5, "walk_min": 10}], "bus": [{"line": "Metro Rapid 733", "distance_mi": 0.1}, {"line": "Metro Local 6 (Sepulveda Blvd)", "distance_mi": 0.1}, {"line": "Culver City Bus 17", "distance_mi": 0.2}, {"line": "Metro Local 7 (Pico Blvd)", "distance_mi": 0.3}]}, "notes": "Metro E Line (Expo) Expo/Sepulveda Station is ~10-min walk. Sepulveda Blvd well-served by buses."}, "Cheviot Hills Recreation Center": {"id": "cheviot-hills", "name": "Cheviot Hills Recreation Center", "address": "2551 Motor Ave, Los Angeles, CA 90064", "transit": {"rail": [{"line": "Metro E Line (Expo)", "station": "Palms Station", "distance_mi": 0.8}], "bus": [{"line": "Metro Local 5 (Olympic Blvd)", "distance_mi": 0.2}, {"line": "Metro Local 7 (Pico Blvd)", "distance_mi": 0.4}, {"line": "Culver City Bus 3 (Culver City)", "distance_mi": 0.3}, {"line": "Metro Rapid R12", "distance_mi": 0.3}]}, "notes": "Metro E Line Palms Station is approx. 0.8 mi. Buses on Olympic/Pico are closest options."}, "Sheldon-Arleta": {"id": "sheldon-arleta", "name": "Sheldon-Arleta", "address": "12455 Wicks St, Sun Valley, CA 91352", "transit": {"rail": [{"line": "Metrolink Antelope Valley Line", "station": "Sun Valley Station", "distance_mi": 1.2}], "bus": [{"line": "Metro Local 224", "distance_mi": 0.3}, {"line": "Metro Local 90", "distance_mi": 0.5}]}, "notes": "Sun Valley Metrolink Station is approx. 1.2 mi away."}, "Sylmar Recreation Center": {"id": "sylmar-recreation-center", "name": "Sylmar Recreation Center", "address": "13109 Borden Ave, Sylmar, CA 91342", "transit": {"rail": [{"line": "Metrolink Antelope Valley Line", "station": "Sylmar / San Fernando Station", "distance_mi": 1.5}], "bus": [{"line": "Metro Local 90", "distance_mi": 0.3}, {"line": "Metro Local 230", "distance_mi": 0.5}]}, "notes": "Sylmar/San Fernando Metrolink Station is approx. 1.5 mi away."}, "Jackie Tatum Harvard Recreation Center": {"id": "jackie-tatum-harvard", "name": "Jackie Tatum Harvard Recreation Center", "address": "1535 W 62nd St, Los Angeles, CA 90047", "transit": {"rail": [], "bus": [{"line": "Metro Local 40 (Crenshaw Blvd)", "distance_mi": 0.2}, {"line": "Metro Local 206 (Harvard Blvd)", "distance_mi": 0.1}, {"line": "Metro Local 207 (Vermont Ave)", "distance_mi": 0.4}, {"line": "DASH Vermont/Main", "distance_mi": 0.5}]}, "notes": "Bus-only area. Crenshaw Blvd and Harvard Blvd buses are closest options."}, "South Park Recreation Center": {"id": "south-park", "name": "South Park Recreation Center", "address": "345 E 51st St, Los Angeles, CA 90011", "transit": {"rail": [{"line": "Metro A Line (Blue)", "station": "Slauson Station", "distance_mi": 0.4}], "bus": [{"line": "Metro Local 51 (Avalon Blvd)", "distance_mi": 0.2}, {"line": "DASH Southeast Clockwise", "distance_mi": 0.2}, {"line": "DASH Southeast Counterclockwise", "distance_mi": 0.2}, {"line": "Metro Local 10/48", "distance_mi": 0.3}]}, "notes": "Metro A Line (Blue) Slauson Station is approx. 0.4 mi. Bus stop at Avalon/51st is 0.2 mi."}, "Seoul International": {"id": "seoul-international", "name": "Seoul International", "address": "3250 San Marino St., Los Angeles, CA 90006", "transit": {"rail": [{"line": "Metro D Line (Purple)", "station": "Wilshire / Normandie Station", "distance_mi": 0.5, "walk_min": 11}], "bus": [{"line": "Metro Local 18 (Wilshire Blvd)", "distance_mi": 0.3}, {"line": "Metro Local 207 (Vermont Ave)", "distance_mi": 0.3}, {"line": "Metro Rapid 720", "distance_mi": 0.3}, {"line": "DASH Koreatown", "distance_mi": 0.2}]}, "notes": "Excellent transit in Koreatown. D Line Wilshire/Normandie Station is ~11-min walk."}, "Venice Beach Recreation Center": {"id": "venice-beach-recreation-center", "name": "Venice Beach Recreation Center", "address": "1800 Ocean Front Walk, Venice, CA 90291", "transit": {"rail": [], "bus": [{"line": "Big Blue Bus 18 (Rapid)", "distance_mi": 0.2}, {"line": "Metro Local 108 (Lincoln Blvd)", "distance_mi": 0.4}, {"line": "Big Blue Bus 1 (Main St)", "distance_mi": 0.3}]}, "notes": "Big Blue Bus serves the Venice Beach area."}, "Stoner Recreation Center": {"id": "stoner-recreation-center", "name": "Stoner Recreation Center", "address": "1835 Stoner Ave, Los Angeles, CA 90025", "transit": {"rail": [{"line": "Metro E Line (Expo)", "station": "Expo / Bundy Station", "distance_mi": 0.5}], "bus": [{"line": "Metro Local 4 (Santa Monica Blvd)", "distance_mi": 0.3}, {"line": "Big Blue Bus 3 (Pico Blvd)", "distance_mi": 0.4}, {"line": "Metro Local 5 (Olympic Blvd)", "distance_mi": 0.4}]}, "notes": "Metro E Line Expo/Bundy Station is approx. 0.5 mi."}, "Northridge": {"id": "northridge", "name": "Northridge", "address": "18300 Lemarsh St, Northridge, CA 91324", "transit": {"rail": [], "bus": [{"line": "Metro Local 167 (Reseda Blvd)", "distance_mi": 0.4}, {"line": "Metro Local 164 (Devonshire St)", "distance_mi": 0.5}]}, "notes": "Bus routes on Reseda Blvd and Devonshire St serve this area."}, "Echo Park": {"id": "echo-park", "name": "Echo Park", "address": "1632 Bellevue Ave, Los Angeles, CA 90026", "transit": {"rail": [{"line": "Metro B Line (Red)", "station": "Westlake / MacArthur Park Station", "distance_mi": 0.3, "walk_min": 7}, {"line": "Metro D Line (Purple)", "station": "Westlake / MacArthur Park Station", "distance_mi": 0.3, "walk_min": 7}], "bus": [{"line": "Metro Local 2 (Sunset Blvd)", "distance_mi": 0.2}, {"line": "Metro Local 4 (Santa Monica Blvd)", "distance_mi": 0.3}, {"line": "Metro Local 92 (Glendale Blvd)", "distance_mi": 0.1}, {"line": "DASH Echo Park", "distance_mi": 0.1}, {"line": "Metro Local 10/48", "distance_mi": 0.3}]}, "notes": "Good transit. B/D Line Westlake/MacArthur Park Station is ~7-min walk. Buses on Glendale Blvd are closest."}, "El Sereno Recreation Center": {"id": "el-sereno", "name": "El Sereno Recreation Center", "address": "4721 Klamath St, Los Angeles, CA 90032", "transit": {"rail": [], "bus": [{"line": "Metro Local 70 (Huntington Dr)", "distance_mi": 0.3}, {"line": "Metro Local 71 (Alhambra Ave)", "distance_mi": 0.4}, {"line": "Metro Local 256 (Valley Blvd)", "distance_mi": 0.5}]}, "notes": "Bus-served area. Routes on Huntington Dr and Alhambra Ave are nearby."}, "Ken Malloy Harbor Regional Park": {"id": "ken-malloy-harbor", "name": "Ken Malloy Harbor Regional Park", "address": "25820 Vermont Ave, Harbor City, CA 90710", "transit": {"rail": [], "bus": [{"line": "Metro Local 205 (Vermont Ave)", "distance_mi": 0.1}, {"line": "Metro Local 246 (Sepulveda Blvd)", "distance_mi": 0.5}]}, "notes": "Bus 205 on Vermont Ave serves this area."}, "Wilmington Recreation Center": {"id": "wilmington-recreation-center", "name": "Wilmington Recreation Center", "address": "325 N Neptune Ave, Wilmington, CA 90744", "transit": {"rail": [], "bus": [{"line": "Metro Local 550 (Pacific Ave)", "distance_mi": 0.3}, {"line": "Metro Local 232 (Anaheim St)", "distance_mi": 0.4}]}, "notes": "Bus routes on Pacific Ave and Anaheim St serve this area."}, "The Original Farmers Market": {"id": "farmers-market", "name": "The Original Farmers Market", "address": "6333 W. 3rd St, Los Angeles, CA 90036", "transit": {"rail": [{"line": "Metro D Line (Purple)", "station": "Wilshire / La Brea Station", "distance_mi": 0.6}], "bus": [{"line": "Metro Local 16 (3rd St)", "distance_mi": 0.1}, {"line": "Metro Rapid 316 (3rd St)", "distance_mi": 0.1}, {"line": "DASH Fairfax", "distance_mi": 0.1}, {"line": "Metro Local 217 (Fairfax Ave)", "distance_mi": 0.2}]}, "notes": "Well-served by bus. D Line Wilshire/La Brea Station is ~0.6 mi south."}, "Los Angeles Union Station": {"id": "union-station", "name": "Los Angeles Union Station", "address": "800 N. Alameda Street, Los Angeles, CA 90012", "transit": {"rail": [{"line": "Metro A Line (Blue)", "station": "Union Station", "distance_mi": 0.0}, {"line": "Metro B Line (Red)", "station": "Union Station", "distance_mi": 0.0}, {"line": "Metro D Line (Purple)", "station": "Union Station", "distance_mi": 0.0}, {"line": "Metro L Line (Gold)", "station": "Union Station", "distance_mi": 0.0}, {"line": "Metrolink (all lines)", "station": "Union Station", "distance_mi": 0.0}, {"line": "Amtrak", "station": "Union Station", "distance_mi": 0.0}], "bus": [{"line": "Metro Local 40 (multiple)", "distance_mi": 0.1}, {"line": "DASH A/B/D", "distance_mi": 0.1}, {"line": "Metro Rapid 720", "distance_mi": 0.2}]}, "notes": "Major transit hub. A, B, D, L Lines + all Metrolink + Amtrak routes all stop here."}, "Hansen Dam": {"id": "hansen-dam", "name": "Hansen Dam", "address": "11770 Foothill Blvd, Sylmar, CA 91342", "transit": {"rail": [], "bus": [{"line": "Metro Local 90 (Foothill Blvd)", "distance_mi": 0.2}, {"line": "Metro Local 230 (Van Nuys Blvd)", "distance_mi": 0.6}]}, "notes": "Bus 90 on Foothill Blvd serves this area."}, "Venice Beach": {"id": "venice-beach", "name": "Venice Beach", "address": "Windward Ave, Venice Beach, Los Angeles, CA 90291", "transit": {"rail": [], "bus": [{"line": "Big Blue Bus 18 (Rapid)", "distance_mi": 0.2}, {"line": "Big Blue Bus 1 (Main St)", "distance_mi": 0.3}, {"line": "Metro Local 33 (Venice Blvd)", "distance_mi": 0.4}]}, "notes": "No Metro Rail. Big Blue Bus primary transit option. Venice Blvd bus provides broader connectivity."}, "West Harbor Los Angeles": {"id": "west-harbor", "name": "West Harbor Los Angeles", "address": "461 W. 6th Street, San Pedro, CA 90731", "transit": {"rail": [], "bus": [{"line": "Metro Local 246 (Gaffey St)", "distance_mi": 0.3}, {"line": "Metro Local 550 (Pacific Ave)", "distance_mi": 0.4}, {"line": "DASH San Pedro", "distance_mi": 0.2}]}, "notes": "No Metro Rail. DASH San Pedro and bus 246 are the closest options."}, "Los Angeles Memorial Coliseum": {"id": "la-memorial-coliseum", "name": "Los Angeles Memorial Coliseum", "address": "3911 S Figueroa St, Los Angeles, CA 90037", "transit": {"rail": [{"line": "Metro E Line (Expo)", "station": "Exposition Park / USC Station", "distance_mi": 0.1, "walk_min": 2}], "bus": [{"line": "Metro Local 81 (Figueroa St)", "distance_mi": 0.1}, {"line": "DASH USC / Exposition Park", "distance_mi": 0.1}, {"line": "Metro Local 40 (Flower St)", "distance_mi": 0.3}]}, "notes": "Excellent transit. Metro E Line Expo/USC Station is steps away (~2-min walk)."}, "The Autry Museum": {"id": "autry-museum", "name": "The Autry Museum", "address": "4700 Western Heritage Way, Griffith Park, Los Angeles, CA 90027", "transit": {"rail": [{"line": "Metro L Line (Gold)", "station": "Downtown Burbank Station", "distance_mi": 1.5}], "bus": [{"line": "DASH Griffith Park", "distance_mi": 0.2}, {"line": "Metro Local 96 (Los Feliz Blvd)", "distance_mi": 0.5}]}, "notes": "DASH Griffith Park seasonal shuttle is the best option."}, "Van Nuys/Sherman Oaks Recreation Center": {"id": "van-nuys-sherman-oaks", "name": "Van Nuys/Sherman Oaks Recreation Center", "address": "14201 Huston St, Sherman Oaks, CA 91423", "transit": {"rail": [], "bus": [{"line": "Metro Local 150 (Ventura Blvd)", "distance_mi": 0.3}, {"line": "Metro Local 240 (Van Nuys Blvd)", "distance_mi": 0.5}, {"line": "Metro Rapid 750 (Ventura Blvd)", "distance_mi": 0.3}]}, "notes": "Bus-only. Ventura Blvd buses are the closest options."}};
 
 // Find transit info for a site by name
 function getTransit(siteName){
@@ -929,7 +1063,7 @@ function MapView({sites,selectedSite,onSelectSite,filteredLocationIds}){
       markers.current.push(marker)
     })
   },[sites,selectedSite,filteredLocationIds,onSelectSite]);
-  return <div ref={mapRef} style={{width:"100%",height:"100%",borderRadius:10,minHeight:420}}/>
+  return <div ref={mapRef} role="application" aria-label="An interactive map of Los Angeles that shows viewers where the celebrations and watch parties take place" style={{width:"100%",height:"100%",borderRadius:10,minHeight:420}}/>
 }
 
 // ─── TRANSIT PANEL ───
@@ -940,7 +1074,7 @@ function TransitInfo({siteId}){
   const buses=transit.transit?.bus||[];
   if(!rails.length&&!buses.length)return null;
   return(<div style={{marginTop:8,padding:"8px 10px",background:"var(--light)",borderRadius:6,fontSize:12}}>
-    <div style={{fontWeight:700,fontSize:11,color:"var(--muted)",marginBottom:4}}>🚌 Transit Options</div>
+    <div style={{fontWeight:700,fontSize:11,color:"var(--muted)",marginBottom:4}}>{L.uiTransitOptions}</div>
     {rails.map((r,i)=><div key={"r"+i} style={{display:"flex",alignItems:"center",gap:6,marginBottom:3}}>
       <span style={{background:"#304FFE",color:"#fff",fontSize:10,fontWeight:700,padding:"1px 6px",borderRadius:3}}>🚇</span>
       <span style={{color:"var(--text)",fontSize:11}}>{r.line} — {r.station} ({r.walk_min} min walk)</span>
@@ -962,6 +1096,9 @@ function App(){
   const[districtFilter,setDistrictFilter]=useState("");
   const[stageFilter,setStageFilter]=useState("");
   const[typeFilter,setTypeFilter]=useState("");
+  const[,forceUpdate]=useState(0);
+  useEffect(()=>{window.rerenderApp=()=>forceUpdate(n=>n+1)},[]);
+  const L=window.LANG||T.en;
 
   const filteredMatches=useMemo(()=>MATCHES.filter(m=>{
     if(dateFilter&&m.date!==dateFilter)return false;
@@ -992,13 +1129,13 @@ function App(){
 
   return(<div>
     <div style={{marginBottom:16}}>
-      <div className="section-eyebrow">Find Your Watch Party</div>
-      <h2 className="section-title">Game Schedule &amp; Locations</h2>
+      <div className="section-eyebrow">{L.uiFinderEyebrow}</div>
+      <h2 className="section-title">{L.uiFinderTitle}</h2>
     </div>
 
     {/* Legend */}
     <div style={{display:"flex",flexWrap:"wrap",gap:12,marginBottom:14,fontSize:12,alignItems:"center"}}>
-      <span style={{fontWeight:700,color:"var(--muted)"}}>Map Legend:</span>
+      <span style={{fontWeight:700,color:"var(--muted)"}}>{L.uiMapLegend}</span>
       {Object.entries(TYPE_STYLES).map(([type,s])=><span key={type} style={{display:"inline-flex",alignItems:"center",gap:4}}>
         <span style={{width:12,height:12,background:s.color,borderRadius:s.shape==="circle"?"50%":s.shape==="square"?"2px":"1px",transform:s.shape==="diamond"?"rotate(45deg) scale(0.8)":"none",display:"inline-block",border:"2px solid #fff",boxShadow:"0 0 3px rgba(0,0,0,.3)"}}></span>
         <span style={{color:"var(--text)",fontWeight:500}}>{type}</span>
@@ -1008,16 +1145,16 @@ function App(){
     {/* Filters */}
     <nav aria-label="Game filters" style={{background:"var(--light)",border:"1px solid var(--border)",borderRadius:10,padding:"14px 18px",marginBottom:18}}>
       <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10,flexWrap:"wrap",gap:8}}>
-        <span id="fh" style={{fontSize:13,fontWeight:700,textTransform:"uppercase",letterSpacing:2,color:"var(--muted)"}}>Filter Games</span>
-        {hasFilters&&<button onClick={clearFilters} aria-label="Clear all filters" style={{background:"rgba(255,82,82,.12)",color:"var(--orange)",border:"none",borderRadius:6,padding:"4px 12px",fontSize:12,cursor:"pointer",fontWeight:600}}>Clear all</button>}
+        <span id="fh" style={{fontSize:13,fontWeight:700,textTransform:"uppercase",letterSpacing:2,color:"var(--muted)"}}>{L.uiFilterGames}</span>
+        {hasFilters&&<button onClick={clearFilters} aria-label="Clear all filters" style={{background:"rgba(255,82,82,.12)",color:"var(--orange)",border:"none",borderRadius:6,padding:"4px 12px",fontSize:12,cursor:"pointer",fontWeight:600}}>{L.uiClearAll}</button>}
       </div>
       <div role="group" aria-labelledby="fh" style={{display:"flex",flexWrap:"wrap",gap:10}}>
-        <select aria-label="Filter by date" value={dateFilter} onChange={e=>setDateFilter(e.target.value)} style={sel}><option value="">All dates</option>{ALL_DATES.map(d=><option key={d} value={d}>{formatDate(d)}</option>)}</select>
-        <select aria-label="Filter by team" value={teamFilter} onChange={e=>setTeamFilter(e.target.value)} style={sel}><option value="">All teams</option>{ALL_TEAMS.map(t=><option key={t} value={t}>{t}</option>)}</select>
-        <select aria-label="Filter by location" value={locationFilter} onChange={e=>setLocationFilter(e.target.value)} style={sel}><option value="">All locations</option>{ALL_LOCATIONS.map(l=><option key={l} value={l}>{l}</option>)}</select>
-        <select aria-label="Filter by district" value={districtFilter} onChange={e=>setDistrictFilter(e.target.value)} style={sel}><option value="">All districts</option>{ALL_DISTRICTS.map(d=><option key={d} value={String(d)}>District {d}</option>)}</select>
-        <select aria-label="Filter by stage" value={stageFilter} onChange={e=>setStageFilter(e.target.value)} style={sel}><option value="">All stages</option>{STAGES.map(s=><option key={s} value={s}>{s}</option>)}</select>
-        <select aria-label="Filter by type" value={typeFilter} onChange={e=>setTypeFilter(e.target.value)} style={sel}><option value="">All types</option>{ALL_TYPES.map(t=><option key={t} value={t}>{t}</option>)}</select>
+        <select aria-label="Filter by date" value={dateFilter} onChange={e=>setDateFilter(e.target.value)} style={sel}><option value="">{L.uiAllDates}</option>{ALL_DATES.map(d=><option key={d} value={d}>{formatDate(d)}</option>)}</select>
+        <select aria-label="Filter by team" value={teamFilter} onChange={e=>setTeamFilter(e.target.value)} style={sel}><option value="">{L.uiAllTeams}</option>{ALL_TEAMS.map(t=><option key={t} value={t}>{t}</option>)}</select>
+        <select aria-label="Filter by location" value={locationFilter} onChange={e=>setLocationFilter(e.target.value)} style={sel}><option value="">{L.uiAllLocations}</option>{ALL_LOCATIONS.map(l=><option key={l} value={l}>{l}</option>)}</select>
+        <select aria-label="Filter by district" value={districtFilter} onChange={e=>setDistrictFilter(e.target.value)} style={sel}><option value="">{L.uiAllDistricts}</option>{ALL_DISTRICTS.map(d=><option key={d} value={String(d)}>District {d}</option>)}</select>
+        <select aria-label="Filter by stage" value={stageFilter} onChange={e=>setStageFilter(e.target.value)} style={sel}><option value="">{L.uiAllStages}</option>{STAGES.map(s=><option key={s} value={s}>{s}</option>)}</select>
+        <select aria-label="Filter by type" value={typeFilter} onChange={e=>setTypeFilter(e.target.value)} style={sel}><option value="">{L.uiAllTypes}</option>{ALL_TYPES.map(t=><option key={t} value={t}>{t}</option>)}</select>
       </div>
     </nav>
 
@@ -1025,7 +1162,7 @@ function App(){
     <div className="kickit-grid" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:18,minHeight:460}}>
       <div className="kickit-map" role="region" aria-label="Map of celebration sites" style={{border:"1px solid var(--border)",borderRadius:10,overflow:"hidden",position:"relative",minHeight:420}}>
         <div aria-live="polite" style={{position:"absolute",top:10,left:10,zIndex:1000,background:"rgba(10,26,138,.9)",padding:"5px 12px",borderRadius:8,fontSize:12,fontWeight:700,color:"var(--yellow)",letterSpacing:1,backdropFilter:"blur(6px)"}}>
-          {filteredLocationIds.size>0?`${filteredLocationIds.size} active site${filteredLocationIds.size>1?"s":""}`:`${SITES.length} celebration sites`}
+          {filteredLocationIds.size>0?`${filteredLocationIds.size} ${filteredLocationIds.size>1?L.uiActiveSites:L.uiActiveSite}`:`${SITES.length} ${L.uiCelebrationSites}`}
         </div>
         <MapView sites={SITES} selectedSite={selectedSite} onSelectSite={s=>setSelectedSite(selectedSite?.id===s.id?null:s)} filteredLocationIds={filteredLocationIds}/>
       </div>
@@ -1033,18 +1170,18 @@ function App(){
       <section aria-label="Game schedule" style={{border:"1px solid var(--border)",borderRadius:10,overflow:"hidden",display:"flex",flexDirection:"column",background:"#fff"}}>
         <div style={{padding:"12px 18px",borderBottom:"1px solid var(--border)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
           <div>
-            <h3 style={{fontSize:15,fontWeight:700,margin:0,fontFamily:"'Barlow Condensed',sans-serif",textTransform:"uppercase"}}>{selectedSite?selectedSite.name:"Schedule"}</h3>
+            <h3 style={{fontSize:15,fontWeight:700,margin:0,fontFamily:"'Barlow Condensed',sans-serif",textTransform:"uppercase"}}>{selectedSite?selectedSite.name:L.uiSchedule}</h3>
             {selectedSite&&<div style={{display:"flex",gap:6,marginTop:3}}>
               <span style={{fontSize:11,color:"var(--muted)"}}>District {selectedSite.district}</span>
               {selectedSite.free==="Yes"?<span style={{fontSize:10,fontWeight:700,background:"#e8f5e9",color:"#2e7d32",padding:"0 5px",borderRadius:3}}>FREE</span>:<span style={{fontSize:10,fontWeight:700,background:"#fde7e7",color:"#8a1a1a",padding:"0 5px",borderRadius:3}}>TICKETED</span>}
               <span style={{fontSize:10,fontWeight:600,background:"#f0f0f0",color:"#555",padding:"0 5px",borderRadius:3}}>{selectedSite.type}</span>
             </div>}
           </div>
-          <span aria-live="polite" style={{fontSize:12,color:"var(--muted)"}}>{selectedSite?`${siteMatches.length} games`:`${filteredMatches.length} games`}</span>
+          <span aria-live="polite" style={{fontSize:12,color:"var(--muted)"}}>{selectedSite?`${siteMatches.length} ${L.uiGames}`:`${filteredMatches.length} ${L.uiGames}`}</span>
         </div>
         {selectedSite&&<TransitInfo siteId={selectedSite.id}/>}
-        <div className="kickit-schedule-list" style={{flex:1,overflowY:"auto",padding:"0 10px 10px",maxHeight:selectedSite?400:480}}>
-          {matchesByDate.length===0?(<div style={{padding:40,textAlign:"center",color:"var(--muted)"}}><div style={{fontSize:32,marginBottom:8}}>⚽</div>No games match your filters</div>):(
+        <div className="kickit-schedule-list" tabIndex={0} aria-label="Scrollable game schedule" style={{flex:1,overflowY:"auto",padding:"0 10px 10px",maxHeight:selectedSite?400:480}}>
+          {matchesByDate.length===0?(<div style={{padding:40,textAlign:"center",color:"var(--muted)"}}><div style={{fontSize:32,marginBottom:8}}>⚽</div>{L.uiNoGames}</div>):(
             matchesByDate.map(([date,matches])=><div key={date}>
               <div style={{position:"sticky",top:0,zIndex:1,background:"#fff",padding:"10px 6px 4px",fontSize:13,fontWeight:700,color:"var(--blue)",borderBottom:"1px solid var(--border)"}}>{formatDate(date)}</div>
               {matches.map((m,i)=>{const cat=stageCategory(m.stage);const sc=STAGE_COLORS[cat]||"#888";const t1R=isRealTeam(m.t1);const t2R=isRealTeam(m.t2);
@@ -1059,7 +1196,7 @@ function App(){
                     <span style={{fontSize:14,fontWeight:t2R?700:400,color:t2R?"var(--text)":"var(--muted)",textAlign:"left",flex:1}}>{m.t2}</span>
                   </div>
                   {!selectedSite&&<div style={{fontSize:11,color:"var(--muted)",display:"flex",flexWrap:"wrap",gap:3,marginTop:3}}>
-                    {m.locations.map((l,j)=><span key={j} style={{background:"rgba(48,79,254,.06)",padding:"1px 6px",borderRadius:3}}>{l.name}</span>)}
+                    {m.locations.map((l,j)=><span key={j} style={{background:"rgba(48,79,254,.06)",color:"#1a1a2e",padding:"1px 6px",borderRadius:3}}>{l.name}</span>)}
                   </div>}
                 </article>})}
             </div>)
@@ -1070,10 +1207,10 @@ function App(){
 
     {/* Sites Grid */}
     <section aria-label="All celebration sites" style={{marginTop:28}}>
-      <h2 className="section-title" style={{fontSize:20,marginBottom:14}}>All Celebration Sites</h2>
-      <div className="kickit-sites-grid" role="list" style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(250px,1fr))",gap:10}}>
+      <h2 className="section-title" style={{fontSize:20,marginBottom:14}}>{L.uiAllSites}</h2>
+      <div className="kickit-sites-grid" style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(250px,1fr))",gap:10}}>
         {SITES.map(site=>{const isSel=selectedSite?.id===site.id;const ts=TYPE_STYLES[site.type]||{};
-          return<div key={site.id} role="listitem">
+          return<div key={site.id}>
             <button aria-pressed={isSel} aria-label={`${site.name}, District ${site.district}, ${site.type}`}
               onClick={()=>setSelectedSite(isSel?null:site)}
               style={{width:"100%",background:isSel?"rgba(48,79,254,.08)":"#fff",border:`1.5px solid ${isSel?"var(--blue)":"var(--border)"}`,borderRadius:10,padding:"12px 14px",cursor:"pointer",textAlign:"left",transition:"all .15s",color:"var(--text)",fontFamily:"inherit",fontSize:"inherit"}}>
@@ -1117,8 +1254,6 @@ ReactDOM.createRoot(document.getElementById("react-root")).render(<App/>);
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 </style>
 
-<div id="google_translate_element"></div>
-<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 </body>
 </html>
