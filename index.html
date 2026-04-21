@@ -161,8 +161,11 @@ a{color:var(--blue)}
 .lang-dropdown.open{display:block}
 .lang-dropdown button{display:block;width:100%;text-align:left;background:none;border:none;color:rgba(255,255,255,.8);font-size:.78rem;font-weight:500;padding:6px 10px;border-radius:4px;cursor:pointer;font-family:inherit}
 .lang-dropdown button:hover{background:rgba(255,255,255,.12);color:#fff}
-/* Hide Google Translate default bar */
-.goog-te-banner-frame,.skiptranslate{display:none!important}
+/* Hide Google Translate default bar but keep combo accessible for JS */
+.goog-te-banner-frame{display:none!important}
+body>.skiptranslate{height:0!important;overflow:hidden!important;visibility:hidden!important;position:absolute!important}
+.goog-te-gadget{font-size:0!important}
+#google_translate_element{position:fixed;left:-9999px;top:0;width:1px;height:1px;overflow:hidden}
 body{top:0!important}
 </style>
 </head>
@@ -319,9 +322,13 @@ body{top:0!important}
 </footer>
 
 <script>
-// ── GOOGLE TRANSLATE ──
+// ── GOOGLE TRANSLATE (no cookies, no reload) ──
 function googleTranslateElementInit(){
-  new google.translate.TranslateElement({pageLanguage:'en',autoDisplay:false},'google_translate_element');
+  new google.translate.TranslateElement({
+    pageLanguage:'en',
+    autoDisplay:false,
+    multilanguagePage:false
+  },'google_translate_element');
 }
 
 function switchLang(lang){
@@ -330,16 +337,51 @@ function switchLang(lang){
   if(dd)dd.classList.remove("open");
 
   if(lang==='en'){
-    // Reset to English: remove Google Translate cookie and reload
-    document.cookie="googtrans=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
-    document.cookie="googtrans=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;domain=."+window.location.hostname;
+    // Restore original page — find the "Show original" button or reset the translate frame
+    try{
+      const frame=document.querySelector('.goog-te-banner-frame');
+      if(frame){
+        const btn=frame.contentDocument.querySelector('.goog-close-link');
+        if(btn){btn.click();updateActiveBtn('en');return}
+      }
+    }catch(e){}
+    // Fallback: manipulate the select dropdown
+    const sel=document.querySelector('.goog-te-combo');
+    if(sel){sel.value='';sel.dispatchEvent(new Event('change'));updateActiveBtn('en');return}
+    // Last resort: clear cookies and reload
+    clearTranslateCookies();
     window.location.reload();
     return;
   }
-  // Set Google Translate cookie
-  document.cookie="googtrans=/en/"+lang+";path=/;";
-  document.cookie="googtrans=/en/"+lang+";path=/;domain=."+window.location.hostname;
-  window.location.reload();
+
+  // Wait for Google Translate widget to be ready, then select the language
+  function trySet(){
+    const sel=document.querySelector('.goog-te-combo');
+    if(sel){
+      sel.value=lang;
+      sel.dispatchEvent(new Event('change'));
+      updateActiveBtn(lang);
+    } else {
+      // Widget not ready yet, retry
+      setTimeout(trySet,300);
+    }
+  }
+  trySet();
+}
+
+function clearTranslateCookies(){
+  const domains=['','.'+window.location.hostname];
+  domains.forEach(d=>{
+    document.cookie="googtrans=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;"+(d?"domain="+d+";":"");
+  });
+}
+
+function updateActiveBtn(lang){
+  document.querySelectorAll(".lang-btn").forEach(btn=>{
+    btn.classList.remove("active");
+    const attr=btn.getAttribute("onclick")||"";
+    if(attr.includes("'"+lang+"'"))btn.classList.add("active");
+  });
 }
 
 function toggleLangDropdown(){
@@ -347,23 +389,11 @@ function toggleLangDropdown(){
   const btn=dd.previousElementSibling;
   const isOpen=dd.classList.toggle("open");
   btn.setAttribute("aria-expanded",isOpen);
-  // Close when clicking outside
   if(isOpen){
     const close=function(e){if(!dd.contains(e.target)&&e.target!==btn){dd.classList.remove("open");btn.setAttribute("aria-expanded","false");document.removeEventListener("click",close)}};
     setTimeout(()=>document.addEventListener("click",close),0);
   }
 }
-
-// Highlight active language button based on current translation
-(function highlightActiveLang(){
-  const match=document.cookie.match(/googtrans=\/en\/([^;]+)/);
-  const currentLang=match?match[1]:"en";
-  document.querySelectorAll(".lang-btn").forEach(btn=>{
-    btn.classList.remove("active");
-    const onclickAttr=btn.getAttribute("onclick")||"";
-    if(onclickAttr.includes("'"+currentLang+"'"))btn.classList.add("active");
-  });
-})();
 
 // ── COUNTDOWN ──
 function updateCountdown(){
@@ -1087,7 +1117,7 @@ ReactDOM.createRoot(document.getElementById("react-root")).render(<App/>);
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 </style>
 
-<div id="google_translate_element" style="display:none"></div>
+<div id="google_translate_element"></div>
 <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 </body>
