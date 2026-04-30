@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kick It In the Park · Los Angeles Community Celebrations</title>
 <meta name="description" content="Free World Cup 2026 watch parties across Los Angeles parks. Find your nearest celebration, filter by date, team, or location.">
@@ -49,14 +51,18 @@ a{color:var(--blue)}
 .hero-eyebrow{display:inline-flex;align-items:center;gap:.5rem;background:rgba(244,255,129,.15);border:1px solid rgba(244,255,129,.4);color:var(--yellow);font-size:.75rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;padding:.35rem 1rem;border-radius:20px;margin-bottom:1rem}
 .hero h1{font-weight:900;font-size:clamp(2.4rem,6vw,4.5rem);color:#fff;line-height:.95;text-transform:uppercase;letter-spacing:-1px;margin-bottom:.8rem}
 .hero h1 em{color:var(--yellow);font-style:normal}
-.hero-sub{color:rgba(255,255,255,.82);font-size:clamp(.9rem,2vw,1.1rem);max-width:540px;margin:0 auto 1.5rem;line-height:1.6}
+.hero-sub{color:rgba(255,255,255,.95);font-size:clamp(.9rem,2vw,1.1rem);max-width:540px;margin:0 auto 1.5rem;line-height:1.6}
 .hero-row{display:flex;align-items:center;justify-content:center;gap:2.5rem;flex-wrap:wrap}
+.hero-player,.hero-ball{position:absolute;bottom:0;pointer-events:none;user-select:none;z-index:0}
+.hero-player{right:-2rem;height:78%;max-height:360px;opacity:.88;filter:hue-rotate(-55deg) saturate(1.2) brightness(1.08)}
+.hero-ball{left:2%;bottom:-1rem;height:40%;max-height:190px;opacity:.82}
+@media(max-width:680px){.hero-player{height:55%;max-height:230px;right:-.5rem;opacity:.55}.hero-ball{height:26%;max-height:110px}}
 
 /* Countdown */
 .countdown{display:inline-flex;gap:1rem;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);padding:.8rem 1.5rem;border-radius:12px}
 .cd-unit{text-align:center}
 .cd-num{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:2rem;color:var(--yellow);line-height:1;display:block}
-.cd-label{font-size:.6rem;font-weight:600;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:1px}
+.cd-label{font-size:.6rem;font-weight:600;color:rgba(255,255,255,.9);text-transform:uppercase;letter-spacing:1px}
 .cd-sep{font-family:'Barlow Condensed',sans-serif;font-size:1.6rem;color:rgba(255,255,255,.3);align-self:center;margin-top:-4px}
 
 /* Stats bar */
@@ -150,7 +156,7 @@ a{color:var(--blue)}
 
 /* Language Bar */
 .lang-bar{background:var(--blue-dk);padding:.45rem 2rem;display:flex;align-items:center;justify-content:center;gap:.4rem;flex-wrap:wrap}
-.lang-bar-label{font-size:.7rem;font-weight:600;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.8px;margin-right:.4rem}
+.lang-bar-label{font-size:.7rem;font-weight:600;color:rgba(255,255,255,.8);text-transform:uppercase;letter-spacing:.8px;margin-right:.4rem}
 .lang-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.85);font-size:.75rem;font-weight:600;padding:.3rem .7rem;border-radius:5px;cursor:pointer;transition:all .15s;font-family:inherit;display:inline-flex;align-items:center;gap:.35rem;text-decoration:none}
 .lang-btn:hover,.lang-btn:focus{background:rgba(255,255,255,.2);color:#fff;border-color:rgba(255,255,255,.35)}
 .lang-btn.active{background:var(--yellow);color:var(--blue-dk);border-color:var(--yellow);font-weight:700}
@@ -170,19 +176,21 @@ a{color:var(--blue)}
 
 <!-- LANGUAGE BAR -->
 <nav class="lang-bar notranslate" translate="no" aria-label="Language selection">
-  <span class="lang-bar-label">🌐 Language:</span>
-  <button class="lang-btn active" onclick="switchLang('en')" aria-label="English">English</button>
-  <button class="lang-btn" onclick="switchLang('es')" aria-label="Español">Español</button>
-  <button class="lang-btn" onclick="switchLang('ko')" aria-label="한국어">한국어</button>
-  <button class="lang-btn" onclick="switchLang('zh-TW')" aria-label="繁體中文">繁體中文</button>
-  <button class="lang-btn" onclick="switchLang('hy')" aria-label="Հայերեն">Հայերեն</button>
-  <button class="lang-btn" onclick="switchLang('tl')" aria-label="Tagalog">Tagalog</button>
-  <button class="lang-btn" onclick="switchLang('fa')" aria-label="فارسی">فارسی</button>
-  <span style="font-size:.65rem;color:rgba(255,255,255,.35);margin-left:.5rem">More languages coming soon</span>
+  <span class="lang-bar-label"><span aria-hidden="true">🌐</span> Language:</span>
+  <button class="lang-btn active" onclick="switchLang('en')" aria-label="English" aria-pressed="true">English</button>
+  <button class="lang-btn" onclick="switchLang('es')" aria-label="Español" aria-pressed="false">Español</button>
+  <button class="lang-btn" onclick="switchLang('ko')" aria-label="한국어" aria-pressed="false">한국어</button>
+  <button class="lang-btn" onclick="switchLang('zh-TW')" aria-label="繁體中文" aria-pressed="false">繁體中文</button>
+  <button class="lang-btn" onclick="switchLang('hy')" aria-label="Հայերեն" aria-pressed="false">Հայերեն</button>
+  <button class="lang-btn" onclick="switchLang('tl')" aria-label="Tagalog" aria-pressed="false">Tagalog</button>
+  <button class="lang-btn" onclick="switchLang('fa')" aria-label="فارسی" aria-pressed="false">فارسی</button>
+
 </nav>
 
 <!-- HERO -->
 <header class="hero" role="banner">
+<img class="hero-player" src="03-2026 Soccer Player.png" alt="" aria-hidden="true">
+<img class="hero-ball" src="03-2026 Soccer Ball.png" alt="" aria-hidden="true">
 <div class="hero-eyebrow" data-i18n="heroEyebrow">⚽ Los Angeles</div>
 <h1 aria-label="Kick it in the Park">Kick It In<br><em>The Park</em></h1>
 <p class="hero-sub" data-i18n="heroSub">Free community watch parties across the City of Los Angeles. Bring your chairs, your neighbors, and your World Cup spirit.</p>
@@ -197,11 +205,11 @@ a{color:var(--blue)}
     <div class="cd-unit"><span class="cd-num" id="cd-secs">—</span><span class="cd-label" data-i18n="cdSecs">Secs</span></div>
   </div>
 </div>
-<div style="font-size:.7rem;color:rgba(255,255,255,.4);margin-top:.6rem"data-i18n="cdUntil">Until the Opening Kick-Off · June 11, 2026</div>
+<div style="font-size:.7rem;color:rgba(255,255,255,.75);margin-top:.6rem"data-i18n="cdUntil">Until the Opening Kick-Off · June 11, 2026</div>
 </header>
 
 <!-- STATS BAR -->
-<div class="stats-bar" role="status" aria-label="Event statistics">
+<div class="stats-bar" role="region" aria-label="Event statistics">
   <div class="stat-item"><span class="stat-num">18</span><div class="stat-desc" data-i18n="statParks">Park<br>Sites</div></div>
   <div class="stat-item"><span class="stat-num">100+</span><div class="stat-desc" data-i18n="statScreenings">Free<br>Screenings</div></div>
   <div class="stat-item"><span class="stat-num">34</span><div class="stat-desc" data-i18n="statDays">Match<br>Days</div></div>
@@ -249,12 +257,12 @@ a{color:var(--blue)}
 <section class="section" id="beyond">
 <div class="container">
   <div class="section-eyebrow"data-i18n="beyondEyebrow">Beyond the Neighborhood</div>
-  <h2 class="section-title" data-i18n="beyondTitle">Other World Cup Celebrations</h2>
+  <h2 class="section-title" data-i18n="beyondTitle">Additional World Cup Celebrations</h2>
   <p class="section-lead" data-i18n="beyondLead" style="margin-bottom:1.5rem">In addition to the free Kick It In the Park community celebrations, there will be many other opportunities across the City to celebrate the World Cup!</p>
   <div class="beyond-grid">
     <div class="beyond-card"><div style="font-size:2rem;margin-bottom:.6rem" aria-hidden="true">🏟️</div><h3 data-i18n="beyondFifa">FIFA Fan Festival</h3><p data-i18n="beyondFifaDesc">The Memorial Coliseum will come alive for a five-day festival, from June 11–15, to create an unforgettable opening weekend celebration.</p><span class="badge-ticket" data-i18n="ticketed">Ticketed · At Cost</span><div style="margin-top:.6rem"><a href="https://www.lacoliseum.com/events/fifa-fan-festival-los-angeles/" target="_blank" style="font-size:.8rem;font-weight:700;color:var(--blue);text-decoration:none" data-i18n="learnMore">Learn more ↗</a></div></div>
     <div class="beyond-card"><div style="font-size:2rem;margin-bottom:.6rem" aria-hidden="true">⚽</div><h3 data-i18n="beyondFanZones">Official Fan Zones</h3><p data-i18n="beyondFanZonesDesc">The Los Angeles Sports &amp; Entertainment Commission will be hosting multiple Fan Zones across L.A., some free of charge and some at cost.</p><span class="badge-free" data-i18n="free">Free</span> <span class="badge-ticket" data-i18n="ticketed">Ticketed · At Cost</span><div style="margin-top:.6rem"><a href="https://losangelesfwc26.com/los-angeles-world-cup-26-fan-zones/" target="_blank" style="font-size:.8rem;font-weight:700;color:var(--blue);text-decoration:none" data-i18n="learnMore">Learn more ↗</a></div></div>
-    <div class="beyond-card"><div style="font-size:2rem;margin-bottom:.6rem" aria-hidden="true">📚</div><h3 data-i18n="beyondOther">Other City Watch Parties</h3><p data-i18n="beyondOtherDesc">Our local City of L.A. libraries and Department of Cultural Affairs facilities will also be broadcasting matches.</p><span class="badge-free" data-i18n="free">Free</span></div>
+    <div class="beyond-card"><div style="font-size:2rem;margin-bottom:.6rem" aria-hidden="true">📚</div><h3 data-i18n="beyondOther">Additional City Watch Parties</h3><p data-i18n="beyondOtherDesc">Our local City of L.A. libraries and Department of Cultural Affairs facilities will also be broadcasting matches.</p><span class="badge-free" data-i18n="free">Free</span></div>
   </div>
 </div>
 </section>
@@ -307,7 +315,7 @@ a{color:var(--blue)}
 const T = {
 en: {
   // Hero
-  heroEyebrow: "⚽ Los Angeles · FIFA World Cup 2026",
+  heroEyebrow: "⚽ Los Angeles 2026",
   heroSub: "Free community watch parties across the City of Los Angeles. Bring your chairs, your neighbors, and your World Cup spirit.",
   cdDays:"Days",cdHours:"Hours",cdMins:"Mins",cdSecs:"Secs",
   cdUntil: "Until the Opening Kick-Off · June 11, 2026",
@@ -332,11 +340,11 @@ en: {
   expectCity:"City Services &amp; Resources",expectCityDesc:"Resource tables connecting residents with City departments, community organizations, and local services.",
   expectTip:"Bring your own blankets, chairs, and snacks. All events are free and open to the public, up to 1,000 people at a time.",
   // Beyond
-  beyondEyebrow:"Beyond the Neighborhood",beyondTitle:"Other World Cup Celebrations",
+  beyondEyebrow:"Beyond the Neighborhood",beyondTitle:"Additional World Cup Celebrations",
   beyondLead:"In addition to the free Kick It In the Park community celebrations, there will be many other opportunities across the City to celebrate the World Cup!",
   beyondFifa:"FIFA Fan Festival",beyondFifaDesc:"The Memorial Coliseum will come alive for a five-day festival, from June 11–15, to create an unforgettable opening weekend celebration.",
   beyondFanZones:"Official Fan Zones",beyondFanZonesDesc:"The Los Angeles Sports &amp; Entertainment Commission will be hosting multiple Fan Zones across L.A., some free of charge and some at cost.",
-  beyondOther:"Other City Watch Parties",beyondOtherDesc:"Our local City of L.A. libraries and Department of Cultural Affairs facilities will also be broadcasting matches.",
+  beyondOther:"Additional City Watch Parties",beyondOtherDesc:"Our local City of L.A. libraries and Department of Cultural Affairs facilities will also be broadcasting matches.",
   learnMore:"Learn more ↗",ticketed:"Ticketed · At Cost",free:"Free",
   // Transit
   transitEyebrow:"Plan Your Trip",transitTitle:"Getting to the Celebrations",
@@ -376,15 +384,15 @@ en: {
   uiActiveSite:"active site",uiActiveSites:"active sites",uiCelebrationSites:"celebration sites",uiGames:"games",
 },
 es: {
-  heroEyebrow: "⚽ Los Ángeles · Copa Mundial FIFA 2026",
+  heroEyebrow: "⚽ Los Ángeles 2026",
   heroSub: "Fiestas comunitarias gratuitas en toda la Ciudad de Los Ángeles. Trae tus sillas, tus vecinos y tu espíritu mundialista.",
   cdDays:"Días",cdHours:"Horas",cdMins:"Min",cdSecs:"Seg",
   cdUntil: "Hasta el inicio · 11 de junio de 2026",
-  cdBegun: "¡La Copa del Mundo ha comenzado!",
+  cdBegun: "¡La Copa Mundial ha comenzado!",
   statParks:"Parques",statScreenings:"Proyecciones<br>Gratuitas",statDays:"Días de<br>Partido",statTeams:"Equipos",
   aboutEyebrow:"Sobre el programa Kick It In the Park",
-  aboutTitle:"La Copa del Mundo<br>en cada vecindario",
-  aboutLead1:"Kick It In the Park, una colaboración entre los Distritos del Concejo, Recreación y Parques, y la Oficina del Alcalde, garantiza que la Copa del Mundo llegue a cada rincón de la ciudad — desde el Valle de San Fernando hasta el Puerto, desde los parques del Westside hasta los centros recreativos del Este de LA.",
+  aboutTitle:"La Copa Mundial<br>en cada vecindario",
+  aboutLead1:"Kick It In the Park, una colaboración entre los Distritos del Concejo, Recreación y Parques, y la Oficina del Alcalde, garantiza que la Copa Mundial llegue a cada rincón de la ciudad — desde el Valle de San Fernando hasta el Puerto, desde los parques del Westside hasta los centros recreativos del Este de LA.",
   aboutLead2:"Estos eventos gratuitos y familiares transforman los sitios de Recreación y Parques de la Ciudad de LA en espacios vibrantes donde los angelinos ven los partidos en grandes pantallas LED rodeados de clínicas de fútbol juvenil, programación comunitaria y recursos. Sin boleto, sin costo, sin barreras.",
   aboutDates:"11 de junio – 19 de julio",aboutDatesDesc:"Fechas del torneo de la Copa Mundial FIFA 2026.",
   aboutFree:"Gratis para todos",aboutFreeDesc:"No se necesitan boletos ni registro. Solo ven, trae tus mantas y sillas, y disfruta el partido con tus vecinos.",
@@ -398,7 +406,7 @@ es: {
   expectCity:"Servicios y recursos de la Ciudad",expectCityDesc:"Mesas de recursos que conectan a los residentes con departamentos de la Ciudad, organizaciones comunitarias y servicios locales.",
   expectTip:"Trae tus propias mantas, sillas y bocadillos. Todos los eventos son gratuitos y abiertos al público, hasta 1,000 personas a la vez.",
   beyondEyebrow:"Más allá del vecindario",beyondTitle:"Otras celebraciones del Mundial",
-  beyondLead:"Además de las celebraciones comunitarias gratuitas Kick It In the Park, ¡habrá muchas otras oportunidades en toda la Ciudad para celebrar la Copa del Mundo!",
+  beyondLead:"Además de las celebraciones comunitarias gratuitas Kick It In the Park, ¡habrá muchas otras oportunidades en toda la Ciudad para celebrar la Copa Mundial!",
   beyondFifa:"Festival de Fans FIFA",beyondFifaDesc:"El Coliseo Memorial de Los Ángeles cobrará vida con un festival de cinco días, del 11 al 15 de junio, para crear una celebración inolvidable del fin de semana inaugural.",
   beyondFanZones:"Zonas Oficiales de Fans",beyondFanZonesDesc:"La Comisión de Deportes y Entretenimiento de Los Ángeles organizará múltiples Zonas de Fans en toda L.A., algunas gratuitas y otras con costo.",
   beyondOther:"Otras fiestas de la Ciudad",beyondOtherDesc:"Nuestras bibliotecas locales y las instalaciones del Departamento de Asuntos Culturales también transmitirán los partidos.",
@@ -496,7 +504,7 @@ ko: {
   uiActiveSite:"활성 장소",uiActiveSites:"활성 장소",uiCelebrationSites:"축제 장소",uiGames:"경기",
 },
 "zh-TW": {
-  heroEyebrow: "⚽ 洛杉磯 · 2026年FIFA世界盃",
+  heroEyebrow: "⚽ 洛杉磯 · 2026",
   heroSub: "在洛杉磯市各地免費社區觀賽派對。帶上您的椅子、鄰居和世界盃熱情。",
   cdDays:"天",cdHours:"時",cdMins:"分",cdSecs:"秒",
   cdUntil: "距開幕賽 · 2026年6月11日",
@@ -557,7 +565,7 @@ ko: {
   uiActiveSite:"啟用場地",uiActiveSites:"啟用場地",uiCelebrationSites:"慶祝場地",uiGames:"場比賽",
 },
 hy: {
-  heroEyebrow: "⚽ Լոս Անջելես · FIFA Աշխարհի Գավաթ 2026",
+  heroEyebrow: "⚽ Լոս Անջելես · 2026",
   heroSub: "Ազատ համայնկային դիտումներ Լոս Անջելեսի կաղակով. Բերեք ձեր աթոռներ, հարեւաններ և Աշխարհի Գավաթի վոգին.",
   cdDays:"Որ",cdHours:"Ժամ",cdMins:"Րոփ",cdSecs:"Վրկ",
   cdUntil:"Մինչև բացման խաղին · 2026, հունիսի 11",
@@ -618,7 +626,7 @@ hy: {
   uiActiveSite:"ակտիվ վայր",uiActiveSites:"ակտիվ վայրեր",uiCelebrationSites:"տոնական վայրեր",uiGames:"խաղերն",
 },
 tl: {
-  heroEyebrow: "⚽ Los Angeles · FIFA World Cup 2026",
+  heroEyebrow: "⚽ Los Angeles · 2026",
   heroSub: "Libreng community watch parties sa buong Lungsod ng Los Angeles. Dalhin ang inyong mga upuan, kapitbahay, at World Cup spirit.",
   cdDays:"Araw",cdHours:"Oras",cdMins:"Min",cdSecs:"Seg",
   cdUntil:"Hanggang sa opening kick-off · Hunyo 11, 2026",
@@ -684,26 +692,26 @@ fa: {
   cdDays:"روز",cdHours:"ساعت",cdMins:"دقیقه",cdSecs:"ثانیه",
   cdUntil:"تا شروع بازی افتتاحیه · ۱۱ ژوئن ۲۰۲۶",
   cdBegun:"جام جهانی شروع شده است!",
-  statParks:"پارک‌ها<br>مکان‌ها",statScreenings:"نمایش<br>رایگان",statDays:"روزهای<br>بازی",statTeams:"تیم‌ها",
+  statParks:"تا پارک و مکان",statScreenings:"نمایش<br>رایگان",statDays:"روزهای<br>بازی",statTeams:"تا تیم",
   aboutEyebrow:"درباره برنامه Kick It In the Park",
   aboutTitle:"جام جهانی<br>در هر محله",
   aboutLead1:"Kick It In the Park یک مشارکت بین مناطق شورا، تفریحات و پارک‌ها و دفتر شهردار است که تضمین می‌کند جام جهانی به هر گوشه شهر برسد — از دره سن فرناندو تا بندر، از پارک‌های غربی تا مراکز تفریحی شرق لس آنجلس.",
   aboutLead2:"این رویدادهای رایگان و خانوادگی، سایت‌های تفریحات و پارک‌های شهر لس آنجلس را به فضاهای پرانرژی گردهمایی تبدیل می‌کنند. بدون بلیط، بدون هزینه، بدون مانع.",
   aboutDates:"۱۱ ژوئن – ۱۹ ژوئیه",aboutDatesDesc:"تاریخ‌های مسابقات جام جهانی فیفا ۲۰۲۶.",
-  aboutFree:"رایگان برای همه",aboutFreeDesc:"نیازی به بلیط یا ثبت‌نام نیست. فقط بیایید.",
+  aboutFree:"رایگان برای همه",aboutFreeDesc:"نیازی به بلیط یا ثبت‌نام نیست. فقط تشریف بیاورید.",
   aboutRotating:"برنامه چرخشی",aboutRotatingDesc:"هر روز بازی مکان‌های مختلف فعال می‌شوند.",
   expectEyebrow:"در هر جشن چه هست",
   expectTitle:"در رویدادهای Kick It In the Park چه انتظاری داشته باشید",
   expectLead:"هر منطقه شورا ممکن است رنگ خاص خود را به رویدادها اضافه کند، اما همیشه بازی‌های جام جهانی خواهد بود!",
-  expectScreen:"پخش زنده بازی‌ها",expectScreenDesc:"صفحه‌های بزرگ LED موبایل هر بازی جام جهانی را به صورت زنده پخش می‌کنند.",
+  expectScreen:"پخش زنده بازی‌ها",expectScreenDesc:"صفحه‌های بزرگ LED متحرک هر بازی جام جهانی را به صورت زنده پخش می‌کنند.",
   expectPlay:"کلینیک‌های فوتبال PlayLA",expectPlayDesc:"کلینیک‌های رایگان فوتبال برای کودکان در همه سنین.",
   expectFamily:"مناطق تفریحی خانوادگی",expectFamilyDesc:"فعالیت‌های تعاملی و برنامه‌ریزی خانوادگی.",
   expectCity:"خدمات و منابع شهری",expectCityDesc:"میزهای منابع برای ارتباط ساکنان با خدمات محلی.",
   expectTip:"پتو، صندلی و تنقلات خود را بیاورید. همه رویدادها رایگان و عمومی هستند، تا ۱۰۰۰ نفر.",
   beyondEyebrow:"فراتر از محله",beyondTitle:"سایر جشن‌های جام جهانی",
   beyondLead:"علاوه بر جشن‌های رایگان Kick It In the Park، فرصت‌های بسیار دیگری در سراسر شهر وجود دارد!",
-  beyondFifa:"جشنواره هواداران فیفا",beyondFifaDesc:"کلوسئوم یادبود لس آنجلس میزبان جشنواره پنج روزه از ۱۱ تا ۱۵ ژوئن خواهد بود.",
-  beyondFanZones:"مناطق رسمی هواداران",beyondFanZonesDesc:"کمیسیون ورزش و سرگرمی لس آنجلس چندین منطقه هواداران را در سراسر شهر میزبانی خواهد کرد، برخی رایگان و برخی با هزینه.",
+  beyondFifa:"جشنواره هواداران فیفا",beyondFifaDesc:"کلوسئوم مموریال لس آنجلس میزبان جشنواره پنج روزه از ۱۱ تا ۱۵ ژوئن خواهد بود.",
+  beyondFanZones:"مناطق رسمی هواداران",beyondFanZonesDesc:"کمیسیون ورزش و سرگرمی لس آنجلس چندین منطقه منطقه برای هواداران در سراسر شهر میزبانی خواهد کرد، برخی رایگان و برخی با هزینه.",
   beyondOther:"سایر مهمانی‌های تماشای شهری",beyondOtherDesc:"کتابخانه‌ها و مراکز فرهنگی شهر نیز بازی‌ها را پخش خواهند کرد.",
   learnMore:"اطلاعات بیشتر ↗",ticketed:"بلیطی · با هزینه",free:"رایگان",
   transitEyebrow:"برنامه‌ریزی سفر",transitTitle:"چگونه به جشن‌ها برسید",
@@ -768,8 +776,12 @@ function switchLang(lang){
   // Update active button
   document.querySelectorAll(".lang-btn").forEach(btn => {
     btn.classList.remove("active");
+    btn.setAttribute("aria-pressed", "false");
     const attr = btn.getAttribute("onclick") || "";
-    if(attr.includes("'" + lang + "'")) btn.classList.add("active");
+    if(attr.includes("'" + lang + "'")){
+      btn.classList.add("active");
+      btn.setAttribute("aria-pressed", "true");
+    }
   });
 
   // Update HTML lang attribute
@@ -809,7 +821,7 @@ function buildFAQ(){
   const faqs = window.LANG.faq || T.en.faq;
   faqs.forEach((item,i)=>{
     const div=document.createElement("div");div.className="faq-item";
-    div.innerHTML=`<button class="faq-q" aria-expanded="false" aria-controls="faq-a-${i}"><span>${item.q}</span><span class="faq-chevron" aria-hidden="true">▾</span></button><div class="faq-a" id="faq-a-${i}" role="region"><div class="faq-a-inner">${item.a}</div></div>`;
+    div.innerHTML=`<button id="faq-btn-${i}" class="faq-q" aria-expanded="false" aria-controls="faq-a-${i}"><span>${item.q}</span><span class="faq-chevron" aria-hidden="true">▾</span></button><div class="faq-a" id="faq-a-${i}" role="region" aria-labelledby="faq-btn-${i}"><div class="faq-a-inner">${item.a}</div></div>`;
     const btn=div.querySelector(".faq-q");
     btn.addEventListener("click",()=>{
       const a=div.querySelector(".faq-a"),isOpen=a.classList.contains("open");
@@ -853,6 +865,7 @@ const SITES = [
   {id:92,district:7,name:"Hansen Dam",address:"11770 Foothill Blvd, Sylmar 91342",lat:34.2742,lng:-118.3963,type:"Official Fan Zone",free:"No"},
   {id:93,district:11,name:"Venice Beach",address:"Winward Ave, Venice Beach, Los Angeles 90291",lat:33.9850,lng:-118.4695,type:"Official Fan Zone",free:"Yes"},
   {id:94,district:15,name:"West Harbor Los Angeles",address:"461 W. 6th Street, Suite 300, San Pedro 90731",lat:33.7400,lng:-118.2780,type:"Official Fan Zone",free:"No"},
+  {id:31,district:2,name:"NoHo Arts District",address:"Magnolia Blvd between Vineland Ave and Lankershim Blvd",lat:34.164971,lng:-118.372691,type:"Community Activations",free:"Yes"},
 ];
 
 const CALENDAR_RAW = [
@@ -1092,21 +1105,27 @@ const CALENDAR_RAW = [
   {m:"67",date:"6/27/2026",time:"2:00 PM",stage:"Group L",host:"New York/NJ",t1:"Panama",t2:"England",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9,type:"Kick It In The Park",free:"Yes"},
   {m:"67",date:"6/27/2026",time:"2:00 PM",stage:"Group L",host:"New York/NJ",t1:"Panama",t2:"England",loc:"Venice Beach Recreation Center",dist:11,lid:12,type:"Kick It In The Park",free:"Yes"},
   {m:"67",date:"6/27/2026",time:"2:00 PM",stage:"Group L",host:"New York/NJ",t1:"Panama",t2:"England",loc:"Los Angeles Union Station",dist:14,lid:91,type:"Official Fan Zone",free:"Yes"},
+  {m:"67",date:"6/27/2026",time:"2:00 PM",stage:"Group L",host:"New York/NJ",t1:"Panama",t2:"England",loc:"NoHo Arts District",dist:2,lid:31,type:"Community Activations",free:"Yes"},
   {m:"68",date:"6/27/2026",time:"2:00 PM",stage:"Group L",host:"Philadelphia",t1:"Croatia",t2:"Ghana",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9,type:"Kick It In The Park",free:"Yes"},
   {m:"68",date:"6/27/2026",time:"2:00 PM",stage:"Group L",host:"Philadelphia",t1:"Croatia",t2:"Ghana",loc:"Venice Beach Recreation Center",dist:11,lid:12,type:"Kick It In The Park",free:"Yes"},
   {m:"68",date:"6/27/2026",time:"2:00 PM",stage:"Group L",host:"Philadelphia",t1:"Croatia",t2:"Ghana",loc:"Los Angeles Union Station",dist:14,lid:91,type:"Official Fan Zone",free:"Yes"},
+  {m:"68",date:"6/27/2026",time:"2:00 PM",stage:"Group L",host:"Philadelphia",t1:"Croatia",t2:"Ghana",loc:"NoHo Arts District",dist:2,lid:31,type:"Community Activations",free:"Yes"},
   {m:"69",date:"6/27/2026",time:"7:00 PM",stage:"Group J",host:"Kansas City",t1:"Algeria",t2:"Austria",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9,type:"Kick It In The Park",free:"Yes"},
   {m:"69",date:"6/27/2026",time:"7:00 PM",stage:"Group J",host:"Kansas City",t1:"Algeria",t2:"Austria",loc:"Venice Beach Recreation Center",dist:11,lid:12,type:"Kick It In The Park",free:"Yes"},
   {m:"69",date:"6/27/2026",time:"7:00 PM",stage:"Group J",host:"Kansas City",t1:"Algeria",t2:"Austria",loc:"Los Angeles Union Station",dist:14,lid:91,type:"Official Fan Zone",free:"Yes"},
+  {m:"69",date:"6/27/2026",time:"7:00 PM",stage:"Group J",host:"Kansas City",t1:"Algeria",t2:"Austria",loc:"NoHo Arts District",dist:2,lid:31,type:"Community Activations",free:"Yes"},
   {m:"70",date:"6/27/2026",time:"7:00 PM",stage:"Group J",host:"Dallas",t1:"Jordan",t2:"Argentina",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9,type:"Kick It In The Park",free:"Yes"},
   {m:"70",date:"6/27/2026",time:"7:00 PM",stage:"Group J",host:"Dallas",t1:"Jordan",t2:"Argentina",loc:"Venice Beach Recreation Center",dist:11,lid:12,type:"Kick It In The Park",free:"Yes"},
   {m:"70",date:"6/27/2026",time:"7:00 PM",stage:"Group J",host:"Dallas",t1:"Jordan",t2:"Argentina",loc:"Los Angeles Union Station",dist:14,lid:91,type:"Official Fan Zone",free:"Yes"},
+  {m:"70",date:"6/27/2026",time:"7:00 PM",stage:"Group J",host:"Dallas",t1:"Jordan",t2:"Argentina",loc:"NoHo Arts District",dist:2,lid:31,type:"Community Activations",free:"Yes"},
   {m:"71",date:"6/27/2026",time:"4:30 PM",stage:"Group K",host:"Miami",t1:"Colombia",t2:"Portugal",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9,type:"Kick It In The Park",free:"Yes"},
   {m:"71",date:"6/27/2026",time:"4:30 PM",stage:"Group K",host:"Miami",t1:"Colombia",t2:"Portugal",loc:"Venice Beach Recreation Center",dist:11,lid:12,type:"Kick It In The Park",free:"Yes"},
   {m:"71",date:"6/27/2026",time:"4:30 PM",stage:"Group K",host:"Miami",t1:"Colombia",t2:"Portugal",loc:"Los Angeles Union Station",dist:14,lid:91,type:"Official Fan Zone",free:"Yes"},
+  {m:"71",date:"6/27/2026",time:"4:30 PM",stage:"Group K",host:"Miami",t1:"Colombia",t2:"Portugal",loc:"NoHo Arts District",dist:2,lid:31,type:"Community Activations",free:"Yes"},
   {m:"72",date:"6/27/2026",time:"4:30 PM",stage:"Group K",host:"Atlanta",t1:"Congo DR",t2:"Uzbekistan",loc:"Jackie Tatum Harvard Recreation Center",dist:8,lid:9,type:"Kick It In The Park",free:"Yes"},
   {m:"72",date:"6/27/2026",time:"4:30 PM",stage:"Group K",host:"Atlanta",t1:"Congo DR",t2:"Uzbekistan",loc:"Venice Beach Recreation Center",dist:11,lid:12,type:"Kick It In The Park",free:"Yes"},
   {m:"72",date:"6/27/2026",time:"4:30 PM",stage:"Group K",host:"Atlanta",t1:"Congo DR",t2:"Uzbekistan",loc:"Los Angeles Union Station",dist:14,lid:91,type:"Official Fan Zone",free:"Yes"},
+  {m:"72",date:"6/27/2026",time:"4:30 PM",stage:"Group K",host:"Atlanta",t1:"Congo DR",t2:"Uzbekistan",loc:"NoHo Arts District",dist:2,lid:31,type:"Community Activations",free:"Yes"},
   {m:"73",date:"6/28/2026",time:"12:00 PM",stage:"Round of 32",host:"Los Angeles",t1:"2A",t2:"2B",loc:"Seoul International Park",dist:10,lid:11,type:"Kick It In The Park",free:"Yes"},
   {m:"73",date:"6/28/2026",time:"12:00 PM",stage:"Round of 32",host:"Los Angeles",t1:"2A",t2:"2B",loc:"Whitsett Fields",dist:2,lid:2,type:"Kick It In The Park",free:"Yes"},
   {m:"73",date:"6/28/2026",time:"12:00 PM",stage:"Round of 32",host:"Los Angeles",t1:"2A",t2:"2B",loc:"Sylmar Recreation Center",dist:7,lid:8,type:"Kick It In The Park",free:"Yes"},
@@ -1300,8 +1319,8 @@ function MapView({sites,selectedSite,onSelectSite,filteredLocationIds}){
       const transit=TRANSIT_BY_ID[site.id];
       let transitHtml="";
       if(transit){
-        const rails=(transit.transit?.rail||[]).map(r=>`<span style="display:inline-block;background:#304FFE;color:#fff;font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px;margin:1px">${r.line} · ${r.walk_min}min walk</span>`).join("");
-        const buses=(transit.transit?.bus||[]).slice(0,3).map(b=>`<span style="display:inline-block;background:#eee;color:#333;font-size:9px;font-weight:600;padding:1px 5px;border-radius:3px;margin:1px">${b.line}</span>`).join("");
+        const rails=(transit.transit?.rail||[]).map(r=>{const c=getTransitColor(r.line);return`<span style="display:inline-block;background:${c.bg};color:${c.color};font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px;margin:1px">${r.line} · ${r.walk_min}min walk</span>`;}).join("");
+        const buses=(transit.transit?.bus||[]).slice(0,3).map(b=>{const c=getTransitColor(b.line);return`<span style="display:inline-block;background:${c.bg};color:${c.color};font-size:9px;font-weight:600;padding:1px 5px;border-radius:3px;margin:1px">${b.line}</span>`;}).join("");
         transitHtml=`<div style="margin-top:6px;border-top:1px solid #ddd;padding-top:5px"><div style="font-size:9px;font-weight:700;color:#555;margin-bottom:3px">🚌 TRANSIT</div>${rails}${buses}</div>`;
       }
       const freeLabel=site.free==="Yes"?`<span style="background:#e8f5e9;color:#2e7d32;font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px">FREE</span>`:`<span style="background:#fde7e7;color:#8a1a1a;font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px">TICKETED</span>`;
@@ -1316,6 +1335,27 @@ function MapView({sites,selectedSite,onSelectSite,filteredLocationIds}){
 }
 
 // ─── TRANSIT PANEL ───
+function getTransitColor(name){
+  const n=name||"";
+  if(/Metro Local|Metro Rapid/i.test(n))return{bg:"#f26722",color:"#fff"};
+  if(/Big Blue/i.test(n))return{bg:"#0072bc",color:"#fff"};
+  if(/Culver City/i.test(n))return{bg:"#2e8b57",color:"#fff"};
+  if(/DASH/i.test(n))return{bg:"#004b87",color:"#fff"};
+  if(/LADOT/i.test(n))return{bg:"#d32f2f",color:"#fff"};
+  if(/Foothill/i.test(n))return{bg:"#8dc63f",color:"#fff"};
+  if(/Metrolink/i.test(n))return{bg:"#f58220",color:"#fff"};
+  if(/A Line|Gold Line/i.test(n))return{bg:"#c89a35",color:"#fff"};
+  if(/B Line|Red Line/i.test(n))return{bg:"#e0242a",color:"#fff"};
+  if(/C Line|Green Line/i.test(n))return{bg:"#58a738",color:"#fff"};
+  if(/D Line|Purple Line/i.test(n))return{bg:"#a05da5",color:"#fff"};
+  if(/E Line|Expo/i.test(n))return{bg:"#1a8cbd",color:"#fff"};
+  if(/G Line|Orange Line/i.test(n))return{bg:"#f7931d",color:"#fff"};
+  if(/J Line|Silver Line/i.test(n))return{bg:"#a0a2a3",color:"#333"};
+  if(/K Line|Crenshaw/i.test(n))return{bg:"#e96bb0",color:"#fff"};
+  if(/L Line/i.test(n))return{bg:"#c89a35",color:"#fff"};
+  return{bg:"#555",color:"#fff"};
+}
+
 function TransitInfo({siteId}){
   const transit=TRANSIT_BY_ID[siteId];
   if(!transit)return null;
@@ -1324,14 +1364,14 @@ function TransitInfo({siteId}){
   if(!rails.length&&!buses.length)return null;
   return(<div style={{marginTop:8,padding:"8px 10px",background:"var(--light)",borderRadius:6,fontSize:12}}>
     <div style={{fontWeight:700,fontSize:11,color:"var(--muted)",marginBottom:4}}>{L.uiTransitOptions}</div>
-    {rails.map((r,i)=><div key={"r"+i} style={{display:"flex",alignItems:"center",gap:6,marginBottom:3}}>
-      <span style={{background:"#304FFE",color:"#fff",fontSize:10,fontWeight:700,padding:"1px 6px",borderRadius:3}}>🚇</span>
+    {rails.map((r,i)=>{const c=getTransitColor(r.line);return(<div key={"r"+i} style={{display:"flex",alignItems:"center",gap:6,marginBottom:3}}>
+      <span style={{background:c.bg,color:c.color,fontSize:10,fontWeight:700,padding:"1px 6px",borderRadius:3}}>🚇</span>
       <span style={{color:"var(--text)",fontSize:11}}>{r.line} — {r.station} ({r.walk_min} min walk)</span>
-    </div>)}
-    {buses.slice(0,4).map((b,i)=><div key={"b"+i} style={{display:"flex",alignItems:"center",gap:6,marginBottom:2}}>
-      <span style={{background:"var(--orange)",color:"#fff",fontSize:10,fontWeight:700,padding:"1px 6px",borderRadius:3}}>🚌</span>
+    </div>)})}
+    {buses.slice(0,4).map((b,i)=>{const c=getTransitColor(b.line);return(<div key={"b"+i} style={{display:"flex",alignItems:"center",gap:6,marginBottom:2}}>
+      <span style={{background:c.bg,color:c.color,fontSize:10,fontWeight:700,padding:"1px 6px",borderRadius:3}}>🚌</span>
       <span style={{color:"var(--text)",fontSize:11}}>{b.line}</span>
-    </div>)}
+    </div>)})}
     {transit.notes&&<div style={{fontSize:10,color:"var(--muted)",marginTop:4,fontStyle:"italic"}}>{transit.notes}</div>}
   </div>);
 }
