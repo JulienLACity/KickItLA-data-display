@@ -611,15 +611,6 @@ function App(){
       <h2 className="section-title">Game Schedule &amp; Locations</h2>
     </div>
 
-    {/* Legend */}
-    <div style={{display:"flex",flexWrap:"wrap",gap:12,marginBottom:14,fontSize:12,alignItems:"center"}}>
-      <span style={{fontWeight:700,color:"var(--muted)"}}>Map Legend:</span>
-      {Object.entries(TYPE_STYLES).map(([type,s])=><span key={type} style={{display:"inline-flex",alignItems:"center",gap:4}}>
-        <span style={{width:12,height:12,background:s.color,borderRadius:s.shape==="circle"?"50%":s.shape==="square"?"2px":"1px",transform:s.shape==="diamond"?"rotate(45deg) scale(0.8)":"none",display:"inline-block",border:"2px solid #fff",boxShadow:"0 0 3px rgba(0,0,0,.3)"}}></span>
-        <span style={{color:"var(--text)",fontWeight:500}}>{type}</span>
-      </span>)}
-    </div>
-
     {/* Filters */}
     <nav aria-label="Game filters" style={{background:"var(--light)",border:"1px solid var(--border)",borderRadius:10,padding:"14px 18px",marginBottom:18}}>
       <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10,flexWrap:"wrap",gap:8}}>
@@ -635,6 +626,15 @@ function App(){
         <select aria-label="Filter by type" value={typeFilter} onChange={e=>setTypeFilter(e.target.value)} style={sel}><option value="">All types</option>{ALL_TYPES.map(t=><option key={t} value={t}>{t}</option>)}</select>
       </div>
     </nav>
+
+    {/* Legend */}
+    <div style={{display:"flex",flexWrap:"wrap",gap:12,marginBottom:12,fontSize:14,alignItems:"center"}}>
+      <span style={{fontWeight:700,color:"var(--muted)"}}>Map Legend:</span>
+      {Object.entries(TYPE_STYLES).map(([type,s])=><span key={type} style={{display:"inline-flex",alignItems:"center",gap:4}}>
+        <span style={{width:12,height:12,background:s.color,borderRadius:s.shape==="circle"?"50%":s.shape==="square"?"2px":"1px",transform:s.shape==="diamond"?"rotate(45deg) scale(0.8)":"none",display:"inline-block",border:"2px solid #fff",boxShadow:"0 0 3px rgba(0,0,0,.3)"}}></span>
+        <span style={{color:"var(--text)",fontWeight:500}}>{type}</span>
+      </span>)}
+    </div>
 
     {/* Map + Schedule */}
     <div className="kickit-grid" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:18,minHeight:460}}>
